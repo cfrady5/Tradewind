@@ -49,11 +49,7 @@ export function Hero({ now, metrics }: { now: Date; metrics: Metric[] }) {
       <div className="container-page grid items-center gap-12 pb-8 pt-[calc(var(--header-h)+2rem)] lg:grid-cols-12 lg:gap-6 lg:pb-10 lg:pt-[calc(var(--header-h)+2rem)]">
         {/* Copy */}
         <div className="relative z-10 lg:col-span-7 xl:col-span-6">
-          <p className="enter eyebrow flex items-center gap-3 text-cobalt" style={i(0)}>
-            <span className="h-px w-10 bg-runway" aria-hidden />
-            Chief Digital and AI Office · Tradewinds
-          </p>
-          <h1 id="hero-title" className="mt-7 text-[clamp(2.6rem,1.3rem+4vw,4.75rem)] font-extrabold leading-[1.03] lg:whitespace-nowrap tracking-[-0.04em] text-navy">
+          <h1 id="hero-title" className="text-[clamp(2.6rem,1.3rem+4vw,4.75rem)] font-extrabold leading-[1.03] lg:whitespace-nowrap tracking-[-0.04em] text-navy">
             <span className="enter block" style={i(1)}>Accelerating the</span>
             <span className="enter block" style={i(2)}>Acquisition of</span>
             <span className="enter block" style={i(3)}>
