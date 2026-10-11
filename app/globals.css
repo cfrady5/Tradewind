@@ -1,0 +1,212 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   Tradewinds design tokens — official palette (Brand Guidelines, Sep 24 2026)
+   See docs/03-DESIGN-SYSTEM.md for usage and accessible pairings.
+   ========================================================================== */
+@theme {
+  /* Official palette */
+  --color-navy: #022c49;
+  --color-signal: #337de5;
+  --color-cobalt: #004aad;
+  --color-sky: #7fbdf2;
+  --color-runway: #f9943b;
+  --color-cloud: #eef1f3;
+  --color-white: #ffffff;
+
+  /* Structural neutrals derived from Navy (legibility only) */
+  --color-navy-900: #011c2f;
+  --color-navy-800: #022c49;
+  --color-navy-700: #0a3a5c;
+  --color-navy-600: #164a70;
+  --color-ink-muted: #4a5e6d; /* 6.75:1 on white */
+  --color-ink-subtle: #a9bed0; /* 7.5:1 on navy */
+  --color-line: #d8e0e6;
+  --color-line-dark: rgb(127 189 242 / 0.16);
+  --color-runway-tint: #fde3cb;
+  --color-sky-tint: #e4f0fc;
+
+  /* Typography */
+  --font-sans: "Montserrat Variable", "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --text-display: clamp(2.75rem, 1.6rem + 4.6vw, 5.5rem);
+  --text-display--line-height: 1.02;
+  --text-display--letter-spacing: -0.035em;
+  --text-h1: clamp(2.25rem, 1.5rem + 3vw, 4rem);
+  --text-h1--line-height: 1.06;
+  --text-h1--letter-spacing: -0.03em;
+  --text-h2: clamp(2rem, 1.5rem + 2vw, 3.5rem);
+  --text-h2--line-height: 1.08;
+  --text-h2--letter-spacing: -0.025em;
+  --text-h3: clamp(1.375rem, 1.2rem + 0.7vw, 2rem);
+  --text-h3--line-height: 1.2;
+  --text-h3--letter-spacing: -0.015em;
+  --text-lead: clamp(1.0625rem, 1rem + 0.35vw, 1.3125rem);
+  --text-lead--line-height: 1.6;
+  --text-eyebrow: 0.75rem;
+  --text-eyebrow--line-height: 1;
+  --text-eyebrow--letter-spacing: 0.16em;
+
+  /* Radii — consistent component geometry */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+
+  /* Elevation — restrained */
+  --shadow-card: 0 1px 2px rgb(2 44 73 / 0.04), 0 4px 16px -4px rgb(2 44 73 / 0.08);
+  --shadow-lift: 0 2px 4px rgb(2 44 73 / 0.05), 0 18px 40px -12px rgb(2 44 73 / 0.22);
+  --shadow-glow: 0 0 0 1px rgb(127 189 242 / 0.24), 0 20px 60px -20px rgb(51 125 229 / 0.45);
+
+  /* Motion tokens */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-micro: 160ms;
+  --duration-ui: 260ms;
+  --duration-enter: 520ms;
+  --duration-hero: 900ms;
+
+  --animate-draw: draw 2.4s var(--ease-out) forwards;
+  --animate-flow: flow 6s linear infinite;
+  --animate-pulse-node: pulse-node 3.2s var(--ease-in-out) infinite;
+}
+
+@keyframes draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes flow {
+  to { stroke-dashoffset: -200; }
+}
+@keyframes pulse-node {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.35); }
+}
+
+/* ------------------------------------------------------------------ base */
+@layer base {
+  :root {
+    color-scheme: light;
+    --header-h: 76px;
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    scroll-padding-top: calc(var(--header-h) + 24px);
+  }
+  body {
+    @apply bg-white font-sans text-navy antialiased;
+    font-feature-settings: "lnum" 1, "tnum" 0;
+  }
+  h1, h2, h3, h4 { @apply text-balance; }
+  p { @apply text-pretty; }
+  ::selection { background: var(--color-sky); color: var(--color-navy); }
+
+  :focus-visible {
+    outline: 2px solid var(--color-signal);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .on-dark :focus-visible { outline-color: var(--color-runway); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
+}
+
+/* ------------------------------------------------------------ utilities */
+@utility container-page {
+  width: 100%;
+  max-width: 1360px;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 0.5rem + 3vw, 3rem);
+}
+@utility section-y {
+  padding-block: clamp(4.5rem, 3rem + 6vw, 9rem);
+}
+@utility eyebrow {
+  font-size: var(--text-eyebrow);
+  line-height: 1;
+  letter-spacing: var(--text-eyebrow--letter-spacing);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+@utility surface-dark {
+  background-color: var(--color-navy);
+  color: var(--color-white);
+}
+@utility bg-hero {
+  background:
+    radial-gradient(60% 70% at 78% 30%, rgb(0 74 173 / 0.55), transparent 70%),
+    radial-gradient(40% 50% at 10% 90%, rgb(51 125 229 / 0.18), transparent 70%),
+    linear-gradient(180deg, var(--color-navy-900) 0%, var(--color-navy) 55%, #033a60 100%);
+}
+@utility bg-grid-fine {
+  background-image:
+    linear-gradient(to right, rgb(127 189 242 / 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(127 189 242 / 0.07) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+@utility bg-grid-light {
+  background-image:
+    linear-gradient(to right, rgb(2 44 73 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(2 44 73 / 0.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+@utility text-gradient-sky {
+  background: linear-gradient(100deg, var(--color-white) 10%, var(--color-sky) 60%, var(--color-signal));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@utility link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size var(--duration-ui) var(--ease-out);
+  &:hover, &:focus-visible { background-size: 100% 1px; }
+}
+
+/* -------------------------------------------- page transitions (React VT) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 220ms;
+  animation-timing-function: var(--ease-out);
+}
+
+/* -------------------------------------------------- reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) { animation: none !important; }
+}
+
+@keyframes fade-in { to { opacity: 1; } }
+@keyframes travel {
+  0% { stroke-dashoffset: 1; opacity: 0; }
+  12%, 85% { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+@keyframes ring {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+
+/* Hero entrance — CSS (not JS) so it starts at first paint and never delays LCP/interaction. */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: none; }
+}
+@utility enter {
+  animation: rise var(--duration-hero) var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 90ms + 60ms);
+}
+@keyframes nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
