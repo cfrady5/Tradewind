@@ -6,7 +6,7 @@ _Last updated: 2026-10-11_
 - Design system: official palette with AA-verified pairings, Montserrat (self-hosted), spacing/grid, motion tokens, reduced-motion support.
 - Official logos (full-color + reversed lockups, monogram, favicon/apple icon) from the approved brand files.
 - Global navigation: sticky compressing header, keyboard-accessible mega menus (Enter/↓/Esc, focus return), animated active indicator, `<dialog>` mobile menu, persistent Marketplace Login CTA. Footer.
-- Homepage: all 10 sections, CSS hero entrance, animated converging-pathways motif, sticky four-stage journey visualization with vertical stepper on mobile.
+- Homepage: all 10 sections; light hero with tilted media collage, mission card, converging pathway lines and a stats bar built from real metrics; CSS hero entrance, animated converging-pathways motif, sticky four-stage journey visualization with vertical stepper on mobile.
 - Directory pattern (URL-synced search/facets/sort, live counts, empty states, pagination) used by Awardable Solutions, Opportunities (+ Special Topics, Shopping Notices, Archive views), AI Tools, Prompt Library (expand + copy with fallback), Resources (+ Videos, Exemplars, News) and FAQs (deep-linkable answers).
 - Opportunity status logic: open/upcoming/closed computed from dates; the monthly Marketplace collection deadline (12:00 pm ET, last day of month, DST-aware) is computed live; closed items move to the Archive automatically.
 - Templates: opportunity detail (sticky key dates + section nav), contract vehicle detail (current vs. historical, pending-field callouts), AI tool detail, process journeys, comparison table (stacked cards on mobile).
@@ -28,7 +28,7 @@ _Last updated: 2026-10-11_
 - DRAID and AI Talent 2.0 scope, eligibility, ordering, holders, documents; T&E holder list.
 - SBIR/STTR Aisle and Prototype Transition Aisle details.
 - Awarded-solutions public dataset; success stories; annual time-series for impact charts.
-- ARI-approved photography (guidelines reference an imagery library that was not supplied). The site currently uses no stock photography by design.
+- ARI-approved photography (guidelines reference an imagery library that was not supplied). The homepage hero collage has photo slots (`public/images/hero/`) and currently renders on-brand illustrated fallbacks. Three interim AI images were generated (Higgsfield) but could not be downloaded into this environment.
 - True vector (SVG) logo masters (PNG exports are used today).
 
 ## Awaiting external integration

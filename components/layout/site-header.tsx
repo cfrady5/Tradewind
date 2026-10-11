@@ -58,6 +58,9 @@ export function SiteHeader() {
 
   const activeIndex = NAV.findIndex((g) => pathname === g.href || pathname.startsWith(g.href + "/"));
   const solid = scrolled || open !== null;
+  // Pages whose hero is light get navy text at the top instead of the reversed treatment.
+  const lightTop = pathname === "/";
+  const light = solid || lightTop;
   const group = open !== null ? NAV[open] : null;
 
   const scheduleOpen = (i: number | null) => {
@@ -69,7 +72,7 @@ export function SiteHeader() {
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,color] duration-(--duration-ui) ease-(--ease-out)",
-        solid ? "bg-white/92 text-navy shadow-[0_1px_0_var(--color-line)] backdrop-blur-xl" : "on-dark bg-transparent text-white",
+        solid ? "bg-white/92 text-navy shadow-[0_1px_0_var(--color-line)] backdrop-blur-xl" : light ? "bg-transparent text-navy" : "on-dark bg-transparent text-white",
       )}
     >
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-[60] focus:rounded-full focus:bg-runway focus:px-4 focus:py-2 focus:font-semibold focus:text-navy">
@@ -84,8 +87,8 @@ export function SiteHeader() {
         >
           <Link href="/" className="shrink-0 rounded-sm" aria-label="Tradewinds home">
             <span className="relative block w-[160px] sm:w-[186px]">
-              <BrandLogo variant="wordmark-reversed" priority className={cn("w-full transition-opacity duration-(--duration-ui)", solid && "opacity-0")} decorative={solid} />
-              <BrandLogo variant="wordmark-navy" className={cn("absolute inset-0 w-full transition-opacity duration-(--duration-ui)", !solid && "opacity-0")} decorative={!solid} />
+              <BrandLogo variant="wordmark-reversed" priority={!lightTop} className={cn("w-full transition-opacity duration-(--duration-ui)", light && "opacity-0")} decorative={light} />
+              <BrandLogo variant="wordmark-navy" priority={lightTop} className={cn("absolute inset-0 w-full transition-opacity duration-(--duration-ui)", !light && "opacity-0")} decorative={!light} />
             </span>
           </Link>
 
@@ -108,8 +111,8 @@ export function SiteHeader() {
                     }}
                     className={cn(
                       "relative flex h-10 items-center gap-1 rounded-full px-3.5 text-[0.9375rem] font-medium transition-colors duration-(--duration-micro)",
-                      solid ? "hover:bg-cloud" : "hover:bg-white/8",
-                      open === i && (solid ? "bg-cloud" : "bg-white/8"),
+                      light ? "hover:bg-navy/[0.05]" : "hover:bg-white/8",
+                      open === i && (light ? "bg-cloud" : "bg-white/8"),
                     )}
                   >
                     {g.label}
@@ -141,7 +144,7 @@ export function SiteHeader() {
               <ArrowUpRight width={16} height={16} className="transition-transform duration-(--duration-ui) group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               <span className="sr-only">(opens external site)</span>
             </a>
-            <MobileMenu solid={solid} />
+            <MobileMenu solid={light} />
           </div>
         </div>
 

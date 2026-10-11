@@ -19,7 +19,7 @@ export default async function HomePage() {
   ]);
   return (
     <>
-      <Hero now={now} />
+      <Hero now={now} metrics={metrics.items} />
       <ChoosePath />
       <ImpactMetrics data={metrics} />
       <HowItWorks />
