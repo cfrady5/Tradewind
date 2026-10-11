@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Breadcrumbs, type Crumb } from "@/components/ui/breadcrumbs";
 import { Pathways } from "@/components/brand/pathways";
 import { cn } from "@/lib/cn";
+import { DotTitle } from "@/components/brand/dot-title";
 
 /** Interior page header — Navy band with the pathways motif receding to the right. */
 export function PageHero({
@@ -24,7 +25,7 @@ export function PageHero({
         <div className="mt-10 grid gap-10 lg:grid-cols-12 lg:items-end">
           <div className={aside ? "lg:col-span-7" : "lg:col-span-9"}>
             {eyebrow && <p className="eyebrow text-runway">{eyebrow}</p>}
-            <h1 className="mt-4 text-h1 font-bold">{title}</h1>
+            <h1 className="mt-4 text-h1 font-bold"><DotTitle>{title}</DotTitle></h1>
             {lead && <p className="mt-6 max-w-2xl text-lead text-white/80">{lead}</p>}
             {children && <div className="mt-8 flex flex-wrap items-center gap-4">{children}</div>}
           </div>

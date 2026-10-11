@@ -28,7 +28,8 @@ export function Counter({ value, format }: { value: number; format: "number" | "
   }, [inView, reduce, value]);
 
   return (
-    <span ref={ref} aria-label={fmt(value)}>
+    <span ref={ref}>
+      <span className="sr-only">{fmt(value)}</span>
       <span aria-hidden="true" className="tabular-nums">{display}</span>
     </span>
   );

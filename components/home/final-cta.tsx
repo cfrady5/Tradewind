@@ -10,7 +10,7 @@ export function FinalCta() {
       <div className="container-page section-y">
         <Reveal className="max-w-3xl">
           <h2 id="cta-title" className="text-display font-extrabold">
-            Innovation moves <span className="text-gradient-sky">faster here.</span>
+            Innovation moves <span className="text-gradient-sky">faster here</span><span className="text-runway">.</span>
           </h2>
         </Reveal>
         <div className="mt-14 grid gap-4 md:grid-cols-2 lg:max-w-4xl">

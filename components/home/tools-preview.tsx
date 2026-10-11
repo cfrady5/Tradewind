@@ -16,7 +16,7 @@ export function ToolsPreview({ data }: { data: Loaded<AiTool> }) {
             <SectionHeader
               dark
               eyebrow="AI Tools"
-              title={<span id="tools-title">Tools built for acquisition work.</span>}
+              id="tools-title" title="Tools built for acquisition work."
               lead="Approved, externally hosted and experimental tools — clearly labeled — plus a searchable prompt library."
             />
             <div className="mt-8 flex flex-wrap gap-3">

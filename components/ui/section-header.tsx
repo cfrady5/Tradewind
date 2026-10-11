@@ -1,10 +1,12 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 import { Reveal } from "./reveal";
+import { DotTitle } from "@/components/brand/dot-title";
 
 export function SectionHeader({
-  eyebrow, title, lead, dark, align = "left", action, className, as: H = "h2",
+  eyebrow, title, lead, dark, align = "left", action, className, as: H = "h2", id,
 }: {
+  id?: string;
   eyebrow?: string;
   title: ReactNode;
   lead?: ReactNode;
@@ -23,7 +25,7 @@ export function SectionHeader({
             {eyebrow}
           </p>
         )}
-        <H className="mt-5 text-h2 font-bold">{title}</H>
+        <H id={id} className="mt-5 text-h2 font-bold"><DotTitle>{title}</DotTitle></H>
       </div>
       {(lead || action) && (
         <div className={cn(align === "split" ? "lg:col-span-5 lg:pb-2" : "mt-6")}>

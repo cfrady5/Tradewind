@@ -21,7 +21,7 @@ export function FeaturedOpportunities({ data, now }: { data: Loaded<Opportunity>
       <div className="container-page">
         <SectionHeader
           eyebrow="Opportunities"
-          title={<span id="opps-title">Open now — and closing soon.</span>}
+          id="opps-title" title="Open now — and closing soon."
           lead="Live calls for solutions, sorted by deadline. Status updates automatically as dates pass."
           align="split"
           action={<ButtonLink href="/opportunities" variant="secondary">All opportunities</ButtonLink>}

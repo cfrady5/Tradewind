@@ -25,7 +25,7 @@ export function ResourcesEvents({ events, resources, now }: { events: EventItem[
   return (
     <section aria-labelledby="learn-title" className="section-y bg-cloud">
       <div className="container-page">
-        <SectionHeader eyebrow="Resources & events" title={<span id="learn-title">Learn the system. Meet the team.</span>} />
+        <SectionHeader eyebrow="Resources & events" id="learn-title" title="Learn the system. Meet the team." />
         <div className="mt-14 grid gap-12 lg:grid-cols-3">
           <Reveal>
             <ColHead title="Upcoming events" href="/resources/events" />

@@ -23,7 +23,7 @@ export function Hero({ now }: { now: Date }) {
           <h1 id="hero-title" className="mt-7 text-display font-extrabold">
             <span className="enter block" style={i(1)}>Accelerating the</span>
             <span className="enter block" style={i(2)}>Acquisition of</span>
-            <span className="enter block text-gradient-sky" style={i(3)}>Innovation.</span>
+            <span className="enter block" style={i(3)}><span className="text-gradient-sky">Innovation</span><span className="text-runway">.</span></span>
           </h1>
           <p className="enter mt-8 max-w-xl text-lead text-white/80" style={i(4)}>
             Discover, assess, and acquire mission-ready AI, digital, and data-driven technologies through the Tradewinds ecosystem.

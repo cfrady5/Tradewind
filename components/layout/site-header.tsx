@@ -28,8 +28,12 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close menus on route change.
-  useEffect(() => setOpen(null), [pathname]);
+  // Close menus on route change (state adjusted during render, not in an effect).
+  const [routeSeen, setRouteSeen] = useState(pathname);
+  if (routeSeen !== pathname) {
+    setRouteSeen(pathname);
+    setOpen(null);
+  }
 
   const close = useCallback((refocus = false) => {
     setOpen((cur) => {
@@ -79,7 +83,10 @@ export function SiteHeader() {
           )}
         >
           <Link href="/" className="shrink-0 rounded-sm" aria-label="Tradewinds home">
-            <BrandLogo variant={solid ? "wordmark-navy" : "wordmark-reversed"} className="w-[150px] sm:w-[170px]" />
+            <span className="relative block w-[160px] sm:w-[186px]">
+              <BrandLogo variant="wordmark-reversed" priority className={cn("w-full transition-opacity duration-(--duration-ui)", solid && "opacity-0")} decorative={solid} />
+              <BrandLogo variant="wordmark-navy" className={cn("absolute inset-0 w-full transition-opacity duration-(--duration-ui)", !solid && "opacity-0")} decorative={!solid} />
+            </span>
           </Link>
 
           <nav aria-label="Primary" className="ml-auto hidden lg:block">
@@ -233,7 +240,7 @@ function MobileMenu({ solid }: { solid: boolean }) {
         onClick={(e) => e.target === ref.current && ref.current?.close()}
       >
         <div className="container-page flex h-16 shrink-0 items-center justify-between border-b border-line">
-          <BrandLogo variant="wordmark-navy" className="w-[150px]" />
+          <BrandLogo variant="wordmark-navy" className="w-[160px]" />
           <button type="button" onClick={() => ref.current?.close()} className="grid size-10 place-items-center rounded-full hover:bg-cloud" aria-label="Close menu" autoFocus>
             <Close />
           </button>

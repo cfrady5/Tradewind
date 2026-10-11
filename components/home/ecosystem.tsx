@@ -36,7 +36,7 @@ export function Ecosystem({ vehicles }: { vehicles: ContractVehicle[] }) {
       <div className="container-page">
         <SectionHeader
           eyebrow="The ecosystem"
-          title={<span id="eco-title">Everything acquisition teams need, connected.</span>}
+          id="eco-title" title="Everything acquisition teams need, connected."
           lead="Three pillars, one system: find assessed technology, choose the right pathway, and work faster with purpose-built tools."
           align="split"
         />

@@ -1,3 +1,4 @@
+import { DotTitle } from "@/components/brand/dot-title";
 import { ButtonLink } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
 import { formatMetric } from "@/lib/format";
@@ -17,7 +18,7 @@ export function Results({ metrics }: { metrics: Metric[] }) {
       <div className="container-page grid gap-14 lg:grid-cols-12 lg:items-center">
         <Reveal className="lg:col-span-6">
           <p className="eyebrow flex items-center gap-3 text-cobalt"><span className="h-px w-8 bg-cobalt" aria-hidden />Results</p>
-          <h2 id="results-title" className="mt-5 text-h2 font-bold">A rigorous bar — and real acquisition outcomes.</h2>
+          <h2 id="results-title" className="mt-5 text-h2 font-bold"><DotTitle>{"A rigorous bar — and real acquisition outcomes."}</DotTitle></h2>
           <p className="mt-6 max-w-xl text-lead text-ink-muted">
             Every awardable solution has been assessed by experts before a buyer ever sees it. That rigor is what lets acquisition teams move with confidence.
           </p>

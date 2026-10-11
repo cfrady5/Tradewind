@@ -1,4 +1,5 @@
 "use client";
+import { DotTitle } from "@/components/brand/dot-title";
 
 import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
@@ -190,7 +191,7 @@ export function HowItWorks() {
       <div className="container-page relative section-y">
         <div className="max-w-3xl">
           <p className="eyebrow flex items-center gap-3 text-runway"><span className="h-px w-8 bg-runway" aria-hidden />How Tradewinds works</p>
-          <h2 id="how-title" className="mt-5 text-h2 font-bold">One pathway from discovery to award.</h2>
+          <h2 id="how-title" className="mt-5 text-h2 font-bold"><DotTitle>{"One pathway from discovery to award."}</DotTitle></h2>
           <p className="mt-6 text-lead text-white/75">Four stages turn a crowded technology landscape into a clear procurement outcome.</p>
         </div>
 
