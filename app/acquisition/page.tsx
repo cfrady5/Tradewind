@@ -17,7 +17,6 @@ export default async function Page() {
   return (
     <>
       <PageHero
-        eyebrow="Acquisition"
         title="Choose the right pathway to award."
         lead="Tradewinds connects discovery to procurement: the Solutions Marketplace for assessed solutions, and CDAO contract vehicles for services, talent and test."
         crumbs={[{ label: "Acquisition", href: "/acquisition" }]}
@@ -26,7 +25,7 @@ export default async function Page() {
         <ButtonLink href="/acquisition/guides" variant="secondary-dark" arrow={false}>Acquisition guides</ButtonLink>
       </PageHero>
       <Section>
-        <SectionHeader eyebrow="Pathways" title="From need to award" lead="Most acquisitions follow the same arc. The right vehicle depends on what you're buying." />
+        <SectionHeader title="From need to award" lead="Most acquisitions follow the same arc. The right vehicle depends on what you're buying." />
         <div className="mt-14">
           <ProcessSteps steps={[
             { title: "Define the need", body: "Outcome-based problem statement, constraints and success measures." },
@@ -37,12 +36,12 @@ export default async function Page() {
         </div>
       </Section>
       <Section tone="cloud">
-        <SectionHeader eyebrow="Contract vehicles" title="Compare at a glance" />
+        <SectionHeader title="Compare at a glance" />
         <DataNotice source={vehicles.source} what="vehicle information" className="mt-8" />
         <div className="mt-10"><VehicleCompare vehicles={vehicles.items} /></div>
       </Section>
       <Section>
-        <Split eyebrow="Historical vs. current" title="Clear status on every vehicle">
+        <Split title="Clear status on every vehicle">
           <p>Each vehicle page separates <strong>current ordering guidance</strong> from <strong>historical information</strong>. Where details are being confirmed with the program office, the page says so rather than presenting outdated information as current.</p>
         </Split>
       </Section>

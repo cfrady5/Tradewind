@@ -4,10 +4,9 @@ import { Reveal } from "./reveal";
 import { DotTitle } from "@/components/brand/dot-title";
 
 export function SectionHeader({
-  eyebrow, title, lead, dark, align = "left", action, className, as: H = "h2", id,
+  title, lead, dark, align = "left", action, className, as: H = "h2", id,
 }: {
   id?: string;
-  eyebrow?: string;
   title: ReactNode;
   lead?: ReactNode;
   dark?: boolean;
@@ -19,13 +18,7 @@ export function SectionHeader({
   return (
     <Reveal className={cn(align === "split" ? "grid gap-6 lg:grid-cols-12 lg:items-end" : "max-w-3xl", className)}>
       <div className={align === "split" ? "lg:col-span-7" : undefined}>
-        {eyebrow && (
-          <p className={cn("eyebrow flex items-center gap-3", dark ? "text-runway" : "text-cobalt")}>
-            <span className={cn("h-px w-8", dark ? "bg-runway" : "bg-cobalt")} aria-hidden />
-            {eyebrow}
-          </p>
-        )}
-        <H id={id} className="mt-5 text-h2 font-bold"><DotTitle>{title}</DotTitle></H>
+        <H id={id} className="text-h2 font-bold"><DotTitle>{title}</DotTitle></H>
       </div>
       {(lead || action) && (
         <div className={cn(align === "split" ? "lg:col-span-5 lg:pb-2" : "mt-6")}>

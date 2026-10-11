@@ -9,7 +9,7 @@ export function NextSteps({ title = "Where to go next", steps }: { title?: strin
   return (
     <section aria-labelledby="next-steps" className="border-t border-line bg-cloud">
       <div className="container-page py-16 md:py-20">
-        <h2 id="next-steps" className="eyebrow text-cobalt">{title}</h2>
+        <h2 id="next-steps" className="text-h3 font-bold">{title}</h2>
         <ul className="mt-8 grid gap-px overflow-hidden rounded-lg border border-line bg-line md:grid-cols-3">
           {steps.map((s, i) => (
             <Reveal as="li" key={s.href} delay={i * 0.06} className="bg-white">

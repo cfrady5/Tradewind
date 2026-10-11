@@ -14,7 +14,7 @@ export default async function Page() {
   const data = await getAwards();
   return (
     <>
-      <PageHero eyebrow="About" title="Awarded solutions" lead="Public records of awards made through the Tradewinds ecosystem." crumbs={[{ label: "About", href: "/about" }, { label: "Awarded Solutions", href: "/about/awarded-solutions" }]} compact />
+      <PageHero title="Awarded solutions" lead="Public records of awards made through the Tradewinds ecosystem." crumbs={[{ label: "About", href: "/about" }, { label: "Awarded Solutions", href: "/about/awarded-solutions" }]} compact />
       <Section>
         {data.items.length === 0 ? (
           <EmptyState title="Award records are awaiting an approved public dataset">

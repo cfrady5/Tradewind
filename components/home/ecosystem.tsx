@@ -7,8 +7,8 @@ import { cn } from "@/lib/cn";
 import type { ContractVehicle } from "@/lib/data/types";
 import { VEHICLE_STATUS } from "@/lib/data/vehicle-status";
 
-function Pillar({ href, eyebrow, title, body, cta, children, className, dark }: {
-  href: string; eyebrow: string; title: string; body: string; cta: string; children: ReactNode; className?: string; dark?: boolean;
+function Pillar({ href, title, body, cta, children, className, dark }: {
+  href: string; title: string; body: string; cta: string; children: ReactNode; className?: string; dark?: boolean;
 }) {
   return (
     <Link
@@ -19,8 +19,7 @@ function Pillar({ href, eyebrow, title, body, cta, children, className, dark }: 
         className,
       )}
     >
-      <span className={cn("eyebrow", dark ? "text-runway" : "text-cobalt")}>{eyebrow}</span>
-      <h3 className="mt-4 text-h3 font-bold">{title}</h3>
+      <h3 className="text-h3 font-bold">{title}</h3>
       <p className={cn("mt-3 max-w-md", dark ? "text-white/75" : "text-ink-muted")}>{body}</p>
       <div className="relative mt-8 flex flex-1 flex-col" aria-hidden>{children}</div>
       <span className={cn("mt-8 flex items-center gap-2 font-semibold", dark ? "text-sky group-hover:text-white" : "text-cobalt")}>
@@ -35,7 +34,6 @@ export function Ecosystem({ vehicles }: { vehicles: ContractVehicle[] }) {
     <section aria-labelledby="eco-title" className="section-y bg-white">
       <div className="container-page">
         <SectionHeader
-          eyebrow="The ecosystem"
           id="eco-title" title="Everything acquisition teams need, connected."
           lead="Three pillars, one system: find assessed technology, choose the right pathway, and work faster with purpose-built tools."
           align="split"
@@ -46,7 +44,6 @@ export function Ecosystem({ vehicles }: { vehicles: ContractVehicle[] }) {
             <Pillar
               dark
               href="/marketplace"
-              eyebrow="01 · Marketplace"
               title="Discover assessed technologies."
               body="A repository of competitively assessed, readily awardable AI, digital and data solutions — searchable by government buyers."
               cta="Explore the Marketplace"
@@ -76,7 +73,6 @@ export function Ecosystem({ vehicles }: { vehicles: ContractVehicle[] }) {
           <Reveal className="lg:col-span-5" delay={0.06}>
             <Pillar
               href="/acquisition"
-              eyebrow="02 · Acquisition"
               title="Choose the right pathway."
               body="Understand procurement vehicles and pathways — compared side by side."
               cta="Compare vehicles"
@@ -96,7 +92,6 @@ export function Ecosystem({ vehicles }: { vehicles: ContractVehicle[] }) {
           <Reveal className="lg:col-span-5" delay={0.12}>
             <Pillar
               href="/ai-tools"
-              eyebrow="03 · AI Tools"
               title="Work smarter with AI."
               body="Tools and a searchable prompt library that support effective acquisition workflows."
               cta="Browse AI tools"

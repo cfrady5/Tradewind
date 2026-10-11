@@ -19,13 +19,12 @@ export function Section({ tone = "white", children, className, id, labelledBy }:
 }
 
 /** Editorial split: sticky heading left, content right. */
-export function Split({ eyebrow, title, children, id }: { eyebrow?: string; title: ReactNode; children: ReactNode; id?: string }) {
+export function Split({ title, children, id }: { title: ReactNode; children: ReactNode; id?: string }) {
   return (
     <div className="grid gap-8 lg:grid-cols-12 lg:gap-16">
       <Reveal className="lg:col-span-4">
         <div className="lg:sticky lg:top-[calc(var(--header-h)+2rem)]">
-          {eyebrow && <p className="eyebrow text-cobalt">{eyebrow}</p>}
-          <h2 id={id} className="mt-4 text-h3 font-bold"><DotTitle>{title}</DotTitle></h2>
+          <h2 id={id} className="text-h3 font-bold"><DotTitle>{title}</DotTitle></h2>
         </div>
       </Reveal>
       <Reveal className="text-lg leading-relaxed text-ink-muted lg:col-span-8 [&_p+p]:mt-4 [&_strong]:text-navy" delay={0.06}>{children}</Reveal>

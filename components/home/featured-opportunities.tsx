@@ -20,7 +20,6 @@ export function FeaturedOpportunities({ data, now }: { data: Loaded<Opportunity>
     <section aria-labelledby="opps-title" className="section-y bg-cloud">
       <div className="container-page">
         <SectionHeader
-          eyebrow="Opportunities"
           id="opps-title" title="Open now — and closing soon."
           lead="Live calls for solutions, sorted by deadline. Status updates automatically as dates pass."
           align="split"

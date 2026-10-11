@@ -17,7 +17,6 @@ export default async function Page() {
   return (
     <>
       <PageHero
-        eyebrow="AI Tools"
         title="AI tools for acquisition work"
         lead="Discover tools that support market research, requirements, evaluation and more — each clearly labeled by approval status."
         crumbs={[{ label: "AI Tools", href: "/ai-tools" }]}

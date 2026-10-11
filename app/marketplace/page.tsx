@@ -25,7 +25,6 @@ export default async function MarketplacePage() {
   return (
     <>
       <PageHero
-        eyebrow="Solutions Marketplace"
         title={<>Assessed once. <span className="text-gradient-sky">Awardable when you need it</span><span className="text-runway">.</span></>}
         lead="A digital repository of post-competition, readily awardable pitch videos — giving government buyers a single place to find AI, digital and data-analytics solutions."
         crumbs={[{ label: "Marketplace", href: "/marketplace" }]}
@@ -48,14 +47,14 @@ export default async function MarketplacePage() {
       </PageHero>
 
       <Section>
-        <Split eyebrow="What it is" title="A marketplace built on competition">
+        <Split title="A marketplace built on competition">
           <p>The Tradewinds Solutions Marketplace is an ongoing solicitation. Solution providers submit short video pitches; expert panels assess them; solutions that meet the bar are designated <strong>awardable</strong> and placed in the Marketplace.</p>
           <p>Because every awardable solution has already been through a competitive assessment, government buyers can discover capabilities and move toward award without starting a new competition from scratch.</p>
         </Split>
       </Section>
 
       <Section tone="cloud">
-        <SectionHeader eyebrow="How submissions work" title="From pitch to awardable" lead="Collection runs monthly. Every submission gets an outcome — and feedback if it isn't awardable yet." />
+        <SectionHeader title="From pitch to awardable" lead="Collection runs monthly. Every submission gets an outcome — and feedback if it isn't awardable yet." />
         <div className="mt-14">
           <ProcessSteps steps={[
             { title: "Prepare", body: "Develop a video pitch no longer than five minutes that explains the mission problem, your solution and the evidence it works." },
@@ -87,7 +86,7 @@ export default async function MarketplacePage() {
       </Section>
 
       <Section tone="cloud">
-        <Split eyebrow="Awardable status" title="What “awardable” means — and doesn't">
+        <Split title="What “awardable” means — and doesn't">
           <p>Awardable means a solution&rsquo;s pitch was assessed by an expert panel and met the Marketplace&rsquo;s criteria. It makes the solution discoverable to government buyers and eligible to pursue an award.</p>
           <p><strong>It is not a contract award</strong>, an endorsement, or a guarantee of one. Buyers still determine mission fit, negotiate terms and award through their contracting office.</p>
           <div className="mt-8"><Callout title="Acquisition pathways">Buying activities select an appropriate award mechanism with their contracting office. See <Link href="/acquisition">Acquisition</Link> for pathways and contract vehicles.</Callout></div>
@@ -95,7 +94,7 @@ export default async function MarketplacePage() {
       </Section>
 
       <Section>
-        <Split eyebrow="Questions" title="Marketplace FAQs">
+        <Split title="Marketplace FAQs">
           <FaqList faqs={faqs.items.filter((f) => f.category === "Marketplace" || f.category === "Government Access")} />
           <div className="mt-8"><ButtonLink href="/resources/faqs" variant="text">All FAQs</ButtonLink></div>
         </Split>

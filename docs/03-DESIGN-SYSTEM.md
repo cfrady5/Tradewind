@@ -45,7 +45,7 @@ Every route is scanned by axe-core (WCAG 2.0/2.1/2.2 A+AA) in the test suite.
 | `text-h3` | clamp(22px → 32px) | 700 | Component headlines |
 | `text-lead` | clamp(17px → 21px) | 400 | Intro paragraphs |
 | body | 16–18px | 400 | Copy |
-| `eyebrow` | 12px, 0.16em, uppercase | 600 | Section labels, metadata |
+| `eyebrow` | 12px, 0.16em, uppercase | 600 | Metadata and in-card labels only — sections and pages carry no kicker labels |
 
 Signature: headlines that end in a period render it in Runway Orange (`components/brand/dot-title.tsx`), as in the guidelines.
 

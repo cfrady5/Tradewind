@@ -18,7 +18,6 @@ export default async function Page() {
   return (
     <>
       <PageHero
-        eyebrow="Acquisition"
         title="Contract vehicles"
         lead="Compare scope, purpose, eligible users, ordering processes and current availability."
         crumbs={[{ label: "Acquisition", href: "/acquisition" }, { label: "Contract Vehicles", href: "/acquisition/vehicles" }]}

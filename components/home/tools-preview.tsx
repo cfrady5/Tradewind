@@ -15,7 +15,6 @@ export function ToolsPreview({ data }: { data: Loaded<AiTool> }) {
           <div className="lg:col-span-4">
             <SectionHeader
               dark
-              eyebrow="AI Tools"
               id="tools-title" title="Tools built for acquisition work."
               lead="Approved, externally hosted and experimental tools — clearly labeled — plus a searchable prompt library."
             />

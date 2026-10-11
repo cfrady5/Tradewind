@@ -19,7 +19,6 @@ export default async function Page() {
   return (
     <>
       <PageHero
-        eyebrow="For Government Buyers"
         title="Find capability for your mission — faster."
         lead="Search competitively assessed AI, digital and data-analytics solutions, then move to award with your contracting office."
         crumbs={[{ label: "Marketplace", href: "/marketplace" }, { label: "For Government Buyers", href: "/marketplace/government" }]}
@@ -35,7 +34,7 @@ export default async function Page() {
         }
       />
       <Section>
-        <SectionHeader eyebrow="Your journey" title="Five steps from requirement to award" />
+        <SectionHeader title="Five steps from requirement to award" />
         <div className="mt-14">
           <ProcessSteps steps={[
             { title: "Identify mission requirements", body: "Frame the need as an outcome-based problem statement — what must improve, for whom, and how you'll measure it." },
@@ -47,14 +46,14 @@ export default async function Page() {
         </div>
       </Section>
       <Section tone="cloud">
-        <Split eyebrow="Before you search" title="Make the Marketplace work for you">
+        <Split title="Make the Marketplace work for you">
           <p>The strongest searches start from a clear mission problem rather than a product name. Use the <Link className="font-semibold text-cobalt hover:underline" href="/ai-tools/prompt-library">prompt library</Link> to draft outcome-based problem statements and vendor questions.</p>
           <p>If you need the market to come to you, a <strong>Shopping Notice</strong> or <strong>Special Topic</strong> can focus submissions on a specific challenge.</p>
           <div className="mt-8"><Callout title="Need help getting started?">Email <a href={`mailto:${EXTERNAL.successEmail}`}>{EXTERNAL.successEmail}</a> for acquisition support, or <a href={`mailto:${EXTERNAL.supportEmail}`}>{EXTERNAL.supportEmail}</a> for account access issues.</Callout></div>
         </Split>
       </Section>
       <Section>
-        <Split eyebrow="Questions" title="For government users">
+        <Split title="For government users">
           <FaqList faqs={faqs.items.filter((f) => f.audiences.includes("government") || f.slug === "what-does-awardable-mean")} />
         </Split>
       </Section>

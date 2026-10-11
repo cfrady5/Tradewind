@@ -16,8 +16,7 @@ export function ChoosePath() {
       <div className="container-page">
         <Reveal className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="eyebrow flex items-center gap-3 text-cobalt"><span className="h-px w-8 bg-cobalt" aria-hidden />Choose your path</p>
-            <h2 id="paths-title" className="mt-5 max-w-2xl text-h2 font-bold"><DotTitle>{"Two journeys. One ecosystem."}</DotTitle></h2>
+            <h2 id="paths-title" className="max-w-2xl text-h2 font-bold"><DotTitle>{"Two journeys. One ecosystem."}</DotTitle></h2>
           </div>
           <p className="max-w-sm text-lead text-ink-muted">Start where you are — Tradewinds routes buyers and builders to exactly what they need.</p>
         </Reveal>

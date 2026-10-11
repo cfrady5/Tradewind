@@ -21,7 +21,6 @@ export default async function SolutionsPage() {
   return (
     <>
       <PageHero
-        eyebrow="Marketplace"
         title="Browse awardable solutions"
         lead="Search public information about solutions determined awardable through the Tradewinds assessment process."
         crumbs={[{ label: "Marketplace", href: "/marketplace" }, { label: "Browse Awardables", href: "/marketplace/solutions" }]}

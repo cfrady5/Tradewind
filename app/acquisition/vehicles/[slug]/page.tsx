@@ -32,13 +32,13 @@ export default async function Page({ params }: PageProps<"/acquisition/vehicles/
   return (
     <>
       <PageHero
-        eyebrow={v.vehicleType}
         title={<>{v.shortName}{v.shortName !== v.name && <span className="block text-[0.5em] font-semibold text-white/75">{v.name}</span>}</>}
         lead={v.tagline}
         crumbs={[{ label: "Acquisition", href: "/acquisition" }, { label: "Contract Vehicles", href: "/acquisition/vehicles" }, { label: v.shortName, href: `/acquisition/vehicles/${v.slug}` }]}
         compact
       >
         <Badge tone={st.tone} dot>{st.label}</Badge>
+        <Badge tone="neutral">{v.vehicleType}</Badge>
       </PageHero>
       <section className="bg-white">
         <div className="container-page grid gap-12 py-14 md:py-20 lg:grid-cols-12">

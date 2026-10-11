@@ -190,8 +190,7 @@ export function HowItWorks() {
       <div className="absolute inset-0 bg-grid-fine opacity-60 [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)]" aria-hidden />
       <div className="container-page relative section-y">
         <div className="max-w-3xl">
-          <p className="eyebrow flex items-center gap-3 text-runway"><span className="h-px w-8 bg-runway" aria-hidden />How Tradewinds works</p>
-          <h2 id="how-title" className="mt-5 text-h2 font-bold"><DotTitle>{"One pathway from discovery to award."}</DotTitle></h2>
+          <h2 id="how-title" className="text-h2 font-bold"><DotTitle>{"One pathway from discovery to award."}</DotTitle></h2>
           <p className="mt-6 text-lead text-white/75">Four stages turn a crowded technology landscape into a clear procurement outcome.</p>
         </div>
 

@@ -18,8 +18,7 @@ export function ImpactMetrics({ data }: { data: Loaded<Metric> }) {
       <div className="container-page relative section-y">
         <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
           <Reveal className="lg:col-span-7">
-            <p className="eyebrow flex items-center gap-3 text-cobalt"><span className="h-px w-8 bg-cobalt" aria-hidden />Impact</p>
-            <h2 id="impact-title" className="mt-5 text-h2 font-bold"><DotTitle>{"Measured in solutions fielded, not slides."}</DotTitle></h2>
+            <h2 id="impact-title" className="text-h2 font-bold"><DotTitle>{"Measured in solutions fielded, not slides."}</DotTitle></h2>
           </Reveal>
           <Reveal className="lg:col-span-5" delay={0.06}>
             <p className="text-lead text-ink-muted">Program results across the Marketplace — reported with their period and source.</p>

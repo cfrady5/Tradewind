@@ -64,13 +64,13 @@ export default async function OpportunityPage({ params }: PageProps<"/opportunit
   return (
     <>
       <PageHero
-        eyebrow={TYPE_LABEL[o.type]}
         title={o.title}
         lead={o.summary}
         crumbs={[{ label: "Opportunities", href: "/opportunities" }, { label: o.title, href: `/opportunities/${o.slug}` }]}
         compact
       >
         <Badge tone={status} dot>{STATUS_LABEL[status]}</Badge>
+        <Badge tone="neutral">{TYPE_LABEL[o.type]}</Badge>
         {o.sample && <Badge tone="accent">Sample</Badge>}
       </PageHero>
 

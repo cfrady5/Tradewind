@@ -43,7 +43,7 @@ export default async function Page() {
   const past = data.items.filter((e) => new Date(e.endsAt ?? e.startsAt) < now).sort((a, b) => b.startsAt.localeCompare(a.startsAt));
   return (
     <>
-      <PageHero eyebrow="Resources" title="Events" lead="Workshops, office hours and summits for buyers and solution providers." crumbs={[{ label: "Resources", href: "/resources" }, { label: "Events", href: "/resources/events" }]} compact />
+      <PageHero title="Events" lead="Workshops, office hours and summits for buyers and solution providers." crumbs={[{ label: "Resources", href: "/resources" }, { label: "Events", href: "/resources/events" }]} compact />
       <section className="bg-white">
         <div className="container-page py-14 md:py-20">
           <DataNotice source={data.source} what="the events list" className="mb-8" />

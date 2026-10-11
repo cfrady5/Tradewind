@@ -14,7 +14,6 @@ export default async function Page() {
   return (
     <>
       <PageHero
-        eyebrow="AI Tools"
         title="Prompt library"
         lead="Copy-ready prompts for requirements, market research, evaluation and communication — searchable and organized by task."
         crumbs={[{ label: "AI Tools", href: "/ai-tools" }, { label: "Prompt Library", href: "/ai-tools/prompt-library" }]}

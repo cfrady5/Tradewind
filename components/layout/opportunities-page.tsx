@@ -17,7 +17,7 @@ export async function OpportunitiesPage({ title, lead, crumbs, lockType, default
   const rows = toRows(data.items, now).filter((r) => !lockType || r.o.type === lockType);
   return (
     <>
-      <PageHero eyebrow="Opportunities" title={title} lead={lead} crumbs={[{ label: "Opportunities", href: "/opportunities" }, ...crumbs]} compact />
+      <PageHero title={title} lead={lead} crumbs={[{ label: "Opportunities", href: "/opportunities" }, ...crumbs]} compact />
       <section className="bg-white">
         <div className="container-page py-14 md:py-20">
           {intro}

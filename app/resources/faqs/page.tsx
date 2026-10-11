@@ -17,7 +17,7 @@ export default async function Page() {
   };
   return (
     <>
-      <PageHero eyebrow="Resources" title="Frequently asked questions" lead="Search answers for buyers and providers. Every answer has its own link to share." crumbs={[{ label: "Resources", href: "/resources" }, { label: "FAQs", href: "/resources/faqs" }]} compact />
+      <PageHero title="Frequently asked questions" lead="Search answers for buyers and providers. Every answer has its own link to share." crumbs={[{ label: "Resources", href: "/resources" }, { label: "FAQs", href: "/resources/faqs" }]} compact />
       <section className="bg-white">
         <div className="container-page max-w-4xl py-14 md:py-20">
           <DataNotice source={data.source} what="the FAQ list" className="mb-8" />

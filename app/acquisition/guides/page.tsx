@@ -14,7 +14,7 @@ export default async function Page() {
   const guides = data.items.filter((r) => (r.kind === "guide" || r.kind === "document") && r.audiences.some((a) => a !== "industry"));
   return (
     <>
-      <PageHero eyebrow="Acquisition" title="Acquisition guides" lead="Handbooks and official documents for buyers and contracting teams." crumbs={[{ label: "Acquisition", href: "/acquisition" }, { label: "Guides", href: "/acquisition/guides" }]} compact />
+      <PageHero title="Acquisition guides" lead="Handbooks and official documents for buyers and contracting teams." crumbs={[{ label: "Acquisition", href: "/acquisition" }, { label: "Guides", href: "/acquisition/guides" }]} compact />
       <Section>
         <DataNotice source={data.source} what="the guide list" className="mb-8" />
         <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">{guides.map((r) => <li key={r.slug}><ResourceCard r={r} /></li>)}</ul>

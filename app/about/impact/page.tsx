@@ -20,7 +20,7 @@ export default async function Page() {
 
   return (
     <>
-      <PageHero eyebrow="About" title="Impact & results" lead="Program performance reported with its period, source and verification status — never rounded up, never invented." crumbs={[{ label: "About", href: "/about" }, { label: "Impact", href: "/about/impact" }]} compact />
+      <PageHero title="Impact & results" lead="Program performance reported with its period, source and verification status — never rounded up, never invented." crumbs={[{ label: "About", href: "/about" }, { label: "Impact", href: "/about/impact" }]} compact />
       <Section>
         <DataNotice source={data.source} what="metric data" className="mb-10" />
         <dl className="grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">

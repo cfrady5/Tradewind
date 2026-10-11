@@ -29,8 +29,9 @@ export default async function Page({ params }: PageProps<"/ai-tools/[slug]">) {
 
   return (
     <>
-      <PageHero eyebrow={t.category} title={t.name} lead={t.summary} crumbs={[{ label: "AI Tools", href: "/ai-tools" }, { label: t.name, href: `/ai-tools/${t.slug}` }]} compact>
+      <PageHero title={t.name} lead={t.summary} crumbs={[{ label: "AI Tools", href: "/ai-tools" }, { label: t.name, href: `/ai-tools/${t.slug}` }]} compact>
         <Badge tone={a.tone} dot>{a.label}</Badge>
+        <Badge tone="neutral">{t.category}</Badge>
         {t.sample && <Badge tone="accent">Sample</Badge>}
       </PageHero>
       <section className="bg-white">

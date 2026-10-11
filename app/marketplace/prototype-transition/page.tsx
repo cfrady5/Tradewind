@@ -9,14 +9,13 @@ export default function Page() {
   return (
     <>
       <PageHero
-        eyebrow="Marketplace"
         title="Prototype Transition Aisle"
         lead="A dedicated Marketplace aisle helping proven prototypes find a path to production and fielding."
         crumbs={[{ label: "Marketplace", href: "/marketplace" }, { label: "Prototype Transition Aisle", href: "/marketplace/prototype-transition" }]}
         compact
       />
       <Section>
-        <Split eyebrow="About this aisle" title="How it works">
+        <Split title="How it works">
           <PendingContent what="Eligibility, submission workflow and transition guidance for the Prototype Transition Aisle" />
           <p className="mt-8">In the meantime, the Marketplace&rsquo;s standard process applies: submit a pitch for expert assessment, and awardable solutions become discoverable to government buyers.</p>
         </Split>

@@ -10,13 +10,12 @@ export default function Page() {
   return (
     <>
       <PageHero
-        eyebrow="About"
         title="Built to move innovation at mission speed."
         lead="Tradewinds is the Department's framework for sourcing, funding and developing solutions to challenges in the AI/ML, digital and data-analytics space."
         crumbs={[{ label: "About", href: "/about" }]}
       />
       <Section>
-        <Split eyebrow="Tradewinds' mission" title="Mission & vision.">
+        <Split title="Mission & vision.">
           {/* Official mission statement — Tradewinds Brand Guidelines (09.24.26), p.1 */}
           <p className="text-[clamp(1.25rem,1.1rem+0.6vw,1.625rem)] leading-snug text-navy">
             The Tradewinds Marketplace is changing the way the Department of War (DoW) discovers, assesses, and acquires cutting-edge AI, digital,
@@ -26,7 +25,7 @@ export default function Page() {
         </Split>
       </Section>
       <Section tone="dark">
-        <SectionHeader dark eyebrow="Operating model" title="Who does what" />
+        <SectionHeader dark title="Who does what" />
         <div className="mt-12">
           <FeatureList dark items={[
             { title: "Chief Digital and AI Office (CDAO)", body: "Tradewinds is housed in the CDAO, which leads the Department's adoption of data, analytics and AI." },
@@ -37,7 +36,7 @@ export default function Page() {
         </div>
       </Section>
       <Section tone="cloud">
-        <Split eyebrow="Ecosystem" title="One front door">
+        <Split title="One front door">
           <p>The <strong>Solutions Marketplace</strong> for assessed, awardable solutions. <strong>Contract vehicles</strong> for services, talent and test. <strong>AI tools</strong> and resources that help acquisition teams work faster. Together they form a single ecosystem with one front door.</p>
         </Split>
       </Section>

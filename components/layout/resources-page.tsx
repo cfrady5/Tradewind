@@ -11,7 +11,7 @@ export async function ResourcesPage({ title, lead, crumbs, lockKinds, steps }: {
   const data = await getResources();
   return (
     <>
-      <PageHero eyebrow="Resources" title={title} lead={lead} crumbs={[{ label: "Resources", href: "/resources" }, ...crumbs]} compact />
+      <PageHero title={title} lead={lead} crumbs={[{ label: "Resources", href: "/resources" }, ...crumbs]} compact />
       <section className="bg-white">
         <div className="container-page py-14 md:py-20">
           <DataNotice source={data.source} what="the resource library" className="mb-8" />

@@ -20,7 +20,6 @@ export default async function Page() {
   return (
     <>
       <PageHero
-        eyebrow="For Solution Providers"
         title="Bring your technology to the mission."
         lead="Submit a five-minute pitch. Get assessed by experts. If awardable, become discoverable to government buyers across the Department."
         crumbs={[{ label: "Marketplace", href: "/marketplace" }, { label: "For Solution Providers", href: "/marketplace/providers" }]}
@@ -37,7 +36,7 @@ export default async function Page() {
         <ButtonLink href="/marketplace/submission-guide" variant="secondary-dark">Read the submission guide</ButtonLink>
       </PageHero>
       <Section>
-        <SectionHeader eyebrow="Your journey" title="Six steps to awardable" />
+        <SectionHeader title="Six steps to awardable" />
         <div className="mt-14">
           <ProcessSteps steps={[
             { title: "Determine eligibility", body: "U.S. businesses, non-traditional contractors, academia and certain foreign entities may submit. Confirm against the current solicitation." },
@@ -50,7 +49,7 @@ export default async function Page() {
         </div>
       </Section>
       <Section tone="dark">
-        <SectionHeader dark eyebrow="What strong pitches share" title="Evidence beats adjectives." />
+        <SectionHeader dark title="Evidence beats adjectives." />
         <div className="mt-12">
           <FeatureList dark items={[
             { title: "A precise mission problem", body: "Name the operational problem and who has it — not just the technology category." },
@@ -61,7 +60,7 @@ export default async function Page() {
         </div>
       </Section>
       <Section>
-        <Split eyebrow="Questions" title="For solution providers">
+        <Split title="For solution providers">
           <FaqList faqs={faqs.items.filter((f) => f.audiences.includes("industry"))} />
         </Split>
       </Section>
