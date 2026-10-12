@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState, type CSSProperties } from "react";
 import { preload } from "react-dom";
 import { BrandLogo } from "@/components/brand/brand-logo";
 import { ArrowRight, ArrowUpRight, ChevronDown, Close, Menu } from "@/components/ui/icons";
@@ -224,13 +224,30 @@ export function SiteHeader() {
 function MobileMenu({ solid }: { solid: boolean }) {
   const ref = useRef<HTMLDialogElement>(null);
   const pathname = usePathname();
-  useEffect(() => ref.current?.close(), [pathname]);
+  const reduce = useReducedMotion();
+  const [open, setOpen] = useState(false);
+
+  const openMenu = () => {
+    ref.current?.showModal();
+    setOpen(true);
+  };
+  // Play the exit animation, then close the native dialog.
+  const closeMenu = useCallback(() => {
+    const el = ref.current;
+    if (!el?.open) return;
+    setOpen(false);
+    if (reduce) { el.close(); return; }
+    const done = () => { el.close(); el.removeEventListener("animationend", done); };
+    el.addEventListener("animationend", done);
+  }, [reduce]);
+
+  useEffect(() => { closeMenu(); }, [pathname, closeMenu]);
 
   return (
     <>
       <button
         type="button"
-        onClick={() => ref.current?.showModal()}
+        onClick={openMenu}
         className={cn("grid size-10 place-items-center rounded-sm lg:hidden", solid ? "hover:bg-cloud" : "hover:bg-white/10")}
         aria-label="Open menu"
         aria-haspopup="dialog"
@@ -240,19 +257,21 @@ function MobileMenu({ solid }: { solid: boolean }) {
       <dialog
         ref={ref}
         aria-label="Site menu"
-        className="m-0 h-dvh max-h-none w-full max-w-none bg-white p-0 text-navy backdrop:bg-navy/40 open:flex open:flex-col lg:hidden"
-        onClick={(e) => e.target === ref.current && ref.current?.close()}
+        data-state={open ? "open" : "closed"}
+        className="menu-sheet m-0 ml-auto h-dvh max-h-none w-full max-w-[26rem] bg-white p-0 text-navy backdrop:bg-navy/40 open:flex open:flex-col lg:hidden"
+        onClick={(e) => e.target === ref.current && closeMenu()}
+        onCancel={(e) => { e.preventDefault(); closeMenu(); }}
       >
         <div className="container-page flex h-16 shrink-0 items-center justify-between border-b border-line">
           <BrandLogo variant="wordmark-navy" className="w-[160px]" />
-          <button type="button" onClick={() => ref.current?.close()} className="grid size-10 place-items-center rounded-sm hover:bg-cloud" aria-label="Close menu" autoFocus>
-            <Close />
+          <button type="button" onClick={closeMenu} className="group grid size-10 place-items-center rounded-sm hover:bg-cloud" aria-label="Close menu" autoFocus>
+            <Close className="transition-transform duration-(--duration-ui) ease-(--ease-out) group-hover:rotate-90" />
           </button>
         </div>
         <nav aria-label="Mobile" className="container-page flex-1 overflow-y-auto py-4">
           <ul className="divide-y divide-line">
-            {NAV.map((g) => (
-              <li key={g.label}>
+            {NAV.map((g, k) => (
+              <li key={g.label} className="menu-item" style={{ "--k": k } as CSSProperties}>
                 <details className="group" open={pathname.startsWith(g.href)}>
                   <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between text-lg font-semibold [&::-webkit-details-marker]:hidden">
                     {g.label}
@@ -276,7 +295,7 @@ function MobileMenu({ solid }: { solid: boolean }) {
             ))}
           </ul>
         </nav>
-        <div className="container-page grid shrink-0 gap-3 border-t border-line py-4">
+        <div className="menu-item container-page grid shrink-0 gap-3 border-t border-line py-4" style={{ "--k": NAV.length } as CSSProperties}>
           <a href={EXTERNAL.marketplaceSignIn} target="_blank" rel="noopener noreferrer" className="flex h-12 items-center justify-center gap-2 rounded-sm bg-cobalt font-semibold text-white">
             Marketplace Login <ArrowUpRight width={18} height={18} />
             <span className="sr-only">(opens external site)</span>
