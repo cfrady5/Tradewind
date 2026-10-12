@@ -21,7 +21,7 @@ export default async function HomePage() {
   const [metrics, opportunities, tools, vehicles] = await Promise.all([getMetrics(), getOpportunities(), getTools(), getVehicles()]);
   return (
     <>
-      <Hero now={now} metrics={metrics.items} />
+      <Hero metrics={metrics.items} />
       <ChoosePath />
       <Why />
       <HowItWorks />

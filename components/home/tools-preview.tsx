@@ -1,36 +1,36 @@
-import { ToolCard } from "@/components/cards/tool-card";
+import Link from "next/link";
+import { DotTitle } from "@/components/brand/dot-title";
 import { ButtonLink } from "@/components/ui/button";
-import { DataNotice } from "@/components/ui/data-notice";
+import { ArrowRight } from "@/components/ui/icons";
 import { Reveal } from "@/components/ui/reveal";
-import { SectionHeader } from "@/components/ui/section-header";
 import type { AiTool, Loaded } from "@/lib/data/types";
 
+/** AI Playground (brief §11): featured tools and a prompt library link. */
 export function ToolsPreview({ data }: { data: Loaded<AiTool> }) {
   const featured = data.items.slice(0, 3);
   return (
     <section aria-labelledby="tools-title" className="on-dark relative overflow-hidden bg-navy-900 text-white">
-      <div className="container-page relative section-y">
-        <div className="grid gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-4">
-            <SectionHeader
-              dark
-              id="tools-title" title="Tools built for acquisition work."
-              lead="Approved, externally hosted and experimental tools, each labeled by status, plus a searchable prompt library."
-            />
-            <div className="mt-8 flex flex-wrap gap-3">
-              <ButtonLink href="/ai-playground" variant="accent">Browse AI tools</ButtonLink>
-              <ButtonLink href="/ai-playground/prompt-library" variant="secondary-dark" arrow={false}>Prompt library</ButtonLink>
-            </div>
-          </div>
-          <ul className="grid gap-4 sm:grid-cols-2 lg:col-span-8 lg:grid-cols-3">
-            {featured.map((t, i) => (
-              <Reveal as="li" key={t.slug} delay={i * 0.08}>
-                <ToolCard tool={t} dark />
-              </Reveal>
-            ))}
-          </ul>
+      <div className="container-page section-y">
+        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <Reveal><h2 id="tools-title" className="text-h2 font-bold"><DotTitle>{"AI Playground."}</DotTitle></h2></Reveal>
+          <ButtonLink href="/ai-playground/prompt-library" variant="secondary-dark">Prompt library</ButtonLink>
         </div>
-        <DataNotice source={data.source} what="the tool catalog" className="mt-10 border-runway/40 bg-white/5 text-white [&_svg]:text-runway" />
+        <ul className="mt-12 grid gap-4 md:grid-cols-3">
+          {featured.map((t, i) => (
+            <Reveal as="li" key={t.slug} delay={i * 0.08}>
+              <Link href={`/ai-playground/${t.slug}`} className="group flex h-full items-center gap-4 rounded-lg border border-line-dark bg-white/[0.03] p-6 transition-[border-color,background-color] duration-(--duration-ui) hover:border-sky/40 hover:bg-white/[0.06]">
+                <span className="grid size-11 shrink-0 place-items-center rounded-md bg-cobalt/40 font-mono text-sm font-bold text-sky" aria-hidden>
+                  {t.name.split(" ").map((w) => w[0]).slice(0, 2).join("")}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-lg font-semibold">{t.name}</span>
+                  <span className="block text-sm text-ink-subtle">{t.category}</span>
+                </span>
+                <ArrowRight className="shrink-0 text-sky transition-transform duration-(--duration-ui) group-hover:translate-x-1" />
+              </Link>
+            </Reveal>
+          ))}
+        </ul>
       </div>
     </section>
   );

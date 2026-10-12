@@ -14,26 +14,22 @@ const STAGES = [
   {
     key: "discover",
     title: "Discover",
-    lead: "Technology enters the ecosystem.",
-    body: "Solution providers submit five-minute video pitches during monthly collection periods. Every submission joins a structured field of AI, digital and data-analytics capabilities.",
+    lead: "Vendors submit a pitch of five minutes or less.",
   },
   {
     key: "assess",
     title: "Assess",
-    lead: "Experts separate signal from noise.",
-    body: "Peer and subject-matter-expert panels assess each pitch. Solutions that meet the bar are determined awardable and placed in the Marketplace; others receive feedback and may resubmit.",
+    lead: "Expert panels assess every submission.",
   },
   {
     key: "connect",
     title: "Connect",
-    lead: "Mission needs meet proven capability.",
-    body: "Government buyers with .gov or .mil access search awardable pitch videos. Special Topics and Shopping Notices focus the field on specific mission challenges.",
+    lead: "Government users search awardable solutions.",
   },
   {
     key: "acquire",
     title: "Acquire",
-    lead: "From discovery to award, faster.",
-    body: "Because solutions were assessed through a competitive process, buyers work with their contracting office to select an award mechanism and move to award — with Tradewinds support along the way.",
+    lead: "Buyers move to award with their contracting office.",
   },
 ] as const;
 
@@ -331,14 +327,13 @@ export function HowItWorks() {
       <div className="container-page relative section-y">
         <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-7">
-            <h2 id="how-title" className="text-h2 font-bold"><DotTitle>{"One pathway from discovery to award."}</DotTitle></h2>
+            <h2 id="how-title" className="text-h2 font-bold"><DotTitle>{"How the Marketplace works."}</DotTitle></h2>
             <p className="mt-6 max-w-2xl text-lead text-white/75">
-              The Marketplace is a repository of evaluated, post-competition pitch videos. Vendors submit short pitches, expert assessors review them against stated criteria, and awardable solutions become discoverable to government users.
+              Vendors submit short pitches, experts assess them, and awardable solutions become discoverable to government buyers.
             </p>
           </div>
           <div className="flex flex-wrap gap-3 lg:col-span-5 lg:justify-end lg:pb-2">
             <ButtonLink href="/marketplace" variant="accent">Explore the Marketplace</ButtonLink>
-            <ButtonLink href="/marketplace/providers" variant="secondary-dark" arrow={false}>Submit a Solution</ButtonLink>
           </div>
         </div>
 
@@ -392,8 +387,7 @@ export function HowItWorks() {
                 </span>
                 <div className={cn("transition-opacity duration-(--duration-enter)", stage === i ? "opacity-100" : "lg:opacity-40")}>
                   <h3 className="text-h3 font-bold">{s.title}</h3>
-                  <p className="mt-1.5 text-lg font-semibold text-sky">{s.lead}</p>
-                  <p className="mt-3 text-[0.95rem] leading-relaxed text-white/75">{s.body}</p>
+                  <p className="mt-1.5 text-lg text-white/75">{s.lead}</p>
                 </div>
               </li>
             ))}

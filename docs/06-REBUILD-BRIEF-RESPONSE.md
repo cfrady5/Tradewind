@@ -35,13 +35,15 @@ dividers, indented child links, the Employee Portal link, and a full-width orang
 Marketplace** button. Rows stagger in; Escape and Close reverse the animation. The bar turns solid
 white on scroll and the wordmark swaps to the full-colour lockup.
 
-**Homepage (brief §6.1, §11).** Hero (headline, one-sentence explanation, Access Marketplace / Submit
-a Solution / View Opportunities, photo collage) with the four-metric grid directly beneath (counting
-up) → three pathway cards (government buyer, solution provider, acquisition professional) → why
-(velocity, compliance, access) → how the Marketplace works (explanation, orbital animation, CTAs) →
-featured opportunities and active notices → contract vehicle cards (DRAID, AI Talent 2.0, T&E) → AI
-Playground featured tools and prompt library → proof (assessment results, award value, testimonial
-slot, participating organizations) → final CTA (Access Marketplace, Submit a Solution, Contact).
+**Homepage (brief §6.1, §11) — only the listed elements.** Hero (headline, one-sentence explanation,
+Access Marketplace / Submit a Solution / View Opportunities, photo collage) with the four-metric grid
+directly beneath → pathway strip (government buyers, solution providers, acquisition professionals:
+one line each) → why (velocity, compliance, access: one line each) → Marketplace (one-sentence
+explanation, the four-stage orbital animation, one CTA) → opportunities (three cards: featured and
+active notices, link to all) → contract vehicles (DRAID, AI Talent 2.0, T&E cards) → AI Playground
+(three featured tools, prompt library link) → proof (testimonial, participating organizations) → final
+CTA (Access Marketplace, Submit a Solution, Contact). The brief's hero eyebrow is omitted at the
+owner's earlier request to remove section labels.
 
 **Section pages.** Each follows the brief's recommended section order: Marketplace overview (two-path
 entry, five-step process, metrics, resource hub, aisles, year in review, CTA); instructional videos

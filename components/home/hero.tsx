@@ -1,7 +1,6 @@
 import type { CSSProperties } from "react";
 import { ButtonLink } from "@/components/ui/button";
-import { Clock } from "@/components/ui/icons";
-import { formatDate, monthlyDeadline } from "@/lib/data/opportunity-status";
+import { formatDate } from "@/lib/data/opportunity-status";
 import { Counter } from "@/components/ui/counter";
 import type { Metric } from "@/lib/data/types";
 import { EXTERNAL } from "@/lib/site-config";
@@ -22,8 +21,7 @@ function StatIcon({ kind }: { kind: StatKind }) {
   );
 }
 
-export function Hero({ now, metrics }: { now: Date; metrics: Metric[] }) {
-  const deadline = monthlyDeadline(now);
+export function Hero({ metrics }: { metrics: Metric[] }) {
   const by = Object.fromEntries(metrics.map((m) => [m.key, m]));
   const awardable = by["awardable"];
   const asOf = awardable ? formatDate(awardable.asOf) : null;
@@ -102,13 +100,7 @@ export function Hero({ now, metrics }: { now: Date; metrics: Metric[] }) {
             ))}
           </ul>
         </div>
-        <div className="mt-4 flex flex-col gap-2 px-2 text-sm text-ink-muted sm:flex-row sm:items-center sm:justify-between">
-          <p className="flex items-center gap-2">
-            <Clock width={16} height={16} className="text-runway" />
-            Current Marketplace collection period closes <strong className="font-semibold text-navy">{formatDate(deadline, true)}</strong>
-          </p>
-          {asOf && <p className="text-xs">Figures cumulative as of {asOf}{awardable && !awardable.verified && " · pending verification"}</p>}
-        </div>
+        {asOf && <p className="mt-3 px-2 text-right text-xs text-ink-muted">Cumulative as of {asOf}{awardable && !awardable.verified && " · pending verification"}</p>}
       </div>
     </section>
   );
