@@ -53,7 +53,7 @@ for (const route of ROUTES) {
 test("unknown route returns branded 404", async ({ page }) => {
   const res = await page.goto("/does-not-exist");
   expect(res?.status()).toBe(404);
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("pathway");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Page not found");
 });
 
 test("legacy Wix URLs redirect permanently", async ({ request }) => {
