@@ -8,12 +8,6 @@ import { HeroTile } from "./hero-tiles";
 
 const i = (n: number) => ({ "--i": n }) as CSSProperties;
 
-/* Converging pathways into the mission card — coordinates in % of the collage box (extends left by 40%). */
-const F = { x: 50, y: 61 };
-const STARTS = [8, 22, 36, 50, 64, 78, 92];
-const pathFor = (y0: number, k: number) => `M ${k % 2 ? 2 : 10} ${y0} C 26 ${y0}, 36 ${F.y + (y0 - F.y) * 0.35}, ${F.x} ${F.y + (k - 3) * 0.8}`;
-const nodeAt = (y0: number) => ({ x: 33, y: y0 * 0.42 + F.y * 0.58 });
-
 function StatIcon({ kind }: { kind: "cube" | "people" | "bolt" | "chart" }) {
   const p = { width: 26, height: 26, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.6, strokeLinecap: "round" as const, strokeLinejoin: "round" as const, "aria-hidden": true };
   return (
@@ -36,8 +30,6 @@ export function Hero({ now, metrics }: { now: Date; metrics: Metric[] }) {
   const stats = [
     awardable && { icon: "cube" as const, value: formatMetric(awardable.value, awardable.format), label: "Solutions determined awardable" },
     activities && { icon: "people" as const, value: formatMetric(activities.value, activities.format), label: "Participating DoW activities" },
-    { icon: "bolt" as const, value: "Faster", label: "Acquisition pathways" },
-    { icon: "chart" as const, value: "Stronger", label: "Mission outcomes" },
   ].filter(Boolean) as { icon: "cube" | "people" | "bolt" | "chart"; value: string; label: string }[];
 
   return (
@@ -69,65 +61,33 @@ export function Hero({ now, metrics }: { now: Date; metrics: Metric[] }) {
           </div>
         </div>
 
-        {/* Collage */}
+        {/* Collage — slanted left edge; two stripes beneath it slide in opposite directions */}
         <div className="relative lg:col-span-5 xl:col-span-6">
-          <div className="relative mx-auto aspect-[10/9] w-full max-w-[640px] lg:mr-[-6%] lg:max-w-none">
-            {/* pathway lines (desktop) */}
-            <svg viewBox="0 0 140 100" preserveAspectRatio="none" className="pointer-events-none absolute inset-y-0 left-[-40%] hidden h-full w-[140%] lg:block" aria-hidden>
-              <defs>
-                <linearGradient id="hl" x1="0" x2="1" y1="0" y2="0">
-                  <stop offset="0" stopColor="#7FBDF2" stopOpacity="0" />
-                  <stop offset=".6" stopColor="#337DE5" stopOpacity=".55" />
-                  <stop offset="1" stopColor="#004AAD" stopOpacity=".9" />
-                </linearGradient>
-              </defs>
-              {STARTS.map((y0, k) => (
-                <path
-                  key={y0} d={pathFor(y0, k)} fill="none" stroke="url(#hl)" strokeWidth={k === 3 ? 1.6 : 1}
-                  vectorEffect="non-scaling-stroke"
-                  className="opacity-0 motion-safe:animate-[fade-in_900ms_var(--ease-out)_forwards] motion-reduce:opacity-100"
-                  style={{ animationDelay: `${300 + Math.abs(k - 3) * 90}ms` }}
+          <div className="relative mx-auto w-full max-w-[640px] lg:mr-[-4%] lg:max-w-none">
+            {/* Dashed lines parallel to the cut, sliding in opposite directions (desktop only) */}
+            <svg viewBox="0 0 100 94" preserveAspectRatio="none" className="pointer-events-none absolute inset-0 hidden h-full w-full lg:block" aria-hidden>
+              {[
+                { d: 4, cls: "animate-[dash-fwd_6s_linear_infinite]", c: "#7FBDF2", o: 0.55 },
+                { d: 8.5, cls: "animate-[dash-back_6s_linear_infinite]", c: "#337DE5", o: 0.3 },
+                { d: 13, cls: "animate-[dash-fwd_8s_linear_infinite]", c: "#7FBDF2", o: 0.35 },
+              ].map((l) => (
+                <line
+                  key={l.d}
+                  x1={-l.d} y1={62} x2={20 - l.d} y2={104}
+                  stroke={l.c} strokeOpacity={l.o} strokeWidth={2.4} strokeLinecap="round"
+                  strokeDasharray="5 3.5" className={`motion-safe:${l.cls}`}
                 />
               ))}
             </svg>
-            {STARTS.filter((_, k) => k % 2 === 0).map((y0, k) => {
-              const n = nodeAt(y0);
-              return (
-                <span
-                  key={y0} aria-hidden
-                  className="absolute hidden size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-signal opacity-0 shadow-[0_0_0_4px_rgb(51_125_229/0.15)] motion-safe:animate-[fade-in_600ms_var(--ease-out)_forwards] motion-reduce:opacity-100 lg:block"
-                  style={{ left: `${((n.x - 40) / 100) * 100}%`, top: `${n.y}%`, animationDelay: `${900 + k * 120}ms` }}
-                />
-              );
-            })}
-
-            {/* tiles — slight 3D tilt toward the copy */}
-            <div className="absolute inset-0">
-              <div className="absolute inset-0">
-                <div className="enter absolute left-[2%] top-[6%] h-[34%] w-[46%]" style={i(2)}>
-                  <HeroTile name="jet" priority sizes="(min-width:1024px) 300px, 45vw" className="h-full w-full" />
-                </div>
-                <div className="enter absolute left-[51%] top-[1%] h-[45%] w-[30%]" style={i(3)}>
-                  <HeroTile name="launch" sizes="(min-width:1024px) 200px, 30vw" className="h-full w-full" />
-                </div>
-                <div className="enter absolute left-[83%] top-[6%] h-[39%] w-[17%]" style={i(4)}>
-                  <HeroTile name="network" sizes="(min-width:1024px) 150px, 22vw" className="h-full w-full" />
-                </div>
-                <div className="enter absolute left-[38%] top-[48%] h-[42%] w-[66%]" style={i(5)}>
-                  <HeroTile name="ship" sizes="(min-width:1024px) 440px, 66vw" className="h-full w-full" />
-                </div>
+            <div className="relative grid grid-cols-2 gap-3 lg:gap-4 lg:[clip-path:polygon(0_0,100%_0,100%_100%,20%_100%,0_62%)]">
+              <div className="enter col-span-2 aspect-[16/8]" style={i(2)}>
+                <HeroTile name="jet" priority sizes="(min-width:1024px) 720px, 100vw" className="h-full w-full" />
               </div>
-            </div>
-
-            {/* mission card */}
-            <div className="enter absolute left-[8%] top-[39%] z-10 w-[50%] min-w-[220px]" style={i(4)}>
-              <div className="relative overflow-hidden rounded-md bg-navy p-[clamp(1.25rem,2.4vw,2.25rem)] text-white shadow-lift ring-1 ring-sky/20">
-                <div className="absolute inset-0 bg-grid-fine opacity-50" aria-hidden />
-                <p className="relative text-[clamp(1.25rem,0.9rem+1.3vw,2rem)] font-extrabold leading-[1.1] tracking-[-0.02em]">
-                  Real solutions for real <span className="text-sky">missions</span><span className="text-runway">.</span>
-                </p>
-                <span className="relative mt-5 block h-0.5 w-10 rounded-sm bg-runway" aria-hidden />
-                <p className="relative mt-5 text-[clamp(0.875rem,0.8rem+0.3vw,1.0625rem)] leading-relaxed text-white/80">Bridging innovative technology and mission outcomes.</p>
+              <div className="enter aspect-[6/5]" style={i(3)}>
+                <HeroTile name="launch" sizes="(min-width:1024px) 350px, 50vw" className="h-full w-full" />
+              </div>
+              <div className="enter aspect-[6/5]" style={i(4)}>
+                <HeroTile name="ship" sizes="(min-width:1024px) 350px, 50vw" className="h-full w-full" />
               </div>
             </div>
           </div>
@@ -136,8 +96,8 @@ export function Hero({ now, metrics }: { now: Date; metrics: Metric[] }) {
 
       {/* Stats bar */}
       <div className="container-page relative z-10 pb-12">
-        <div className="enter rounded-md border border-line bg-white" style={i(6)}>
-          <ul className="grid divide-line sm:grid-cols-2 lg:grid-cols-4 lg:divide-x">
+        <div className="enter rounded-md border border-line bg-white lg:max-w-[640px]" style={i(6)}>
+          <ul className="grid divide-line sm:grid-cols-2 sm:divide-x">
             {stats.map((s) => (
               <li key={s.label} className="flex items-center gap-5 px-7 py-6">
                 <StatIcon kind={s.icon} />
