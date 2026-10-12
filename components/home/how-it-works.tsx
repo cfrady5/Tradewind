@@ -1,6 +1,7 @@
 "use client";
 
 import { DotTitle } from "@/components/brand/dot-title";
+import { ButtonLink } from "@/components/ui/button";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion, useReducedMotion } from "motion/react";
@@ -328,9 +329,17 @@ export function HowItWorks() {
     <section ref={sectionRef} id="how-it-works" aria-labelledby="how-title" className="on-dark relative bg-navy text-white">
       <div className="absolute inset-0 bg-grid-fine opacity-60 [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)]" aria-hidden />
       <div className="container-page relative section-y">
-        <div className="max-w-3xl">
-          <h2 id="how-title" className="text-h2 font-bold"><DotTitle>{"One pathway from discovery to award."}</DotTitle></h2>
-          <p className="mt-6 text-lead text-white/75">Four stages move a solution from submission to award.</p>
+        <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <div className="lg:col-span-7">
+            <h2 id="how-title" className="text-h2 font-bold"><DotTitle>{"One pathway from discovery to award."}</DotTitle></h2>
+            <p className="mt-6 max-w-2xl text-lead text-white/75">
+              The Marketplace is a repository of evaluated, post-competition pitch videos. Vendors submit short pitches, expert assessors review them against stated criteria, and awardable solutions become discoverable to government users.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3 lg:col-span-5 lg:justify-end lg:pb-2">
+            <ButtonLink href="/marketplace" variant="accent">Explore the Marketplace</ButtonLink>
+            <ButtonLink href="/marketplace/providers" variant="secondary-dark" arrow={false}>Submit a Solution</ButtonLink>
+          </div>
         </div>
 
         <div ref={pinRef} className="mt-12 grid gap-10 lg:mt-16 lg:grid-cols-12 lg:items-center lg:gap-16">

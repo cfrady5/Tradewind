@@ -88,17 +88,17 @@ export function SiteHeader() {
       <div ref={navRef} onMouseLeave={() => scheduleOpen(null)}>
         <div
           className={cn(
-            "container-page flex items-center gap-6 transition-[height] duration-(--duration-ui) ease-(--ease-out)",
+            "container-page flex items-center gap-4 transition-[height] duration-(--duration-ui) ease-(--ease-out) 2xl:gap-6",
             scrolled ? "h-16" : "h-19",
           )}
         >
           <Link href="/" className="shrink-0 rounded-sm" aria-label="Tradewinds home">
             {/* One image whose source switches: full-colour lockup on light/solid headers, reversed on dark. */}
-            <BrandLogo variant={light ? "wordmark-navy" : "wordmark-reversed"} priority className="w-[160px] sm:w-[186px]" />
+            <BrandLogo variant={light ? "wordmark-navy" : "wordmark-reversed"} priority className="w-[160px] sm:w-[186px] xl:w-[164px] 2xl:w-[186px]" />
           </Link>
 
-          <nav aria-label="Primary" className="ml-auto hidden lg:block">
-            <ul className="flex items-center gap-1">
+          <nav aria-label="Primary" className="ml-auto hidden xl:block">
+            <ul className="flex items-center gap-0.5">
               {ITEMS.map((g, i) => (
                 <li key={g.label} className="relative" onMouseEnter={() => scheduleOpen(g.links.length ? i : null)}>
                   {g.links.length === 0 ? (
@@ -106,13 +106,13 @@ export function SiteHeader() {
                       href={g.href}
                       aria-current={activeIndex === i ? "page" : undefined}
                       className={cn(
-                        "relative flex h-10 items-center rounded-sm px-3.5 text-[0.9375rem] font-medium transition-colors duration-(--duration-micro)",
+                        "relative flex h-10 items-center whitespace-nowrap rounded-sm px-2 text-[0.9375rem] 2xl:px-3.5 font-medium transition-colors duration-(--duration-micro)",
                         light ? "hover:bg-navy/[0.05]" : "hover:bg-white/8",
                       )}
                     >
                       {g.label}
                       {activeIndex === i && (
-                        <motion.span layoutId="nav-active" className="absolute inset-x-3.5 -bottom-0.5 h-0.5 rounded-sm bg-runway" transition={{ duration: reduce ? 0 : 0.35, ease: EASE }} />
+                        <motion.span layoutId="nav-active" className="absolute inset-x-2 -bottom-0.5 h-0.5 rounded-sm bg-runway 2xl:inset-x-3.5" transition={{ duration: reduce ? 0 : 0.35, ease: EASE }} />
                       )}
                     </Link>
                   ) : (
@@ -130,7 +130,7 @@ export function SiteHeader() {
                       }
                     }}
                     className={cn(
-                      "relative flex h-10 items-center gap-1 rounded-sm px-3.5 text-[0.9375rem] font-medium transition-colors duration-(--duration-micro)",
+                      "relative flex h-10 items-center gap-1 whitespace-nowrap rounded-sm px-2 text-[0.9375rem] 2xl:px-3.5 font-medium transition-colors duration-(--duration-micro)",
                       light ? "hover:bg-navy/[0.05]" : "hover:bg-white/8",
                       open === i && (light ? "bg-cloud" : "bg-white/8"),
                     )}
@@ -140,7 +140,7 @@ export function SiteHeader() {
                     {activeIndex === i && (
                       <motion.span
                         layoutId="nav-active"
-                        className="absolute inset-x-3.5 -bottom-0.5 h-0.5 rounded-sm bg-runway"
+                        className="absolute inset-x-2 -bottom-0.5 h-0.5 rounded-sm bg-runway 2xl:inset-x-3.5"
                         transition={{ duration: reduce ? 0 : 0.35, ease: EASE }}
                       />
                     )}
@@ -151,13 +151,13 @@ export function SiteHeader() {
             </ul>
           </nav>
 
-          <div className="ml-auto flex items-center gap-2 lg:ml-2">
+          <div className="ml-auto flex items-center gap-2 xl:ml-2">
             <a
               href={EXTERNAL.marketplaceSignIn}
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
-                "group hidden h-10 items-center gap-1.5 rounded-sm px-4 text-sm font-semibold transition-colors duration-(--duration-ui) sm:inline-flex",
+                "group hidden h-10 items-center gap-1.5 whitespace-nowrap rounded-sm px-4 text-sm font-semibold transition-colors duration-(--duration-ui) sm:inline-flex",
                 solid ? "bg-cobalt text-white hover:bg-navy" : "bg-runway text-navy hover:bg-[#ffa957]",
               )}
             >
@@ -165,7 +165,7 @@ export function SiteHeader() {
               <ArrowUpRight width={16} height={16} className="transition-transform duration-(--duration-ui) group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               <span className="sr-only">(opens external site)</span>
             </a>
-            <MobileMenu solid={light} />
+            <OverlayMenu light={light} />
           </div>
         </div>
 
@@ -179,7 +179,7 @@ export function SiteHeader() {
               animate={{ opacity: 1, y: 0 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, y: -6 }}
               transition={{ duration: 0.24, ease: EASE }}
-              className="absolute inset-x-0 top-full hidden border-t border-line bg-white text-navy shadow-lift lg:block"
+              className="absolute inset-x-0 top-full hidden border-t border-line bg-white text-navy shadow-lift xl:block"
               onMouseEnter={() => clearTimeout(hoverTimer.current)}
             >
               <AnimatePresence mode="wait" initial={false}>
@@ -240,7 +240,13 @@ export function SiteHeader() {
   );
 }
 
-function MobileMenu({ solid }: { solid: boolean }) {
+/**
+ * Full-site menu (rebuild brief §5): a full-screen navy overlay with large uppercase parent rows,
+ * hairline dividers, indented child links and a full-width Access the Marketplace button.
+ * Available at every width. Native <dialog> gives focus trapping, Escape and an inert page;
+ * CSS handles the enter/exit and the staggered rows (instant under reduced motion).
+ */
+function OverlayMenu({ light }: { light: boolean }) {
   const ref = useRef<HTMLDialogElement>(null);
   const pathname = usePathname();
   const reduce = useReducedMotion();
@@ -262,77 +268,101 @@ function MobileMenu({ solid }: { solid: boolean }) {
 
   useEffect(() => { closeMenu(); }, [pathname, closeMenu]);
 
+  let k = 0;
+  const row = () => ({ "--k": k++ }) as CSSProperties;
+  const isCurrent = (href: string) => pathname === href || (href !== "/" && pathname.startsWith(href + "/"));
+
   return (
     <>
       <button
         type="button"
         onClick={openMenu}
-        className={cn("grid size-10 place-items-center rounded-sm lg:hidden", solid ? "hover:bg-cloud" : "hover:bg-white/10")}
+        className={cn("group flex h-10 items-center gap-2 rounded-sm px-2.5 text-sm font-semibold transition-colors", light ? "hover:bg-navy/[0.05]" : "hover:bg-white/10")}
         aria-label="Open menu"
         aria-haspopup="dialog"
       >
-        <Menu />
+        {/* Text label only while the compact link row is hidden; the icon is always there. */}
+        <span className="hidden sm:inline xl:hidden">Menu</span>
+        <Menu className="transition-transform duration-(--duration-ui) group-hover:scale-x-110" />
       </button>
       <dialog
         ref={ref}
         aria-label="Site menu"
         data-state={open ? "open" : "closed"}
-        className="menu-sheet m-0 ml-auto h-dvh max-h-none w-full max-w-[26rem] bg-white p-0 text-navy backdrop:bg-navy/40 open:flex open:flex-col lg:hidden"
-        onClick={(e) => e.target === ref.current && closeMenu()}
+        className="menu-overlay on-dark m-0 h-dvh max-h-none w-full max-w-none bg-navy-900 p-0 text-white backdrop:bg-navy-900/50 open:flex open:flex-col"
         onCancel={(e) => { e.preventDefault(); closeMenu(); }}
       >
-        <div className="container-page flex h-16 shrink-0 items-center justify-between border-b border-line">
-          <BrandLogo variant="wordmark-navy" className="w-[160px]" />
-          <button type="button" onClick={closeMenu} className="group grid size-10 place-items-center rounded-sm hover:bg-cloud" aria-label="Close menu" autoFocus>
-            <Close className="transition-transform duration-(--duration-ui) ease-(--ease-out) group-hover:rotate-90" />
-          </button>
+        <div className="pointer-events-none absolute inset-0 bg-grid-fine opacity-60 [mask-image:radial-gradient(80%_70%_at_50%_0%,black,transparent)]" aria-hidden />
+        <div className="relative border-b border-line-dark">
+          <div className="container-page flex h-19 items-center justify-between">
+            <BrandLogo variant="wordmark-reversed" decorative className="w-[160px] sm:w-[186px]" />
+            <button type="button" onClick={closeMenu} className="group flex h-10 items-center gap-2 rounded-sm px-2.5 text-sm font-semibold hover:bg-white/10" aria-label="Close menu" autoFocus>
+              <span className="hidden sm:inline">Close</span>
+              <Close className="transition-transform duration-(--duration-ui) ease-(--ease-out) group-hover:rotate-90" />
+            </button>
+          </div>
         </div>
-        <nav aria-label="Mobile" className="container-page flex-1 overflow-y-auto py-4">
-          <ul className="divide-y divide-line">
-            {ITEMS.map((g, k) => (
-              <li key={g.label} className="menu-item" style={{ "--k": k } as CSSProperties}>
-                {g.links.length === 0 ? (
-                  <Link href={g.href} aria-current={pathname === g.href ? "page" : undefined} className="flex min-h-14 items-center text-lg font-semibold aria-[current=page]:text-cobalt">
+
+        <nav aria-label="All pages" className="relative min-h-0 flex-1 overflow-y-auto overscroll-contain">
+          <ul className="container-page">
+            {NAV.map((g) => (
+              <li key={g.label} className="menu-row border-b border-line-dark" style={row()}>
+                <Link
+                  href={g.href}
+                  aria-current={pathname === g.href ? "page" : undefined}
+                  className={cn(
+                    "group flex items-center justify-between gap-6 py-4 text-[clamp(1.5rem,1.1rem+1.6vw,2.5rem)] font-extrabold uppercase leading-none tracking-[-0.01em] transition-colors duration-(--duration-micro) sm:py-5",
+                    isCurrent(g.href) ? "text-sky" : "text-white hover:text-sky",
+                  )}
+                >
+                  <span className="flex items-center gap-4">
+                    {isCurrent(g.href) && <span className="h-0.5 w-6 bg-runway" aria-hidden />}
                     {g.label}
-                  </Link>
-                ) : (
-                <details className="group" open={pathname.startsWith(g.href)}>
-                  <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between text-lg font-semibold [&::-webkit-details-marker]:hidden">
-                    {g.label}
-                    <ChevronDown className="transition-transform duration-(--duration-ui) group-open:rotate-180" />
-                  </summary>
-                  <ul className="pb-4">
+                  </span>
+                  <ArrowRight className="shrink-0 -translate-x-2 text-runway opacity-0 transition-[opacity,transform] duration-(--duration-ui) group-hover:translate-x-0 group-hover:opacity-100" />
+                </Link>
+                {g.links.length > 0 && (
+                  <ul className="grid gap-x-8 border-l border-line-dark pb-5 pl-5 sm:grid-cols-2 lg:ml-1 lg:grid-cols-4 lg:pl-8">
                     {g.links.map((l) => (
                       <li key={l.href}>
                         <Link
                           href={l.href}
                           aria-current={pathname === l.href ? "page" : undefined}
-                          className="flex min-h-11 items-center rounded-md px-3 text-[0.9375rem] text-ink-muted hover:bg-cloud hover:text-navy aria-[current=page]:font-semibold aria-[current=page]:text-cobalt"
+                          className={cn(
+                            "link-underline inline-block py-1.5 text-[0.9375rem] transition-colors",
+                            pathname === l.href ? "font-semibold text-white" : "text-white/70 hover:text-white",
+                          )}
                         >
                           {l.label}
                         </Link>
                       </li>
                     ))}
                   </ul>
-                </details>
                 )}
               </li>
             ))}
-            <li className="menu-item" style={{ "--k": ITEMS.length } as CSSProperties}>
-              <Link href={PORTAL.href} className="flex min-h-12 items-center gap-2 text-sm font-semibold text-ink-muted hover:text-navy">
-                {PORTAL.label}<ArrowRight width={14} height={14} />
+            <li className="menu-row" style={row()}>
+              <Link href={PORTAL.href} className="group inline-flex items-center gap-2 py-5 text-xs font-semibold uppercase tracking-[0.16em] text-ink-subtle transition-colors hover:text-white">
+                {PORTAL.label}
+                <ArrowRight width={14} height={14} className="transition-transform group-hover:translate-x-1" />
               </Link>
             </li>
           </ul>
         </nav>
-        <div className="menu-item container-page grid shrink-0 gap-3 border-t border-line py-4" style={{ "--k": ITEMS.length + 1 } as CSSProperties}>
-          <a href={EXTERNAL.marketplaceSignIn} target="_blank" rel="noopener noreferrer" className="flex h-12 items-center justify-center gap-2 rounded-sm bg-cobalt font-semibold text-white">
-            Access Marketplace <ArrowUpRight width={18} height={18} />
-            <span className="sr-only">(opens external site)</span>
-          </a>
-          <Link href="/marketplace/providers" className="flex h-12 items-center justify-center rounded-sm border border-navy/20 font-semibold">
-            Submit a Solution
-          </Link>
+
+        <div className="menu-row relative border-t border-line-dark" style={row()}>
+          <div className="container-page py-4">
+            <a
+              href={EXTERNAL.marketplaceSignIn}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex h-14 w-full items-center justify-center gap-2 rounded-sm bg-runway text-base font-bold uppercase tracking-[0.08em] text-navy transition-colors duration-(--duration-ui) hover:bg-[#ffa957]"
+            >
+              Access the Marketplace
+              <ArrowUpRight className="transition-transform duration-(--duration-ui) group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              <span className="sr-only">(opens external site)</span>
+            </a>
+          </div>
         </div>
       </dialog>
     </>

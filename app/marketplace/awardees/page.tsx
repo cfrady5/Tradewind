@@ -1,45 +1,38 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { PageHero } from "@/components/layout/page-hero";
 import { NextSteps } from "@/components/layout/next-steps";
 import { Section } from "@/components/content/blocks";
+import { AwardeesDirectory } from "@/components/directory/awardees-directory";
 import { EmptyState } from "@/components/ui/empty-state";
+import { Shield } from "@/components/ui/icons";
 import { getAwards } from "@/lib/data";
-import { formatDate } from "@/lib/data/opportunity-status";
-import { formatMetric } from "@/lib/format";
 
 export const revalidate = 300;
-export const metadata: Metadata = { title: "Awarded Solutions", description: "Public records of awards made through Tradewinds.", alternates: { canonical: "/marketplace/awardees" } };
+export const metadata: Metadata = { title: "Awardees", description: "Public records of contracts awarded through the Tradewinds ecosystem.", alternates: { canonical: "/marketplace/awardees" } };
 
 export default async function Page() {
   const data = await getAwards();
   return (
     <>
-      <PageHero title="Awardees" lead="Public records of awards made through the Tradewinds ecosystem." crumbs={[{ label: "Marketplace", href: "/marketplace" }, { label: "Awardees", href: "/marketplace/awardees" }]} compact />
+      <PageHero title="Awardees" lead="Real contract outcomes from the Tradewinds ecosystem — companies, awards and the organizations that made them." crumbs={[{ label: "Marketplace", href: "/marketplace" }, { label: "Awardees", href: "/marketplace/awardees" }]} compact />
       <Section>
+        <p className="mb-10 flex items-start gap-3 rounded-lg border border-line bg-cloud/60 p-5 text-sm">
+          <Shield className="mt-0.5 shrink-0 text-cobalt" />
+          <span><strong className="font-semibold">Public information only.</strong> Award titles, organizations, dates and values appear only where cleared for release. Classified awards are never listed.</span>
+        </p>
         {data.items.length === 0 ? (
           <EmptyState title="Award records are awaiting an approved public dataset">
             Only award information cleared for public release will appear here. No records are shown until the program office approves the dataset.
           </EmptyState>
         ) : (
-          <div className="overflow-hidden rounded-xl border border-line">
-            <table className="w-full text-left text-[0.9375rem]">
-              <caption className="sr-only">Public award records</caption>
-              <thead className="bg-cloud text-xs uppercase tracking-[0.12em] text-ink-muted">
-                <tr><th scope="col" className="p-4">Vendor</th><th scope="col" className="p-4">Solution</th><th scope="col" className="p-4">Awarding activity</th><th scope="col" className="p-4">Date</th><th scope="col" className="p-4">Value</th></tr>
-              </thead>
-              <tbody className="divide-y divide-line">
-                {data.items.map((a) => (
-                  <tr key={a.slug}><th scope="row" className="p-4 font-semibold">{a.vendor}</th><td className="p-4">{a.solution}</td><td className="p-4">{a.awardingActivity}</td><td className="p-4">{formatDate(a.awardDate)}</td><td className="p-4 tabular-nums">{a.valueUsd ? formatMetric(a.valueUsd, "currency-compact") : "—"}</td></tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <Suspense fallback={<p className="text-ink-muted">Loading…</p>}><AwardeesDirectory items={data.items} /></Suspense>
         )}
       </Section>
       <NextSteps steps={[
+        { eyebrow: "Marketplace", title: "Awardable companies", href: "/marketplace/awardable-companies" },
         { eyebrow: "Impact", title: "Program metrics", href: "/about/impact" },
-        { eyebrow: "Marketplace", title: "Awardable solutions", href: "/marketplace/awardable-companies" },
-        { eyebrow: "Acquisition", title: "How awards are made", href: "/contract-vehicles" },
+        { eyebrow: "Acquisition", title: "Contract vehicles", href: "/contract-vehicles" },
       ]} />
     </>
   );

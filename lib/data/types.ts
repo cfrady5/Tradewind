@@ -15,7 +15,7 @@ export type Metric = {
   verified: boolean;
 };
 
-export type OpportunityType = "marketplace-collection" | "special-topic" | "shopping-notice" | "external";
+export type OpportunityType = "marketplace-collection" | "special-topic" | "shopping-notice" | "notice-of-intent" | "initiative" | "external";
 export type OpportunityStatus = "open" | "upcoming" | "closed";
 
 export type Opportunity = Base & {
@@ -35,6 +35,12 @@ export type Opportunity = Base & {
   documents?: { label: string; url: string }[];
   contactEmail?: string;
   externalUrl?: string;
+  issuingOffice?: string;
+  /** Pinned to the top of the Opportunities page and the homepage. */
+  featured?: boolean;
+  ctaLabel?: string;
+  ctaUrl?: string;
+  updatedAt?: string;
 };
 
 export type Solution = Base & {
@@ -48,6 +54,7 @@ export type Solution = Base & {
   aisle?: "General" | "SBIR/STTR" | "Prototype Transition";
   businessSize?: "Small" | "Large" | "Non-traditional" | "Academia";
   trl?: number;
+  listingStatus?: "Awardable" | "Archived" | "Updated";
 };
 
 export type VehicleStatus = "active" | "limited" | "historical" | "pending-confirmation";
@@ -68,6 +75,17 @@ export type ContractVehicle = Base & {
   contacts: { label: string; email: string }[];
   historicalNotes?: string;
   pendingFields?: string[];
+  /** Brief §6.13–6.16 detail sections — each renders only when present. */
+  whoItServes?: string;
+  background?: string;
+  problem?: string;
+  howItHelps?: string;
+  capabilityLabel?: string;
+  capabilityCategories?: string[];
+  serviceGroups?: { title: string; body: string }[];
+  orderingGuideUrl?: string;
+  holderListUrl?: string;
+  updateNotice?: string;
 };
 
 export type ToolAvailability = "approved" | "external" | "experimental" | "pending";
@@ -83,6 +101,9 @@ export type AiTool = Base & {
   dataSensitivity?: string;
   authorizationLevel?: string;
   owner?: string;
+  audiences?: Audience[];
+  learnMoreUrl?: string;
+  updatedAt?: string;
 };
 
 export type Prompt = Base & {
@@ -91,6 +112,11 @@ export type Prompt = Base & {
   description: string;
   body: string;
   usageNotes?: string;
+  intendedUser?: string;
+  inputsRequired?: string;
+  outputFormat?: string;
+  warnings?: string;
+  updatedAt?: string;
 };
 
 export type ResourceKind = "guide" | "video" | "tutorial" | "exemplar" | "document" | "news";
@@ -105,7 +131,16 @@ export type Resource = Base & {
   duration?: string;
   hasCaptions?: boolean;
   hasTranscript?: boolean;
+  /** Instructional-video category (brief §6.3). */
+  category?: VideoCategory;
+  updatedAt?: string;
+  related?: { label: string; href: string }[];
 };
+
+export const VIDEO_CATEGORIES = [
+  "Getting Started", "Submission Format", "Content and Criteria", "Competition Standards", "Assessment and Feedback", "Communications and Marketing",
+] as const;
+export type VideoCategory = (typeof VIDEO_CATEGORIES)[number];
 
 export type EventItem = Base & {
   title: string;
@@ -116,14 +151,28 @@ export type EventItem = Base & {
   summary: string;
   registrationUrl?: string;
   recordingUrl?: string;
+  description?: string;
+  timeZone?: string;
+  eventType?: string;
+  speakers?: { name: string; title?: string }[];
+  resources?: { label: string; url: string }[];
 };
 
 export type Faq = Base & {
   question: string;
   answer: string; // plain text paragraphs separated by \n\n
-  category: "Marketplace" | "Submissions" | "Government Access" | "Acquisition" | "General";
+  category: FaqCategory;
   audiences: Audience[];
+  updatedAt?: string;
+  relatedLinks?: { label: string; href: string }[];
 };
+
+/** FAQ organization from the rebuild brief §6.5. */
+export const FAQ_CATEGORIES = [
+  "General Marketplace", "Vendor Submission", "Government Buyer", "Assessment and Awardable Status",
+  "SBIR/STTR Aisle", "Prototype Transition Aisle", "Contracting and Acquisition", "Communications and Press",
+] as const;
+export type FaqCategory = (typeof FAQ_CATEGORIES)[number];
 
 export type Award = Base & {
   vendor: string;
@@ -132,4 +181,8 @@ export type Award = Base & {
   awardDate: string;
   valueUsd?: number;
   vehicle: string;
+  website?: string;
+  description?: string;
+  category?: string;
+  caseStudyUrl?: string;
 };

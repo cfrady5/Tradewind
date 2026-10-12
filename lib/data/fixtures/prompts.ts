@@ -7,7 +7,7 @@ import type { Prompt } from "../types";
 const p = (slug: string, category: string, title: string, description: string, body: string, usageNotes?: string): Prompt =>
   ({ slug, category, title, description, body, usageNotes, sample: true });
 
-export const prompts: Prompt[] = [
+const list: Prompt[] = [
   p("problem-statement", "Requirements", "Write an outcome-based problem statement",
     "Reframe a capability request as a measurable mission problem.",
     `You are an acquisition requirements specialist. Rewrite the following capability request as an outcome-based problem statement.
@@ -92,3 +92,22 @@ Notes:
 Capability:
 [DESCRIBE CAPABILITY]`),
 ];
+
+/** Brief §6.12 prompt fields: who it is for, what to paste in, what comes out. */
+const META: Record<string, Pick<Prompt, "intendedUser" | "inputsRequired" | "outputFormat" | "warnings">> = {
+  "problem-statement": { intendedUser: "Requirements owners and program managers", inputsRequired: "The capability request as written", outputFormat: "Five-part problem statement" },
+  "market-research-summary": { intendedUser: "Contracting officers and market research analysts", inputsRequired: "Your market research notes", outputFormat: "Sectioned summary with unsupported claims flagged" },
+  "evaluation-criteria": { intendedUser: "Source selection and evaluation teams", inputsRequired: "Requirement summary and priorities", outputFormat: "Criteria with definitions and rating guidance" },
+  "pitch-outline": { intendedUser: "Solution providers", inputsRequired: "Solution description, evidence and the mission problem", outputFormat: "Timed outline for a five-minute video" },
+  "vendor-questions": { intendedUser: "Program and contracting teams", inputsRequired: "Requirement summary and the vendor's materials", outputFormat: "Prioritized question list" },
+  "plain-language": { intendedUser: "Anyone writing for a broad audience", inputsRequired: "The text to simplify", outputFormat: "Plain-language rewrite" },
+  "risk-register": { intendedUser: "AI program and project managers", inputsRequired: "Project description and known constraints", outputFormat: "Risk register table" },
+  "data-readiness": { intendedUser: "Data owners and AI program leads", inputsRequired: "Description of the data sources and intended use", outputFormat: "Readiness assessment with gaps and next steps" },
+  "brief-summary": { intendedUser: "Staff preparing decision briefs", inputsRequired: "Source material for the decision", outputFormat: "One-page decision summary" },
+  "sow-to-pws": { intendedUser: "Requirements and contracting teams", inputsRequired: "The SOW task language", outputFormat: "Performance-based PWS task with standards" },
+  "lessons-learned": { intendedUser: "Program teams closing out a phase", inputsRequired: "Notes from the effort", outputFormat: "Structured lessons-learned record" },
+  "responsible-ai-review": { intendedUser: "Program leads and AI assurance reviewers", inputsRequired: "Description of the AI capability and its use", outputFormat: "Review question set by risk area" },
+};
+const WARNING = "Do not paste classified, CUI, proprietary or personally identifiable information into a tool that is not authorized for it. Review all output before use.";
+
+export const prompts: Prompt[] = list.map((p) => ({ ...p, ...META[p.slug], warnings: META[p.slug]?.warnings ?? WARNING, updatedAt: "2026-10-11" }));

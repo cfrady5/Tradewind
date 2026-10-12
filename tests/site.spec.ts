@@ -5,7 +5,7 @@ const ROUTES = [
   "/", "/marketplace", "/marketplace/awardable-companies", "/marketplace/awardees", "/marketplace/government", "/marketplace/providers",
   "/marketplace/submission-guide", "/marketplace/videos", "/marketplace/exemplars", "/marketplace/faqs", "/marketplace/sbir-sttr", "/marketplace/prototype-transition",
   "/opportunities", "/opportunities/solutions-marketplace-collection", "/opportunities/special-topics", "/opportunities/shopping-notices", "/opportunities/archive", "/opportunities/swarm-forge",
-  "/contract-vehicles", "/contract-vehicles/test-and-evaluation", "/contract-vehicles/draid", "/contract-vehicles/guides",
+  "/contract-vehicles", "/contract-vehicles/test-and-evaluation", "/contract-vehicles/draid", "/contract-vehicles/ai-talent-2", "/contract-vehicles/guides",
   "/ai-playground", "/ai-playground/acqbot", "/ai-playground/prompt-library",
   "/resources", "/resources/news", "/events", "/contact", "/about", "/about/impact", "/privacy",
 ];
@@ -86,19 +86,28 @@ test.describe("desktop navigation", () => {
   });
 });
 
-test.describe("mobile navigation", () => {
-  test.skip(({ isMobile }) => !isMobile, "mobile only");
-  test("menu dialog opens, navigates and closes", async ({ page }) => {
-    await page.goto("/");
-    await page.waitForLoadState("networkidle");
-    await page.getByRole("button", { name: "Open menu" }).click();
-    const dialog = page.getByRole("dialog", { name: "Site menu" });
-    await expect(dialog).toBeVisible();
-    await dialog.getByText("Opportunities", { exact: true }).click();
-    await dialog.getByRole("link", { name: "Special Topics" }).click();
-    await expect(page).toHaveURL(/\/opportunities\/special-topics$/);
-    await expect(dialog).toBeHidden();
-  });
+test("full-screen menu opens on every width, lists nested pages and navigates", async ({ page }) => {
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+  await page.getByRole("button", { name: "Open menu" }).click();
+  const dialog = page.getByRole("dialog", { name: "Site menu" });
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByRole("link", { name: "Awardable Companies" })).toBeVisible();
+  await expect(dialog.getByRole("link", { name: "Employee Portal" })).toBeVisible();
+  await expect(dialog.getByRole("link", { name: /Access the Marketplace/ })).toBeVisible();
+  await dialog.getByRole("link", { name: "Special Topics" }).click();
+  await expect(page).toHaveURL(/\/opportunities\/special-topics$/);
+  await expect(dialog).toBeHidden();
+});
+
+test("full-screen menu closes with Escape", async ({ page }) => {
+  await page.goto("/marketplace");
+  await page.waitForLoadState("networkidle");
+  await page.getByRole("button", { name: "Open menu" }).click();
+  const dialog = page.getByRole("dialog", { name: "Site menu" });
+  await expect(dialog).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
 });
 
 test("solutions filters sync to the URL and survive reload", async ({ page }) => {
@@ -113,10 +122,18 @@ test("solutions filters sync to the URL and survive reload", async ({ page }) =>
   await expect(page.getByText("No solutions match those filters")).toBeVisible();
 });
 
+test("awardable companies filter by aisle and show the sign-in prompt", async ({ page }) => {
+  await page.goto("/marketplace/awardable-companies");
+  await page.getByRole("radio", { name: /SBIR\/STTR/ }).click();
+  await expect(page).toHaveURL(/aisle=SBIR/);
+  await expect(page.locator("main").getByText("SBIR/STTR Aisle").first()).toBeVisible();
+  await expect(page.locator("main").getByRole("link", { name: /Sign in for full details/ }).first()).toBeVisible();
+});
+
 test("opportunity status filter and archive", async ({ page }) => {
   await page.goto("/opportunities?status=closed");
   await expect(page.getByRole("radio", { name: /Closed/ })).toHaveAttribute("aria-checked", "true");
-  const cards = page.locator("article");
+  const cards = page.locator("#all article");
   await expect(cards.first()).toContainText("Closed");
 });
 
@@ -159,3 +176,25 @@ test.describe("employee portal (no Supabase configured in CI)", () => {
   });
 });
 
+test("events offer an add-to-calendar download", async ({ request }) => {
+  const res = await request.get("/events/sample-buyer-workshop/calendar");
+  expect(res.status()).toBe(200);
+  expect(res.headers()["content-type"]).toContain("text/calendar");
+  const body = await res.text();
+  expect(body).toContain("BEGIN:VCALENDAR");
+  expect(body).toContain("SUMMARY:Government Buyer Workshop: From Discovery to Award");
+});
+
+test("instructional videos are organized by the brief's six categories", async ({ page }) => {
+  await page.goto("/marketplace/videos");
+  for (const c of ["Getting Started", "Submission Format", "Content and Criteria", "Competition Standards", "Assessment and Feedback", "Communications and Marketing"]) {
+    await expect(page.getByRole("heading", { name: c, level: 2 })).toBeVisible();
+  }
+});
+
+test("FAQ categories follow the brief and answers show their last update", async ({ page }) => {
+  await page.goto("/marketplace/faqs?category=Vendor+Submission");
+  await expect(page.getByRole("radio", { name: /Vendor Submission/ })).toHaveAttribute("aria-checked", "true");
+  await page.getByRole("button", { name: "Expand all" }).click();
+  await expect(page.getByText(/Last updated/).first()).toBeVisible();
+});

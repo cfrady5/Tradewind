@@ -27,16 +27,33 @@ excluded from indexing by robots.txt and per-page `noindex`.
 
 ## 2. Wireframes (text)
 
-**Header (all pages).** Logo · top-level items (Marketplace, Opportunities, AI Playground, Contract
-Vehicles open a mega menu; Events and Contact are direct links) · persistent **Access Marketplace**
-button · hamburger on small screens opening a slide-in sheet with the full hierarchy and the Employee
-Portal link. The bar turns solid white on scroll; the wordmark swaps to the full-colour lockup.
+**Header (all pages).** Logo · compact top-level links on wide screens (Marketplace, Opportunities,
+AI Playground and Contract Vehicles open a mega menu; Events and Contact are direct links) · persistent
+**Access Marketplace** button · **Menu** button at every width. Menu opens the brief's full-screen
+overlay in the site's navy: logo top left, Close top right, large uppercase parent rows with hairline
+dividers, indented child links, the Employee Portal link, and a full-width orange **Access the
+Marketplace** button. Rows stagger in; Escape and Close reverse the animation. The bar turns solid
+white on scroll and the wordmark swaps to the full-colour lockup.
 
-**Homepage.** Hero (headline, one-sentence explanation, Access Marketplace / Submit a Solution / View
-Opportunities, photo collage) → metric strip (participating organizations, awardable solutions,
-submitted solutions, award value) → pathway cards (government buyer / solution provider) → how it works
-(orbital assess → connect → acquire animation) → ecosystem & contract vehicles → featured
-opportunities → AI Playground preview → results → resources & events → final CTA.
+**Homepage (brief §6.1, §11).** Hero (headline, one-sentence explanation, Access Marketplace / Submit
+a Solution / View Opportunities, photo collage) with the four-metric grid directly beneath (counting
+up) → three pathway cards (government buyer, solution provider, acquisition professional) → why
+(velocity, compliance, access) → how the Marketplace works (explanation, orbital animation, CTAs) →
+featured opportunities and active notices → contract vehicle cards (DRAID, AI Talent 2.0, T&E) → AI
+Playground featured tools and prompt library → proof (assessment results, award value, testimonial
+slot, participating organizations) → final CTA (Access Marketplace, Submit a Solution, Contact).
+
+**Section pages.** Each follows the brief's recommended section order: Marketplace overview (two-path
+entry, five-step process, metrics, resource hub, aisles, year in review, CTA); instructional videos
+grouped by the six categories with audience tags; exemplars (six qualities, exemplar grid, why they
+work, checklist); FAQs (eight categories, expand/collapse, last updated, related links); awardable
+companies (aisle, focus area, TRL, business size, awardable month and status filters, sign-in prompt);
+awardees (searchable directory, public records only); opportunities (featured, special topics,
+shopping notices, notices of intent, full directory, archive, guidance); Swarm Forge, the two aisles
+and each contract vehicle use a long-form template with sticky "on this page" navigation; AI
+Playground (disclaimer, featured tools, catalog, prompt library, responsible use); events (next event,
+why attend, recordings, past sessions, add to calendar); contact (helpdesk, schedule a call,
+self-serve, six support categories).
 
 **Interior pages.** Navy page header with breadcrumbs, title, lead and the monogram field; content in
 a 12-column grid with sticky in-page navigation on long pages; "next steps" band; footer with the
@@ -122,13 +139,14 @@ select restricted columns; the portal reads through `portal_content` for cross-t
 
 ## 6. Component list
 
-Public: `SiteHeader` (mega menu + mobile sheet), `SiteFooter`, `PageHero`, `Breadcrumbs`, `Hero`,
-`ChoosePath`, `HowItWorks` (orbital animation), `Ecosystem`, `FeaturedOpportunities`, `ToolsPreview`,
-`Results`, `ResourcesEvents`, `FinalCta`, `MonogramField`, `BrandLogo`, `DotTitle`, `ButtonLink`,
-`Badge`, `Reveal`, `DataNotice`, `EmptyState`, `Accordion`, `SectionHeader`, directory controls and
-directories (solutions, opportunities, tools, prompts, FAQs, resources), cards (opportunity, tool,
-resource), content blocks (`Section`, `Split`, `Callout`, `PendingContent`, `FeatureList`,
-`ProcessSteps`, `SubmissionChecklist`, `VehicleCompare`, `FaqList`), `NextSteps`.
+Public: `SiteHeader` (desktop links + mega menu, full-screen `OverlayMenu`), `SiteFooter`, `PageHero`,
+`Breadcrumbs`, `Hero`, `ChoosePath`, `Why`, `HowItWorks` (orbital animation), `FeaturedOpportunities`,
+`Vehicles`, `ToolsPreview`, `Results` (proof), `FinalCta`, `MonogramField`, `BrandLogo`, `DotTitle`,
+`ButtonLink`, `Badge`, `Counter`, `Reveal`, `DataNotice`, `EmptyState`, `Accordion`, `SectionHeader`,
+directory controls and directories (solutions, awardees, opportunities, tools, prompts, FAQs,
+resources), `VideoLibrary` / `VideoCard`, cards (opportunity, tool, resource), content blocks
+(`Section`, `Split`, `Callout`, `PendingContent`, `FeatureList`, `ProcessSteps`, `SubmissionChecklist`,
+`VehicleCompare`, `FaqList`), `DetailLayout` (sticky section navigation), `AislePage`, `NextSteps`.
 
 Portal (`components/portal/`): `PortalShell`, `AuthScreen`, `Notice`, `StatusBadge`, `RoleBadge`,
 `Card`, `Btn`/`BtnLink`, `FieldInput`, `Table`, `Editor` (structured editor with workflow sidebar),
@@ -160,7 +178,7 @@ version history on every record.
 
 | Phase | Scope | Status |
 | --- | --- | --- |
-| 1 | Information architecture, navigation, redirects, copy | Done |
+| 1 | Information architecture, navigation (full-screen overlay), redirects, copy | Done |
 | 2 | Marketplace section pages, directories, FAQs, videos, exemplars | Done (illustrative records labeled until approved data arrives) |
 | 3 | Opportunities + Swarm Forge, Contract Vehicles, AI Playground | Done (nine tools listed as pending content) |
 | 4 | Supabase schema, RLS, workflow, audit, media, search | Done and validated in PGlite; **project provisioning blocked by the Supabase free-plan limit** |

@@ -72,6 +72,9 @@ export default async function Page({ searchParams }: { searchParams: Promise<Par
             <ul className="divide-y divide-line text-sm">{d.events.map((e) => <li key={String(e.id)} className="flex justify-between gap-3 py-2"><Link href={`/employee/content/events/${e.id}`} className="truncate font-semibold hover:text-cobalt">{String(e.title)}</Link><span className="shrink-0 text-ink-muted">{fmtDate(e.starts_at)}</span></li>)}</ul>
           ) : <Empty>No events scheduled this month.</Empty>}
         </Card>
+        <Card title="Content needing review"><RowList rows={d.stale} names={d.names} empty="Everything published was updated in the last 90 days." /></Card>
+        <Card title="Most edited"><RowList rows={d.topEdited} names={d.names} empty="No edits yet." /></Card>
+        <Card title="Recently archived"><RowList rows={d.archived} names={d.names} empty="Nothing archived yet." /></Card>
         <Card title="Recent uploads" actions={<Link href="/employee/media" className="text-xs font-semibold text-cobalt hover:underline">Media library</Link>}>
           {d.uploads.length ? (
             <ul className="divide-y divide-line text-sm">{d.uploads.map((u) => <li key={String(u.id)} className="flex justify-between gap-3 py-2"><span className="truncate font-semibold">{String(u.title)}</span><span className="shrink-0 text-ink-muted">{fmtDate(u.created_at)}</span></li>)}</ul>

@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Check, ChevronDown, Copy } from "@/components/ui/icons";
+import { formatDate } from "@/lib/data/opportunity-status";
 import type { Prompt } from "@/lib/data/types";
 import { cn } from "@/lib/cn";
 import { ResultsBar, SearchField, countBy } from "./controls";
@@ -56,7 +57,7 @@ function CopyButton({ text, label }: { text: string; label: string }) {
 export function PromptLibrary({ items }: { items: Prompt[] }) {
   const { state, set, clear, active } = useQueryState({ q: "", category: "" });
   const [open, setOpen] = useState<string | null>(null);
-  const searched = useMemo(() => items.filter((p) => matches(state.q, p.title, p.description, p.body, p.category)), [items, state.q]);
+  const searched = useMemo(() => items.filter((p) => matches(state.q, p.title, p.description, p.body, p.category, p.intendedUser ?? "")), [items, state.q]);
   const filtered = searched.filter((p) => !state.category || p.category === state.category);
   const counts = countBy(searched, (p) => p.category);
   const categories = uniq(items.map((p) => p.category));
@@ -113,9 +114,17 @@ export function PromptLibrary({ items }: { items: Prompt[] }) {
                     </div>
                     {isOpen && (
                       <div id={`${p.slug}-body`} className="border-t border-line px-5 pb-6 pt-5 md:px-6">
+                        {(p.intendedUser || p.inputsRequired || p.outputFormat) && (
+                          <dl className="mb-5 grid gap-px overflow-hidden rounded-md border border-line bg-line text-sm sm:grid-cols-3">
+                            {[["Intended user", p.intendedUser], ["Inputs required", p.inputsRequired], ["Output format", p.outputFormat]].map(([k, v]) => (
+                              <div key={k} className="bg-cloud/50 p-4"><dt className="text-xs font-semibold uppercase tracking-[0.1em] text-ink-muted">{k}</dt><dd className="mt-1 font-medium text-navy">{v ?? "—"}</dd></div>
+                            ))}
+                          </dl>
+                        )}
                         <pre className="max-h-[28rem] overflow-auto whitespace-pre-wrap rounded-md bg-navy-900 p-5 font-mono text-sm leading-relaxed text-white/90">{p.body}</pre>
                         {p.usageNotes && <p className="mt-4 rounded-md bg-sky-tint/60 p-4 text-sm"><strong className="font-semibold">Intended use: </strong>{p.usageNotes}</p>}
-                        <p className="mt-4 text-xs text-ink-muted">Never paste classified, CUI or proprietary information into tools that are not approved for it. Review all AI output before use.</p>
+                        <p className="mt-4 rounded-md border border-runway/50 bg-runway-tint p-4 text-sm text-navy"><strong className="font-semibold text-[#8a4100]">Warning: </strong>{p.warnings ?? "Never paste classified, CUI or proprietary information into tools that are not approved for it. Review all AI output before use."}</p>
+                        {p.updatedAt && <p className="mt-3 text-xs text-ink-muted">Last updated {formatDate(p.updatedAt)}</p>}
                       </div>
                     )}
                   </li>

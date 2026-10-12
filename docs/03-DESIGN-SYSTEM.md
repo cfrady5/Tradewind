@@ -62,7 +62,7 @@ Signature: headlines that end in a period render it in Runway Orange (`component
 - **Monogram watermark** (footer) and **Cobalt/Signal band** echo the guideline stationery and page furniture.
 
 ## Components (`components/`)
-Navigation (header + mega menu + mobile dialog), footer, breadcrumbs (with JSON-LD), `ButtonLink` (primary / accent / secondary / text), `Badge` (status tones), `SectionHeader`, `PageHero`, `NextSteps`, accordion (`<details>`), process steps (horizontal → vertical stepper), feature list, callouts, pending-content marker, data notice, empty state, search field, facet select, chip group, results bar, sort, pagination, opportunity / tool / resource cards, vehicle comparison table, prompt library, submission checklist, counters.
+Navigation (header + mega menu + full-screen overlay dialog), footer, breadcrumbs (with JSON-LD), `ButtonLink` (primary / accent / secondary / text), `Badge` (status tones), `SectionHeader`, `PageHero`, `NextSteps`, accordion (`<details>`), process steps (horizontal → vertical stepper), feature list, callouts, pending-content marker, data notice, empty state, search field, facet select, chip group, results bar, sort, pagination, opportunity / tool / resource cards, vehicle comparison table, prompt library, submission checklist, counters.
 
 ## Motion system
 | Token | Value | Use |
@@ -78,7 +78,7 @@ Patterns:
 2. **Scroll reveals** — `Reveal` / `Stagger` (Motion `whileInView`, once, 18–24px rise).
 3. **Scrollytelling** — How-it-Works pins its two-column block with GSAP ScrollTrigger and scrubs one master timeline (320vh) through four stages; the rings spin continuously on a clock (paused off-screen, off under reduced motion) while every selection attribute is a pure function of scroll progress, so reverse scrolling replays the selection exactly. Below 1024px, on short viewports, or under reduced motion the section is stage-based instead: steps in view select the stage and the visual tweens (or jumps) to that stage's resting state.
 4. **Hover** — arrow nudges, underline draw (`link-underline`), border/elevation shifts, small `-translate-y-0.5` on cards; no tilt or large scale.
-5. **Navigation** — header compresses 76→64px and turns solid on scroll; active-section underline uses a shared `layoutId`; mega menu content cross-slides between sections.
+5. **Navigation** — header compresses 76→64px and turns solid on scroll; active-section underline uses a shared `layoutId`; mega menu content cross-slides between sections; the full-screen menu fades down over the page while its rows stagger in, and reverses on close (instant under reduced motion).
 6. **Page transitions** — React `<ViewTransition>` crossfade (220ms) via the browser View Transitions API; no-op where unsupported.
 7. **Data** — counters animate once from 0 to the exact value; the final value is server-rendered and exposed to assistive tech, so animation never misrepresents data.
 8. **Reduced motion** — `prefers-reduced-motion: reduce` disables all decorative animation globally (CSS) and in Motion components (`useReducedMotion`); content renders in its final state immediately.

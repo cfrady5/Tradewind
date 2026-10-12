@@ -37,6 +37,8 @@ export const TYPE_LABEL: Record<Opportunity["type"], string> = {
   "marketplace-collection": "Marketplace Collection",
   "special-topic": "Special Topic",
   "shopping-notice": "Shopping Notice",
+  "notice-of-intent": "Notice of Intent",
+  initiative: "Initiative",
   external: "Other Opportunity",
 };
 

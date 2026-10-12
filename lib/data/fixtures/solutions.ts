@@ -46,4 +46,5 @@ export const solutions: Solution[] = rows.map(([name, summary, focusArea, techno
   aisle: (["General", "General", "SBIR/STTR", "General", "Prototype Transition"] as const)[i % 5],
   businessSize: (["Small", "Small", "Non-traditional", "Large", "Academia"] as const)[i % 5],
   trl: 4 + (i % 5),
+  listingStatus: i === 7 ? "Updated" : i === 15 ? "Archived" : "Awardable",
 }));

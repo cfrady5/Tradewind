@@ -48,6 +48,7 @@ export const COMMON_FIELDS: Field[] = [
 ];
 
 const AUDIENCES = ["all", "government", "industry"] as const;
+const FAQ_CATS = ["General Marketplace", "Vendor Submission", "Government Buyer", "Assessment and Awardable Status", "SBIR/STTR Aisle", "Prototype Transition Aisle", "Contracting and Acquisition", "Communications and Press"] as const;
 
 export const CONTENT_TYPES: Record<string, ContentType> = {
   pages: {
@@ -157,7 +158,7 @@ export const CONTENT_TYPES: Record<string, ContentType> = {
       F("title", "Title", "text", { required: true }),
       F("slug", "Slug", "slug", { required: true }),
       F("kind", "Kind", "select", { required: true, options: ["guide", "video", "tutorial", "exemplar", "document", "news"] }),
-      F("category", "Category", "select", { options: ["", "Getting Started", "Submission Format", "Content and Criteria", "Competition Standards", "Assessment and Feedback", "Communications and Marketing"] }),
+      F("category", "Video category", "select", { options: ["", "Getting Started", "Submission Format", "Content and Criteria", "Competition Standards", "Assessment and Feedback", "Communications and Marketing"] }),
       F("audiences", "Audience", "tags", { options: AUDIENCES }),
       F("summary", "Short description", "textarea", { required: true, wide: true }),
       F("url", "Link / document URL", "url"),
@@ -174,11 +175,11 @@ export const CONTENT_TYPES: Record<string, ContentType> = {
     table: "faqs", label: "FAQs", singular: "FAQ", titleField: "question",
     description: "Searchable answers. Order with the sort field; reorder from the list view.",
     listColumns: [{ name: "category", label: "Category" }, { name: "sort_order", label: "Order" }],
-    filter: { name: "category", label: "Category", options: ["Marketplace", "Submissions", "Government Access", "Acquisition", "General", "Assessment", "SBIR/STTR Aisle", "Prototype Transition Aisle", "Communications"] },
+    filter: { name: "category", label: "Category", options: FAQ_CATS },
     fields: [
       F("question", "Question", "text", { required: true, wide: true }),
       F("slug", "Slug", "slug", { required: true }),
-      F("category", "Category", "select", { required: true, options: ["Marketplace", "Submissions", "Government Access", "Acquisition", "General", "Assessment", "SBIR/STTR Aisle", "Prototype Transition Aisle", "Communications"] }),
+      F("category", "Category", "select", { required: true, options: FAQ_CATS }),
       F("audiences", "Audience", "tags", { options: AUDIENCES }),
       F("answer", "Answer", "textarea", { required: true, wide: true, help: "Plain text; separate paragraphs with a blank line." }),
       F("related_links", "Related links", "json", { help: 'JSON array of { "label", "href" }.' }),
@@ -240,6 +241,12 @@ export const CONTENT_TYPES: Record<string, ContentType> = {
       F("overview", "Overview", "textarea", { required: true, wide: true }),
       F("scope", "Scope", "list", { help: "One per line." }),
       F("capability_categories", "Capability categories", "tags"),
+      F("who_it_serves", "Who it serves", "textarea"),
+      F("background", "Background", "textarea", { wide: true }),
+      F("problem", "Problem it addresses", "textarea", { wide: true }),
+      F("how_it_helps", "How the vehicle helps", "textarea", { wide: true }),
+      F("capability_label", "Capability list heading", "text", { help: "e.g. Covered capabilities, Services covered." }),
+      F("service_groups", "Service groups", "json", { wide: true, help: 'JSON array of { "title", "body" }.' }),
       F("eligible_users", "Eligible users", "textarea", { required: true }),
       F("ordering_process", "Ordering steps", "list", { help: "One per line." }),
       F("ordering_guide_url", "Ordering guide URL", "url"), F("holder_list_url", "Holder list URL", "url"),
@@ -278,7 +285,7 @@ export const CONTENT_TYPES: Record<string, ContentType> = {
     defaultSort: { column: "starts_at", ascending: false },
   },
   metrics: {
-    table: "metrics", label: "Metrics", singular: "Metric", titleField: "label",
+    table: "metrics", label: "Marketplace Metrics", singular: "Metric", titleField: "label",
     description: "Homepage and impact figures. Keep the source note current; unverified figures display a notice.",
     listColumns: [{ name: "value", label: "Value" }, { name: "as_of", label: "As of" }, { name: "verified", label: "Verified" }],
     fields: [
@@ -309,16 +316,17 @@ export function getType(key: string): ContentType | null {
 export const PORTAL_NAV: { label: string; href: string; min?: "viewer" | "contributor" | "editor" | "admin" | "super_admin" }[] = [
   { label: "Dashboard", href: "/employee/dashboard" },
   { label: "Pages", href: "/employee/content/pages" },
+  { label: "Marketplace", href: "/employee/content/metrics" },
   { label: "Opportunities", href: "/employee/content/opportunities" },
   { label: "Awardables", href: "/employee/content/solutions" },
   { label: "Awardees", href: "/employee/content/awards" },
-  { label: "Resources & Videos", href: "/employee/content/resources" },
+  { label: "Resources", href: "/employee/content/resources" },
+  { label: "Videos", href: "/employee/content/resources?filter=video" },
   { label: "FAQs", href: "/employee/content/faqs" },
   { label: "AI Playground", href: "/employee/content/ai_tools" },
   { label: "Prompt Library", href: "/employee/content/prompts" },
   { label: "Contract Vehicles", href: "/employee/content/contract_vehicles" },
   { label: "Events", href: "/employee/content/events" },
-  { label: "Metrics", href: "/employee/content/metrics" },
   { label: "Media Library", href: "/employee/media" },
   { label: "Users", href: "/employee/users", min: "admin" },
   { label: "Settings", href: "/employee/settings", min: "admin" },

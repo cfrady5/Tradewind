@@ -40,7 +40,7 @@ export default async function SolutionsPage() {
           </div>
           <DataNotice source={data.source} what="the solutions directory" className="mb-8" />
           <Suspense fallback={<p className="text-ink-muted">Loading directory…</p>}>
-            <SolutionsDirectory items={data.items} />
+            <SolutionsDirectory items={data.items} signInUrl={EXTERNAL.marketplaceSignIn} />
           </Suspense>
         </div>
       </section>

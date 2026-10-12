@@ -11,6 +11,7 @@ export function Results({ metrics }: { metrics: Metric[] }) {
   const submitted = by["submitted"];
   const awardable = by["awardable"];
   const value = by["award-value"];
+  const orgs = by["activities"];
   const rate = submitted && awardable ? Math.round((awardable.value / submitted.value) * 100) : null;
 
   return (
@@ -23,7 +24,7 @@ export function Results({ metrics }: { metrics: Metric[] }) {
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <ButtonLink href="/about/impact" variant="primary">View impact</ButtonLink>
-            <ButtonLink href="/marketplace/awardees" variant="secondary" arrow={false}>Awarded solutions</ButtonLink>
+            <ButtonLink href="/marketplace/awardees" variant="secondary" arrow={false}>Awardees</ButtonLink>
           </div>
         </Reveal>
 
@@ -54,10 +55,27 @@ export function Results({ metrics }: { metrics: Metric[] }) {
             </Reveal>
           )}
           <Reveal delay={0.14} className="flex flex-col justify-between rounded-xl border border-dashed border-line p-8">
-            <p className="eyebrow text-ink-muted">Success stories</p>
-            <p className="mt-4 text-ink-muted">Approved awardee stories and acquisition case studies will appear here as the program office clears them for release.</p>
+            <p className="text-5xl font-extrabold leading-none text-cobalt/30" aria-hidden>&ldquo;</p>
+            <p className="mt-2 font-semibold">Testimonials</p>
+            <p className="mt-2 text-sm text-ink-muted">Buyer and awardee testimonials appear here once cleared for public release.</p>
           </Reveal>
         </div>
+      </div>
+
+      {/* Participating organizations (brief §6.1 proof section) */}
+      <div className="container-page mt-16">
+        <Reveal className="flex flex-col gap-6 rounded-xl border border-line bg-cloud/60 p-8 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="font-semibold">Participating organizations</p>
+            <p className="mt-1 max-w-xl text-sm text-ink-muted">Department of War activities that use the Marketplace. The named list is published once cleared for public release.</p>
+          </div>
+          {orgs && (
+            <p className="flex items-baseline gap-3">
+              <span className="text-4xl font-extrabold tracking-[-0.04em]">{formatMetric(orgs.value, orgs.format)}</span>
+              <span className="text-sm text-ink-muted">{orgs.label.toLowerCase()}{!orgs.verified && " · pending verification"}</span>
+            </p>
+          )}
+        </Reveal>
       </div>
     </section>
   );

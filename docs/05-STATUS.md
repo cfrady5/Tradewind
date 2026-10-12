@@ -6,7 +6,7 @@ _Last updated: 2026-10-12_
 - Design system: official palette with AA-verified pairings, Montserrat (self-hosted), spacing/grid, motion tokens, reduced-motion support.
 - Official logos (full-color + reversed lockups, monogram, favicon/apple icon) from the approved brand files.
 - Information architecture per the Oct 2026 rebuild brief: Marketplace (overview, instructional videos, exemplars, FAQs, awardable companies, awardees, aisles), Opportunities (+ Swarm Forge), AI Playground (tool catalog, prompt library, nine named tools), Contract Vehicles, Events, Contact, Employee Portal; permanent redirects from Wix-era and first-pass URLs. The brief's dark tactical treatment was built, reviewed and reverted on the owner's instruction — the approved light system stays.
-- Global navigation: sticky compressing header, keyboard-accessible mega menus (Enter/↓/Esc, focus return), direct Events/Contact links, animated active indicator, `<dialog>` mobile menu, persistent **Access Marketplace** CTA. Four-column footer.
+- Global navigation: sticky compressing header, keyboard-accessible mega menus on wide screens (Enter/↓/Esc, focus return), direct Events/Contact links, animated active indicator, a full-screen `<dialog>` overlay menu at every width (brief §5: large uppercase rows, dividers, indented children, full-width Access the Marketplace button, staggered entrance), persistent **Access Marketplace** CTA. Four-column footer.
 - Homepage: all 10 sections; light hero with tilted media collage, mission card, converging pathway lines and a stats bar built from real metrics; CSS hero entrance, animated converging-pathways motif, a GSAP-pinned four-ring orbital journey (continuous spin; scroll-scrubbed selection, deterministic in reverse) with a stage-based fallback on mobile and under reduced motion.
 - Directory pattern (URL-synced search/facets/sort, live counts, empty states, pagination) used by Awardable Solutions, Opportunities (+ Special Topics, Shopping Notices, Archive views), AI Tools, Prompt Library (expand + copy with fallback), Resources (+ Videos, Exemplars, News) and FAQs (deep-linkable answers).
 - Opportunity status logic: open/upcoming/closed computed from dates; the monthly Marketplace collection deadline (12:00 pm ET, last day of month, DST-aware) is computed live; closed items move to the Archive automatically.
@@ -15,6 +15,9 @@ _Last updated: 2026-10-12_
 - 301/308 redirects for known legacy Wix URLs; security headers + CSP.
 - Supabase schema (consolidated): content tables with the brief's fields, five portal roles, MFA-gated access, draft → in review → scheduled → published → archived workflow enforced in triggers, pending changes for live content, revisions + restore, immutable audit log, media library, site settings, full-text search, pg_cron publishing — **validated** by applying migration + seed in PGlite and asserting 40 role/RLS/workflow behaviors.
 - Employee portal (`/employee`): invite-only sign-in, authenticator (TOTP) enrolment/verification, 30-minute inactivity timeout, login throttling, dashboard with approvals/drafts/scheduled/deadlines/uploads and global search, registry-driven list + structured editor for every content type (search, filters, bulk archive, scheduling, SEO, version notes, versions with restore, pending-change approval, draft preview), media library (upload/replace/delete with attestation), users (invite, role, disable), settings, audit log. Renders a clear "not configured" screen until the Supabase project exists.
+
+## Brief layout pass (2026-10-12)
+The light theme stays; page layouts now follow the rebuild brief section by section — homepage order (§6.1/§11), Marketplace overview (§6.2), instructional videos by six categories (§6.3), exemplars (§6.4), FAQs in eight categories with last-updated dates and related links (§6.5), awardable-company filters for aisle, TRL, business size, month and status (§6.6), searchable awardees (§6.7), opportunities with featured items, lanes and notices of intent (§6.8), Swarm Forge (§6.9), both aisles (§6.10–6.11), AI Playground disclaimer, featured tools and responsible use (§6.12), vehicle overview cards and per-vehicle sections including the brief's capability lists (§6.13–6.16), events with add-to-calendar files (§6.17), contact with six support categories (§6.18), footer microcopy (§10), portal navigation labels and dashboard widgets (§7.4, §7.9), and a media grid/table toggle (§12). Content the program office has not supplied (aisle eligibility detail, Swarm Forge problem statement and dates, holder lists, ordering guides, testimonials, the named participating-organization list) is marked as awaiting approved content rather than invented.
 
 ## Using illustrative / development data (labeled on-page as “Development data” and “Sample”)
 | Area | Why |
@@ -48,7 +51,7 @@ _Last updated: 2026-10-12_
 | `npm run lint` | 0 errors, 0 warnings |
 | `npm run typecheck` | Pass |
 | `next build` | Pass — all routes static/ISR |
-| Playwright (desktop 1440 + Pixel 7) | **86 passed**, 2 skipped (device-specific nav tests run on the other project) |
+| Playwright (desktop 1440 + Pixel 7) | **99 passed**, 1 skipped (the keyboard mega-menu test runs on desktop only) |
 | axe-core WCAG 2.0/2.1/2.2 A+AA on all 31 tested routes × 2 viewports | 0 serious/critical violations |
 | Employee portal: unconfigured screen, anonymous redirects, robots exclusion | Pass |
 | Viewport overflow (no element beyond viewport, no horizontal scroll) | Pass on all routes, both viewports |

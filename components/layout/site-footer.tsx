@@ -41,9 +41,12 @@ export function SiteFooter() {
         </nav>
       </div>
       <div className="container-page flex flex-col gap-4 border-t border-line-dark py-8 text-xs text-ink-subtle sm:flex-row sm:items-center sm:justify-between">
-        <p>© {new Date().getFullYear()} Tradewinds · Chief Digital and Artificial Intelligence Office</p>
+        <div className="space-y-1">
+          <p>An official program of the Chief Digital and Artificial Intelligence Office, U.S. Department of War.</p>
+          <p>© {new Date().getFullYear()} Tradewinds · <a href={`mailto:${EXTERNAL.successEmail}`} className="hover:text-white">{EXTERNAL.successEmail}</a></p>
+        </div>
         <ul className="flex flex-wrap gap-x-6 gap-y-2">
-          <li><Link href="/privacy" className="hover:text-white">Privacy</Link></li>
+          <li><Link href="/privacy" className="hover:text-white">Privacy Notice</Link></li>
           <li><Link href="/contact" className="hover:text-white">Contact</Link></li>
           <li><Link href="/sitemap.xml" className="hover:text-white" prefetch={false}>Sitemap</Link></li>
           <li><a href={EXTERNAL.linkedIn} target="_blank" rel="noopener noreferrer" className="hover:text-white">LinkedIn<span className="sr-only"> (opens external site)</span></a></li>

@@ -11,6 +11,7 @@ export function FeaturedOpportunities({ data, now }: { data: Loaded<Opportunity>
     .map((o) => ({ o, status: opportunityStatus(o, now), date: resolveDates(o, now) }))
     .filter((x) => x.status !== "closed")
     .sort((a, b) => {
+      if (!!a.o.featured !== !!b.o.featured) return a.o.featured ? -1 : 1;
       if (a.status !== b.status) return a.status === "open" ? -1 : 1;
       return (a.date.closesAt?.getTime() ?? Infinity) - (b.date.closesAt?.getTime() ?? Infinity);
     })
@@ -21,7 +22,7 @@ export function FeaturedOpportunities({ data, now }: { data: Loaded<Opportunity>
       <div className="container-page">
         <SectionHeader
           id="opps-title" title="Current opportunities."
-          lead="Open calls for solutions, ordered by deadline. Status is updated automatically."
+          lead="Featured calls and active notices, ordered by deadline. Status updates automatically."
           align="split"
           action={<ButtonLink href="/opportunities" variant="secondary">All opportunities</ButtonLink>}
         />

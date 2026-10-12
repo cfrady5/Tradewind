@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageHero } from "@/components/layout/page-hero";
 import { NextSteps } from "@/components/layout/next-steps";
-import { AVAILABILITY, ToolCard } from "@/components/cards/tool-card";
+import { AVAILABILITY, ToolCard, audienceLabel, dataLimit } from "@/components/cards/tool-card";
+import { Shield } from "@/components/ui/icons";
+import { formatDate } from "@/lib/data/opportunity-status";
 import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { DataNotice } from "@/components/ui/data-notice";
@@ -48,21 +50,31 @@ export default async function Page({ params }: PageProps<"/ai-playground/[slug]"
                 </ul>
               </>
             )}
-            {t.dataSensitivity && (
-              <p className="mt-10 flex gap-3 rounded-md border border-runway/50 bg-runway-tint p-4 text-sm text-navy"><span className="eyebrow mt-0.5 shrink-0 text-[#8a4100]">Data sensitivity</span>{t.dataSensitivity}</p>
-            )}
           </div>
           <aside className="lg:col-span-4">
-            <div className="rounded-lg border border-line p-6">
+            <div className="rounded-lg border border-line p-6 lg:sticky lg:top-[calc(var(--header-h)+2rem)]">
               <h2 className="eyebrow text-ink-muted">Access</h2>
               <p className="mt-3 font-semibold">{t.access}</p>
-              <p className="mt-2 text-sm text-ink-muted">{a.description}.</p>
-              <div className="mt-6">
+              <p className="mt-1 text-sm text-ink-muted">{a.description}.</p>
+              <dl className="mt-5 grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 border-t border-line pt-5 text-sm">
+                <dt className="text-ink-muted">Status</dt><dd><Badge tone={a.tone} dot>{a.label}</Badge></dd>
+                <dt className="text-ink-muted">Audience</dt><dd className="font-medium">{audienceLabel(t.audiences)}</dd>
+                <dt className="text-ink-muted">Owner</dt><dd className="font-medium">{t.owner ?? "Pending"}</dd>
+                <dt className="text-ink-muted">Updated</dt><dd className="font-medium">{t.updatedAt ? formatDate(t.updatedAt) : "—"}</dd>
+              </dl>
+              {/* Data limits sit directly above the action (brief §6.12). */}
+              <div className="mt-5 rounded-md border border-runway/50 bg-runway-tint p-4 text-sm text-navy">
+                <p className="flex items-center gap-2 font-semibold text-[#8a4100]"><Shield width={16} height={16} />Data sensitivity</p>
+                <p className="mt-1.5 font-medium">{dataLimit(t)}</p>
+                {t.dataSensitivity && <p className="mt-1.5">{t.dataSensitivity}</p>}
+              </div>
+              <div className="mt-5 flex flex-col gap-3">
                 {t.accessUrl ? (
                   <ButtonLink href={t.accessUrl} external variant="primary">Open tool</ButtonLink>
                 ) : (
-                  <p className="rounded-md bg-cloud p-3 text-sm text-ink-muted">Access link awaiting external integration.</p>
+                  <p className="rounded-md bg-cloud p-3 text-sm text-ink-muted">Access link awaiting program-office content.</p>
                 )}
+                {t.learnMoreUrl && <ButtonLink href={t.learnMoreUrl} external variant="text">User guide</ButtonLink>}
               </div>
             </div>
           </aside>
@@ -75,7 +87,7 @@ export default async function Page({ params }: PageProps<"/ai-playground/[slug]"
         )}
       </section>
       <NextSteps steps={[
-        { eyebrow: "AI Tools", title: "All tools", href: "/ai-playground" },
+        { eyebrow: "AI Playground", title: "Tool catalog", href: "/ai-playground" },
         { eyebrow: "Prompts", title: "Prompt library", href: "/ai-playground/prompt-library" },
         { eyebrow: "Support", title: "Contact the team", href: "/contact" },
       ]} />

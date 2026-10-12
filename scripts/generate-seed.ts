@@ -9,7 +9,7 @@ import { vehicles } from "../lib/data/fixtures/vehicles";
 import { faqs } from "../lib/data/fixtures/faqs";
 import { resources } from "../lib/data/fixtures/resources";
 
-const JSONB = new Set(["documents", "contacts"]);
+const JSONB = new Set(["documents", "contacts", "service_groups", "related_links", "related"]);
 const lit = (v: unknown, col = ""): string => {
   if (v === undefined || v === null) return "null";
   if (JSONB.has(col)) return `'${JSON.stringify(v).replace(/'/g, "''")}'::jsonb`;
@@ -30,14 +30,17 @@ const sql = [
   insert("opportunities", real(opportunities).map((o) => ({
     slug: o.slug, title: o.title, type: o.type, sponsor: o.sponsor, summary: o.summary, topics: o.topics, opens_at: o.opensAt, closes_at: o.closesAt,
     recurrence: o.recurrence, mission_need: o.missionNeed, eligibility: o.eligibility, requirements: o.requirements, submission_instructions: o.submissionInstructions,
-    documents: o.documents ?? [], contact_email: o.contactEmail, external_url: o.externalUrl, status: "published",
+    documents: o.documents ?? [], contact_email: o.contactEmail, external_url: o.externalUrl, issuing_office: o.issuingOffice, featured: o.featured ?? false,
+    cta_label: o.ctaLabel, cta_url: o.ctaUrl, status: "published",
   }))),
   insert("contract_vehicles", real(vehicles).map((v, i) => ({
     slug: v.slug, name: v.name, short_name: v.shortName, vehicle_type: v.vehicleType, vehicle_status: v.status, tagline: v.tagline, overview: v.overview,
     scope: v.scope, eligible_users: v.eligibleUsers, ordering_process: v.orderingProcess, availability: v.availability, documents: v.documents, holders: v.holders,
-    contacts: v.contacts, historical_notes: v.historicalNotes, pending_fields: v.pendingFields, status: "published", sort_order: i,
+    contacts: v.contacts, historical_notes: v.historicalNotes, pending_fields: v.pendingFields, who_it_serves: v.whoItServes, background: v.background,
+    problem: v.problem, how_it_helps: v.howItHelps, capability_label: v.capabilityLabel, capability_categories: v.capabilityCategories ?? [],
+    service_groups: v.serviceGroups ?? [], update_notice: v.updateNotice, status: "published", sort_order: i,
   }))),
-  insert("faqs", real(faqs).map((f, i) => ({ slug: f.slug, question: f.question, answer: f.answer, category: f.category, audiences: f.audiences, status: "published", sort_order: i }))),
+  insert("faqs", real(faqs).map((f, i) => ({ slug: f.slug, question: f.question, answer: f.answer, category: f.category, audiences: f.audiences, related_links: f.relatedLinks ?? [], status: "published", sort_order: i }))),
   insert("resources", real(resources).map((r) => ({ slug: r.slug, title: r.title, kind: r.kind, audiences: r.audiences, summary: r.summary, url: r.url, date: r.date, status: "published" }))),
   "",
 ].join("\n\n");

@@ -318,7 +318,13 @@ create table contract_vehicles (
   contacts jsonb not null default '[]',
   historical_notes text,
   update_notice text,
-  pending_fields text[]
+  pending_fields text[],
+  who_it_serves text,
+  background text,
+  problem text,
+  how_it_helps text,
+  capability_label text,
+  service_groups jsonb not null default '[]'   -- [{ "title", "body" }]
 );
 
 create table ai_tools (
@@ -398,7 +404,8 @@ create table faqs (
   slug text not null unique,
   question text not null,
   answer text not null,
-  category text not null check (category in ('Marketplace', 'Submissions', 'Government Access', 'Acquisition', 'General', 'Assessment', 'SBIR/STTR Aisle', 'Prototype Transition Aisle', 'Communications')),
+  category text not null check (category in ('General Marketplace', 'Vendor Submission', 'Government Buyer', 'Assessment and Awardable Status',
+    'SBIR/STTR Aisle', 'Prototype Transition Aisle', 'Contracting and Acquisition', 'Communications and Press')),
   audiences text[] not null default '{all}',
   related_links jsonb not null default '[]'
 );
@@ -710,7 +717,8 @@ create view public_solutions with (security_invoker = on) as
 create view public_contract_vehicles with (security_invoker = on) as
   select slug, name, short_name, vehicle_type, vehicle_status as status, tagline, overview, scope, capability_categories, eligible_users,
          ordering_process, ordering_guide_url, holder_list_url, availability, period_of_performance, documents, holders, contacts,
-         historical_notes, update_notice, pending_fields, sample, sort_order, updated_at
+         historical_notes, update_notice, pending_fields, who_it_serves, background, problem, how_it_helps, capability_label, service_groups,
+         sample, sort_order, updated_at
   from contract_vehicles;
 create view public_ai_tools with (security_invoker = on) as
   select slug, name, provider as owner, category, summary, description, use_cases, availability, authorization_level, data_sensitivity,

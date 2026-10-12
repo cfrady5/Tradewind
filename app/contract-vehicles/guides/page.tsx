@@ -22,7 +22,7 @@ export default async function Page() {
       <NextSteps steps={[
         { eyebrow: "Vehicles", title: "Compare contract vehicles", href: "/contract-vehicles" },
         { eyebrow: "Library", title: "All resources", href: "/resources" },
-        { eyebrow: "Questions", title: "Acquisition FAQs", href: "/marketplace/faqs?category=Acquisition" },
+        { eyebrow: "Questions", title: "Acquisition FAQs", href: "/marketplace/faqs?category=Contracting+and+Acquisition" },
       ]} />
     </>
   );

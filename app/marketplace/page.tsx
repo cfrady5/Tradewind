@@ -1,110 +1,177 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/layout/page-hero";
-import { NextSteps } from "@/components/layout/next-steps";
-import { Section, Split, Callout } from "@/components/content/blocks";
+import { Section, Split, Callout, PendingContent } from "@/components/content/blocks";
 import { ProcessSteps } from "@/components/content/process-steps";
-import { FaqList } from "@/components/content/faq-list";
+import { FinalCta } from "@/components/home/final-cta";
 import { ButtonLink } from "@/components/ui/button";
+import { Counter } from "@/components/ui/counter";
 import { SectionHeader } from "@/components/ui/section-header";
-import { ArrowRight } from "@/components/ui/icons";
+import { ArrowRight, Building, Document, Layers, Play, Search, Spark, Users } from "@/components/ui/icons";
 import { Reveal } from "@/components/ui/reveal";
-import { getFaqs, getMetrics } from "@/lib/data";
-import { formatMetric } from "@/lib/format";
+import { getMetrics } from "@/lib/data";
+import { formatDate } from "@/lib/data/opportunity-status";
+import { EXTERNAL } from "@/lib/site-config";
 
 export const revalidate = 300;
 export const metadata: Metadata = {
   title: "Solutions Marketplace",
-  description: "The Tradewinds Solutions Marketplace: a repository of competitively assessed, readily awardable AI, digital and data-analytics solutions for government buyers.",
+  description: "A repository of evaluated, post-competition pitch videos for AI, ML, digital and data-analytics solutions — discoverable by government users ready to move toward award.",
   alternates: { canonical: "/marketplace" },
 };
 
+const PATHS = [
+  {
+    id: "providers", label: "I am a solution provider", title: "Get assessed. Become discoverable.", dark: true,
+    steps: ["Create a solution-provider account.", "Submit one solution per pitch, five minutes or less.", "Follow the stated requirements and rubric.", "Receive an awardable outcome — or feedback to improve and resubmit.", "Promote awardable status and engage when government users reach out."],
+    primary: { label: "Submit a solution", href: EXTERNAL.submissionPortal, external: true }, secondary: { label: "Provider guide", href: "/marketplace/providers" },
+  },
+  {
+    id: "government", label: "I am a government user", title: "Find evaluated capability. Move to award.", dark: false,
+    steps: ["Sign in or register with an eligible .gov or .mil email.", "Search awardable solutions by need, title or company.", "Review pitch videos and supporting information.", "Contact the provider or request acquisition support.", "Move toward award with your contracting office."],
+    primary: { label: "Access the Marketplace", href: EXTERNAL.marketplaceSignIn, external: true }, secondary: { label: "Buyer guide", href: "/marketplace/government" },
+  },
+];
+
+const HUB = [
+  { icon: Play, title: "Instructional videos", body: "How the Marketplace works, from first login to awardable.", href: "/marketplace/videos" },
+  { icon: Spark, title: "Exemplar submissions", body: "What strong pitches look like — and why they work.", href: "/marketplace/exemplars" },
+  { icon: Document, title: "Submission guide", body: "Requirements, timing and an interactive checklist.", href: "/marketplace/submission-guide" },
+  { icon: Search, title: "Awardable companies", body: "Search public listings of awardable solutions.", href: "/marketplace/awardable-companies" },
+  { icon: Building, title: "Awardees", body: "Public records of contracts awarded through Tradewinds.", href: "/marketplace/awardees" },
+  { icon: Users, title: "FAQs", body: "Answers for vendors, buyers and acquisition teams.", href: "/marketplace/faqs" },
+];
+
+const AISLES = [
+  { title: "General aisle", body: "The Marketplace's ongoing solicitation for AI, ML, digital and data-analytics solutions, assessed every month.", href: "/opportunities/solutions-marketplace-collection", cta: "Current collection period" },
+  { title: "SBIR/STTR Aisle", body: "Pre-competed SBIR/STTR-developed technologies that can move toward Phase III faster.", href: "/marketplace/sbir-sttr", cta: "Explore the aisle" },
+  { title: "Prototype Transition Aisle", body: "Completed, competitively awarded prototypes that may qualify for follow-on production.", href: "/marketplace/prototype-transition", cta: "Explore the aisle" },
+];
+
 export default async function MarketplacePage() {
-  const [faqs, metrics] = await Promise.all([getFaqs(), getMetrics()]);
+  const metrics = await getMetrics();
   const m = Object.fromEntries(metrics.items.map((x) => [x.key, x]));
+  const shown = [m.awardable, m.submitted, m.activities, m["award-value"]].filter(Boolean);
   return (
     <>
       <PageHero
         title={<>Competitively assessed. <span className="text-gradient-sky">Readily awardable</span><span className="text-runway">.</span></>}
-        lead="A digital repository of post-competition, readily awardable pitch videos — giving government buyers a single place to find AI, digital and data-analytics solutions."
+        lead="A repository of evaluated, post-competition pitch videos for AI, ML, digital and data-analytics solutions — discoverable by government users ready to move toward award."
         crumbs={[{ label: "Marketplace", href: "/marketplace" }]}
-        aside={m.awardable && (
-          <div className="overflow-hidden rounded-lg border border-line-dark bg-line-dark">
-          <dl className="grid grid-cols-2 gap-px">
-            {[m.awardable, m.submitted, m.activities].filter(Boolean).map((x) => (
-              <div key={x.key} className="bg-navy/70 p-5 backdrop-blur first:col-span-2">
-                <dt className="text-sm text-white/70">{x.label}</dt>
-                <dd className="mt-1 text-3xl font-extrabold tracking-tight">{formatMetric(x.value, x.format)}</dd>
-              </div>
-            ))}
-          </dl>
-            <p className="mt-px bg-navy/70 px-5 py-3 text-xs text-ink-subtle">{m.awardable.reportingPeriod}{!m.awardable.verified && " · pending verification"}</p>
-          </div>
-        )}
       >
-        <ButtonLink href="/marketplace/government" variant="accent">I&rsquo;m a government buyer</ButtonLink>
-        <ButtonLink href="/marketplace/providers" variant="secondary-dark">I&rsquo;m a solution provider</ButtonLink>
+        <ButtonLink href="#government" variant="accent">I&rsquo;m a government user</ButtonLink>
+        <ButtonLink href="#providers" variant="secondary-dark">I&rsquo;m a solution provider</ButtonLink>
       </PageHero>
 
+      {/* 1 · Two-path entry */}
       <Section>
-        <Split title="A marketplace built on competition">
-          <p>The Tradewinds Solutions Marketplace is an ongoing solicitation. Solution providers submit short video pitches; expert panels assess them; solutions that meet the bar are designated <strong>awardable</strong> and placed in the Marketplace.</p>
-          <p>Because every awardable solution has already been through a competitive assessment, government buyers can discover capabilities and move toward award without starting a new competition from scratch.</p>
-        </Split>
-      </Section>
-
-      <Section tone="cloud">
-        <SectionHeader title="From pitch to awardable" lead="Collection runs monthly. Every submission gets an outcome — and feedback if it isn't awardable yet." />
-        <div className="mt-14">
-          <ProcessSteps steps={[
-            { title: "Prepare", body: "Develop a video pitch no longer than five minutes that explains the mission problem, your solution and the evidence it works." },
-            { title: "Submit", body: "Upload through the solution-provider portal by 12:00 pm ET on the last day of the month." },
-            { title: "Assess", body: "Peer and subject-matter-expert panels assess each pitch in that month's cycle." },
-            { title: "Awardable", body: "Awardable solutions enter the Marketplace. Others receive feedback and may resubmit." },
-          ]} />
-        </div>
-      </Section>
-
-      <Section>
-        <div className="grid gap-5 lg:grid-cols-2">
-          {[
-            { id: "government", href: "/marketplace/government", eyebrow: "Government buyers", title: "Discover and acquire", body: "Government users with a .gov or .mil email sign in to search awardable pitch videos by title or company and move toward award with their contracting office.", dark: true },
-            { id: "providers", href: "/marketplace/providers", eyebrow: "Solution providers", title: "Get assessed and discovered", body: "U.S. businesses, non-traditional contractors and academia — and certain foreign entities — submit pitches for assessment.", dark: false },
-          ].map((c, i) => (
-            <Reveal key={c.href} id={c.id} delay={i * 0.06} className="scroll-mt-28">
-              <Link href={c.href} className={c.dark ? "on-dark group flex h-full flex-col rounded-xl bg-navy p-10 text-white transition-shadow hover:shadow-glow" : "group flex h-full flex-col rounded-xl border border-line bg-cloud/60 p-10 transition-[border-color,box-shadow] hover:border-signal/50 hover:shadow-lift"}>
-                <span className={c.dark ? "eyebrow text-runway" : "eyebrow text-cobalt"}>{c.eyebrow}</span>
-                <h2 className="mt-4 text-h3 font-bold">{c.title}</h2>
-                <p className={c.dark ? "mt-3 text-white/75" : "mt-3 text-ink-muted"}>{c.body}</p>
-                <span className={c.dark ? "mt-8 flex items-center gap-2 font-semibold text-sky" : "mt-8 flex items-center gap-2 font-semibold text-cobalt"}>
-                  Continue <ArrowRight className="transition-transform group-hover:translate-x-1.5" />
-                </span>
-              </Link>
+        <SectionHeader title="Two ways in." lead="Vendors and government users take different paths through the same evaluated marketplace." align="split" />
+        <div className="mt-14 grid gap-5 lg:grid-cols-2">
+          {PATHS.map((p, i) => (
+            <Reveal key={p.id} id={p.id} delay={i * 0.06} className="scroll-mt-28">
+              <div className={p.dark ? "on-dark relative flex h-full flex-col overflow-hidden rounded-xl bg-navy p-8 text-white md:p-10" : "relative flex h-full flex-col rounded-xl border border-line bg-cloud/60 p-8 md:p-10"}>
+                {p.dark && <span className="absolute inset-0 bg-grid-fine opacity-60" aria-hidden />}
+                <span className={p.dark ? "relative eyebrow text-runway" : "relative eyebrow text-cobalt"}>{p.label}</span>
+                <h2 className="relative mt-4 text-h3 font-bold">{p.title}</h2>
+                <ol className="relative mt-8 space-y-4">
+                  {p.steps.map((s, k) => (
+                    <li key={s} className="flex gap-4">
+                      <span className={p.dark ? "grid size-8 shrink-0 place-items-center rounded-sm bg-cobalt font-mono text-xs font-bold text-white" : "grid size-8 shrink-0 place-items-center rounded-sm bg-navy font-mono text-xs font-bold text-white"}>{String(k + 1).padStart(2, "0")}</span>
+                      <span className={p.dark ? "pt-1 text-white/85" : "pt-1 text-navy"}>{s}</span>
+                    </li>
+                  ))}
+                </ol>
+                <div className="relative mt-auto flex flex-wrap gap-3 pt-10">
+                  <ButtonLink href={p.primary.href} external={p.primary.external} variant={p.dark ? "accent" : "primary"}>{p.primary.label}</ButtonLink>
+                  <ButtonLink href={p.secondary.href} variant={p.dark ? "secondary-dark" : "secondary"} arrow={false}>{p.secondary.label}</ButtonLink>
+                </div>
+              </div>
             </Reveal>
           ))}
         </div>
       </Section>
 
+      {/* 2 · How it works */}
       <Section tone="cloud">
-        <Split title="What awardable status means">
-          <p>Awardable means a solution&rsquo;s pitch was assessed by an expert panel and met the Marketplace&rsquo;s criteria. It makes the solution discoverable to government buyers and eligible to pursue an award.</p>
-          <p><strong>It is not a contract award</strong>, an endorsement, or a guarantee of one. Buyers still determine mission fit, negotiate terms and award through their contracting office.</p>
-          <div className="mt-8"><Callout title="Acquisition pathways">Buying activities select an appropriate award mechanism with their contracting office. See <Link href="/contract-vehicles">Acquisition</Link> for pathways and contract vehicles.</Callout></div>
-        </Split>
+        <SectionHeader title="How it works." lead="Collection runs every month. Every submission gets an outcome — and feedback if it is not awardable yet." />
+        <div className="mt-14">
+          <ProcessSteps steps={[
+            { title: "Submit", body: "A vendor submits a concise pitch video of five minutes or less." },
+            { title: "Review", body: "The submission is checked for compliance and assessed by peer and subject-matter-expert panels." },
+            { title: "Awardable", body: "Solutions that meet the criteria are added to the Marketplace." },
+            { title: "Engage", body: "Government users search, evaluate and engage providers." },
+            { title: "Award", body: "Contracting proceeds under the appropriate authority or vehicle." },
+          ]} />
+        </div>
+        <div className="mt-14 max-w-3xl">
+          <Callout title="What awardable means">
+            An expert panel assessed the pitch and found it met the Marketplace&rsquo;s criteria. It is <strong>not a contract award</strong>, an endorsement or a guarantee of one — buyers still determine fit and award through their contracting office. See <Link href="/contract-vehicles">contract vehicles</Link> for pathways.
+          </Callout>
+        </div>
       </Section>
 
+      {/* 3 · Metrics */}
+      {shown.length > 0 && (
+        <Section>
+          <SectionHeader title="By the numbers." lead={`Cumulative Marketplace results${m.awardable ? `, as of ${formatDate(m.awardable.asOf)}` : ""}.`} align="split" />
+          <dl className="mt-12 grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+            {shown.map((x, i) => (
+              <Reveal key={x.key} delay={i * 0.06} className="flex flex-col bg-white p-8">
+                <dt className="order-2 mt-3 font-semibold">{x.label}</dt>
+                <dd className="order-1 text-[clamp(2.25rem,1.7rem+2vw,3.5rem)] font-extrabold leading-none tracking-[-0.04em] text-navy"><Counter value={x.value} format={x.format} /></dd>
+                <dd className="order-3 mt-auto pt-5 text-xs text-ink-muted">{x.reportingPeriod}{!x.verified && <span className="block text-[#8a4100]">Pending verification</span>}</dd>
+              </Reveal>
+            ))}
+          </dl>
+          <p className="mt-4 text-xs text-ink-muted">Sources: {[...new Set(shown.map((x) => x.source))].join("; ")}. Figures marked pending are replaced with program-office-verified values once confirmed.</p>
+        </Section>
+      )}
+
+      {/* 4 · Resource hub */}
+      <Section tone="cloud">
+        <SectionHeader title="Resource hub." lead="Everything vendors and buyers need to use the Marketplace well." align="split" />
+        <ul className="mt-12 grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+          {HUB.map((h, i) => (
+            <Reveal as="li" key={h.href} delay={i * 0.04} className="bg-white">
+              <Link href={h.href} className="group flex h-full flex-col p-7 transition-colors duration-(--duration-ui) hover:bg-sky-tint/40">
+                <h.icon className="text-cobalt" width={26} height={26} />
+                <span className="mt-5 text-lg font-bold">{h.title}</span>
+                <span className="mt-1.5 text-[0.9375rem] text-ink-muted">{h.body}</span>
+                <ArrowRight className="mt-auto pt-5 text-cobalt transition-transform duration-(--duration-ui) group-hover:translate-x-1.5" width={40} height={40} />
+              </Link>
+            </Reveal>
+          ))}
+        </ul>
+      </Section>
+
+      {/* 5 · Aisles */}
       <Section>
-        <Split title="Marketplace FAQs">
-          <FaqList faqs={faqs.items.filter((f) => f.category === "Marketplace" || f.category === "Government Access")} />
-          <div className="mt-8"><ButtonLink href="/marketplace/faqs" variant="text">All FAQs</ButtonLink></div>
+        <SectionHeader title="Marketplace aisles." lead="Three entry points for different stages of technology maturity." align="split" />
+        <ul className="mt-12 grid gap-5 md:grid-cols-3">
+          {AISLES.map((a, i) => (
+            <Reveal as="li" key={a.href} delay={i * 0.06}>
+              <Link href={a.href} className="group flex h-full flex-col rounded-xl border border-line p-8 transition-[border-color,box-shadow,transform] duration-(--duration-ui) hover:-translate-y-1 hover:border-signal/50 hover:shadow-lift">
+                <Layers className="text-cobalt" width={26} height={26} />
+                <span className="mt-6 text-xl font-bold">{a.title}</span>
+                <span className="mt-2 text-ink-muted">{a.body}</span>
+                <span className="mt-auto flex items-center gap-2 pt-8 font-semibold text-cobalt">{a.cta}<ArrowRight className="transition-transform group-hover:translate-x-1.5" /></span>
+              </Link>
+            </Reveal>
+          ))}
+        </ul>
+      </Section>
+
+      {/* 6 · Year in review */}
+      <Section tone="cloud">
+        <Split title="Year in review.">
+          <p>Each year the program reports what moved through the Marketplace: submissions, awardable solutions, participating organizations and awards.</p>
+          <div className="mt-8"><PendingContent what="The Marketplace year in review" /></div>
+          <div className="mt-6"><ButtonLink href="/about/impact" variant="text">Current impact dashboard</ButtonLink></div>
         </Split>
       </Section>
 
-      <NextSteps steps={[
-        { eyebrow: "Browse", title: "Awardable solutions directory", href: "/marketplace/awardable-companies" },
-        { eyebrow: "Submit", title: "Submission guide", href: "/marketplace/submission-guide" },
-        { eyebrow: "Now open", title: "Current opportunities", href: "/opportunities" },
-      ]} />
+      {/* 7 · CTA */}
+      <FinalCta />
     </>
   );
 }

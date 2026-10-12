@@ -34,7 +34,8 @@ export async function getRevisions(client: SupabaseClient, ct: ContentType, id: 
 export async function dashboardData(client: SupabaseClient) {
   const now = new Date();
   const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 1).toISOString();
-  const [review, pending, drafts, scheduled, published, opps, events, uploads, users] = await Promise.all([
+  const staleBefore = new Date(now.getTime() - 90 * 86_400_000).toISOString();
+  const [review, pending, drafts, scheduled, published, opps, events, uploads, users, stale, archived, topEdited] = await Promise.all([
     client.from("portal_content").select("*").eq("status", "in_review").order("updated_at", { ascending: false }).limit(10),
     client.from("portal_content").select("*").eq("pending_status", "in_review").order("updated_at", { ascending: false }).limit(10),
     client.from("portal_content").select("*").eq("status", "draft").order("updated_at", { ascending: false }).limit(8),
@@ -44,12 +45,16 @@ export async function dashboardData(client: SupabaseClient) {
     client.from("events").select("id, title, starts_at, status").gte("starts_at", now.toISOString()).lt("starts_at", monthEnd).order("starts_at", { ascending: true }).limit(6),
     client.from("media_assets").select("id, title, file_name, mime_type, created_at, bucket, path").is("deleted_at", null).order("created_at", { ascending: false }).limit(6),
     client.from("portal_users").select("user_id, email, display_name").limit(200),
+    client.from("portal_content").select("*").eq("status", "published").lt("updated_at", staleBefore).order("updated_at", { ascending: true }).limit(8),
+    client.from("portal_content").select("*").eq("status", "archived").order("updated_at", { ascending: false }).limit(6),
+    client.from("portal_content").select("*").neq("status", "archived").order("version", { ascending: false }).limit(6),
   ]);
   const names = Object.fromEntries((users.data ?? []).map((u) => [u.user_id, u.display_name || u.email]));
   return {
     review: (review.data ?? []) as Row[], pending: (pending.data ?? []) as Row[], drafts: (drafts.data ?? []) as Row[],
     scheduled: (scheduled.data ?? []) as Row[], published: (published.data ?? []) as Row[],
     opps: (opps.data ?? []) as Row[], events: (events.data ?? []) as Row[], uploads: (uploads.data ?? []) as Row[], names,
+    stale: (stale.data ?? []) as Row[], archived: (archived.data ?? []) as Row[], topEdited: (topEdited.data ?? []) as Row[],
   };
 }
 

@@ -67,7 +67,7 @@ export default async function Page() {
       <Section>
         <div className="grid gap-10 lg:grid-cols-12">
           <h2 className="text-h3 font-bold lg:col-span-4">Submission FAQs</h2>
-          <div className="lg:col-span-8"><FaqList faqs={faqs.items.filter((f) => f.category === "Submissions")} /></div>
+          <div className="lg:col-span-8"><FaqList faqs={faqs.items.filter((f) => f.category === "Vendor Submission")} /></div>
         </div>
       </Section>
       <NextSteps steps={[

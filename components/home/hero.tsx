@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 import { ButtonLink } from "@/components/ui/button";
 import { Clock } from "@/components/ui/icons";
 import { formatDate, monthlyDeadline } from "@/lib/data/opportunity-status";
-import { formatMetric } from "@/lib/format";
+import { Counter } from "@/components/ui/counter";
 import type { Metric } from "@/lib/data/types";
 import { EXTERNAL } from "@/lib/site-config";
 import { HeroTile } from "./hero-tiles";
@@ -30,14 +30,14 @@ export function Hero({ now, metrics }: { now: Date; metrics: Metric[] }) {
 
   const stat = (key: string, icon: StatKind, label: string) => {
     const m = by[key];
-    return m ? { icon, value: formatMetric(m.value, m.format), label } : null;
+    return m ? { icon, value: m.value, format: m.format, label } : null;
   };
   const stats = [
     stat("activities", "people", "Participating organizations"),
     stat("awardable", "cube", "Awardable solutions"),
     stat("submitted", "upload", "Submitted solutions"),
     stat("award-value", "chart", "Award value facilitated"),
-  ].filter(Boolean) as { icon: StatKind; value: string; label: string }[];
+  ].filter(Boolean) as { icon: StatKind; value: number; format: Metric["format"]; label: string }[];
 
   return (
     <section aria-labelledby="hero-title" className="relative isolate overflow-hidden bg-[linear-gradient(180deg,#f7fbff_0%,#eef5fd_55%,#e8f1fb_100%)]">
@@ -95,7 +95,7 @@ export function Hero({ now, metrics }: { now: Date; metrics: Metric[] }) {
               <li key={s.label} className="flex items-center gap-4 px-6 py-5">
                 <StatIcon kind={s.icon} />
                 <p className="flex flex-col">
-                  <span className="text-[1.5rem] font-extrabold leading-none tracking-[-0.03em] text-navy tabular-nums">{s.value}</span>
+                  <span className="text-[1.5rem] font-extrabold leading-none tracking-[-0.03em] text-navy tabular-nums"><Counter value={s.value} format={s.format} /></span>
                   <span className="mt-1 text-sm text-ink-muted">{s.label}</span>
                 </p>
               </li>
