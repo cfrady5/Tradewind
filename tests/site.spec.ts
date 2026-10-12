@@ -137,3 +137,25 @@ test("FAQ deep link opens the answer", async ({ page }) => {
   await page.goto("/marketplace/faqs#video-length");
   await expect(page.locator("details#video-length")).toHaveAttribute("open", "");
 });
+
+test.describe("employee portal (no Supabase configured in CI)", () => {
+  test("sign-in route explains the missing configuration and is not indexed", async ({ page }) => {
+    await page.goto("/employee");
+    await expect(page.getByRole("heading", { name: "Portal not configured" })).toBeVisible();
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+    await expect(page.getByRole("navigation", { name: "Primary" })).toHaveCount(0); // public chrome hidden
+  });
+  test("every portal area redirects anonymous visitors to sign-in", async ({ request }) => {
+    for (const path of ["/employee/dashboard", "/employee/content/faqs", "/employee/media", "/employee/users", "/employee/settings", "/employee/audit", "/employee/mfa"]) {
+      const res = await request.get(path, { maxRedirects: 0 });
+      expect(res.status(), path).toBeGreaterThanOrEqual(300);
+      expect(res.status(), path).toBeLessThan(400);
+      expect(res.headers()["location"], path).toMatch(/^\/employee(\?|$)/);
+    }
+  });
+  test("robots excludes the portal", async ({ request }) => {
+    const body = await (await request.get("/robots.txt")).text();
+    expect(body).toMatch(/Disallow: \/employee/);
+  });
+});
+

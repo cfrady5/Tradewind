@@ -17,36 +17,47 @@ Without Supabase env vars the site runs on clearly labeled development fixtures.
 | `npm run seed:generate` | Regenerate `supabase/seed.sql` from verified (non-sample) fixtures |
 | `python3 scripts/export-brand-assets.py <src> public/brand app` | Re-export logos/favicons from the approved brand files |
 
-## Supabase setup (all site data)
-1. Create a dedicated Supabase project for the Tradewinds website (US region; review against hosting/compliance requirements first).
-2. Apply the schema: `supabase db push` (or run `supabase/migrations/20261011000000_init.sql` in the SQL editor).
+## Supabase setup (all site data + employee portal)
+1. Create a dedicated Supabase project (US region; review against hosting/compliance requirements first). **Blocked today:** the connected Supabase account is at its free-plan limit of two active projects, so `tradewinds` could not be created. Pause/delete another project or upgrade the plan, then run `create project`.
+2. Apply the schema: `supabase db push` (or run `supabase/migrations/20261011000000_init.sql` in the SQL editor). It is one consolidated migration — nothing earlier was ever applied anywhere.
 3. Load verified starter content: run `supabase/seed.sql`.
-4. Set env vars on the host: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`. **Never** expose the service-role key to the app.
-5. Create editor accounts in Supabase Auth, then grant roles:
+4. Enable **pg_cron** (Database → Extensions) so scheduled content publishes itself; without it, the portal still promotes due rows whenever an admin loads it.
+5. Set env vars on the host: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and — server only — `SUPABASE_SERVICE_ROLE_KEY` (used for invitations and logging failed sign-ins; never shipped to the browser).
+6. Auth settings: enable Email provider, disable public sign-ups (portal accounts are invite-only), set Site URL to the production origin and add `https://<origin>/employee/auth/callback` to the redirect allow-list, set JWT expiry ≤ 1 hour.
+7. Bootstrap the first super admin: Authentication → Users → *Invite user* (their work email), then in the SQL editor:
    ```sql
-   insert into editors (user_id, role) values ('<auth user uuid>', 'publisher');
+   insert into portal_users (user_id, email, display_name, role, status)
+   values ('<auth user uuid>', '<email>', '<name>', 'super_admin', 'invited');
    ```
+   They open the invitation, set a password, enrol an authenticator app, and the account activates on the first verified sign-in. Every further account is invited from **Employee Portal → Users**.
 
 ### Security model (verified in PGlite during the build)
-- Anonymous visitors can read **only** rows with `status = 'published'` and `publish_at` in the past — through `public_*` views that run with the caller's privileges (RLS enforced).
-- `solutions` and `awards` additionally require `is_public = true`; restricted Marketplace data is never readable by the public site.
-- Anonymous writes are blocked. Editors can create drafts; only publishers/admins can publish or archive. Hard deletes are blocked for non-admins (archive instead).
-- Every update writes a snapshot to `content_revisions` (who, when, previous version).
+- Anonymous visitors can read **only** live rows (`published`, or `scheduled` with `publish_at` reached, and before `unpublish_at`) — through `public_*` views that run with the caller's privileges (RLS enforced).
+- `solutions` and `awards` additionally require `visibility = 'public'`; government-only columns are never selected by the public views.
+- Portal access = active invited account **and** a verified second factor (JWT `aal2`). Without MFA a signed-in user cannot read drafts, let alone write.
+- Roles: viewer (read) · contributor (drafts) · editor (+ submit for review) · admin (+ publish, schedule, archive, approve, users, file deletes) · super admin (+ admin accounts, settings). Enforced by RLS and by the `content_before_write` trigger, which also turns non-admin edits to live content into pending changes.
+- Hard deletes are admin-only (archive instead). Every update writes `content_revisions`; `restore_revision()` rolls back. `audit_log` is append-only via security-definer functions.
+- Files: `public-media` bucket is world-readable; `private-media` is readable by portal users only. Uploads are allow-listed (JPG, PNG, WebP, PDF, DOCX, XLSX, CSV, MP4; 50 MB) and carry a data-handling attestation.
 
-## Editing content (non-developers)
-Phase 1 — Supabase Studio table editor:
+## Editing content (non-developers) — Employee Portal
+`/employee` → sign in → authenticator code → dashboard. Quick actions cover the common jobs; each content type has a list (search, status/type filters, bulk archive) and a structured editor (fields, government-only fields, scheduling/SEO, version note, status actions, versions with restore, draft preview).
+
 | Task | How |
 |---|---|
-| Add an opportunity | `opportunities` → Insert row → status `draft` → publisher sets `published` |
-| Schedule publication | Set `status = published` and a future `publish_at` |
-| Close an opportunity | Nothing to do — status is computed from `closes_at`; it moves to the Archive automatically |
-| Retire content | Set `status = archived` (never delete) |
-| Update a metric | Edit `metrics.value`, `as_of`, `reporting_period`, `source`; set `verified = true` once confirmed |
-| Upload a PDF | Storage → `documents` bucket → copy public URL into the row's `documents`/`url` field |
-| Roll back | Copy the prior `snapshot` from `content_revisions` |
+| Add an opportunity / event / FAQ / tool | Dashboard quick action or *New …* in the list → fill the fields → **Create draft** |
+| Get it published | Editor: **Submit for review** → Admin: **Publish now** (or **Schedule** with a date/time) |
+| Change something that is already live | Save as usual; non-admins' edits become *pending changes* for an admin to **Approve** or **Reject** |
+| Close an opportunity | Nothing to do — open/closed is computed from the due date |
+| Retire content | **Archive** (never delete) |
+| Update a homepage metric | Metrics → edit value, as-of date, source; tick *Verified* once the program office confirms |
+| Upload a PDF or image | Media Library → upload (title, alt text, visibility) → paste the public URL into the record |
+| Replace a file | Media Library → *Replace* on the row (history is kept) |
+| Roll back | Editor → Versions → **Restore** |
+| Preview a draft | Editor → **Preview draft** (renders with the public page header; never visible to the public) |
+| Invite a colleague | Users → *Invite an employee* (admins; super admins for admin roles) |
+| See who did what | Audit Logs (admins) |
 
-Changes appear within 5 minutes (ISR `revalidate = 300`).
-Phase 2 (recommended) — a purpose-built `/studio` admin on the same Supabase Auth + RLS, with forms, previews and an approval queue.
+Changes appear within 5 minutes (ISR `revalidate = 300`); publishing from the portal also purges the public cache immediately.
 
 ## Deployment (pending approval)
 Vercel works out of the box (`next build`). Before production:

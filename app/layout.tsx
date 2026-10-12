@@ -5,6 +5,7 @@ import "@fontsource-variable/montserrat/wght-italic.css";
 import "./globals.css";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
+import { SiteChrome } from "@/components/layout/site-chrome";
 import { EXTERNAL, SITE } from "@/lib/site-config";
 
 export const metadata: Metadata = {
@@ -35,13 +36,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className="min-h-dvh">
-        <SiteHeader />
+        <SiteChrome><SiteHeader /></SiteChrome>
         <ViewTransition>
           <main id="main" tabIndex={-1} className="outline-none">
             {children}
           </main>
         </ViewTransition>
-        <SiteFooter />
+        <SiteChrome><SiteFooter /></SiteChrome>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }} />
       </body>
     </html>

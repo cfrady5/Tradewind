@@ -31,7 +31,7 @@ create type business_size as enum ('Small', 'Large', 'Non-traditional', 'Academi
 create type audit_action as enum (
   'insert', 'update', 'delete', 'publish', 'unpublish', 'schedule', 'archive', 'restore', 'submit_review', 'approve', 'reject',
   'upload', 'replace', 'file_delete',
-  'invite', 'role_change', 'user_disable', 'user_enable', 'user_delete',
+  'invite', 'role_change', 'user_disable', 'user_enable', 'user_activate', 'user_delete',
   'sign_in', 'sign_in_failed', 'sign_out', 'mfa_enrolled', 'mfa_verified', 'mfa_failed', 'password_reset'
 );
 
@@ -125,6 +125,22 @@ begin
   values (auth.uid(), actor_email(), p_action, p_table, p_row_id, p_summary, p_meta);
 end $$;
 
+-- Called by the portal after a verified sign-in: records the sign-in and activates invited accounts
+-- once their second factor is verified.
+create or replace function public.portal_touch_sign_in() returns portal_users
+language plpgsql security definer set search_path = public as $$
+declare u portal_users;
+begin
+  if auth.uid() is null then raise exception 'not signed in'; end if;
+  update portal_users
+     set last_sign_in_at = now(),
+         status = case when status = 'invited' and mfa_verified() then 'active'::portal_user_status else status end,
+         activated_at = case when status = 'invited' and mfa_verified() then now() else activated_at end
+   where user_id = auth.uid() and status <> 'disabled'
+   returning * into u;
+  return u;
+end $$;
+
 -- Row-level audit trigger for content, users and media.
 create or replace function public.audit_row() returns trigger
 language plpgsql security definer set search_path = public as $$
@@ -134,7 +150,7 @@ declare
   b jsonb; a jsonb;
 begin
   if tg_op = 'INSERT' then
-    act := 'insert'; a := to_jsonb(new);
+    act := case when tg_table_name = 'media_assets' then 'upload' when tg_table_name = 'portal_users' then 'invite' else 'insert' end; a := to_jsonb(new);
   elsif tg_op = 'DELETE' then
     act := case when tg_table_name = 'media_assets' then 'file_delete' when tg_table_name = 'portal_users' then 'user_delete' else 'delete' end; b := to_jsonb(old);
   else
@@ -143,6 +159,7 @@ begin
     if tg_table_name = 'portal_users' then
       if (b ->> 'role') is distinct from (a ->> 'role') then act := 'role_change';
       elsif (a ->> 'status') = 'disabled' and (b ->> 'status') <> 'disabled' then act := 'user_disable';
+      elsif (a ->> 'status') = 'active' and (b ->> 'status') = 'invited' then act := 'user_activate';
       elsif (a ->> 'status') = 'active' and (b ->> 'status') <> 'active' then act := 'user_enable';
       end if;
     elsif tg_table_name = 'media_assets' then
@@ -677,8 +694,8 @@ grant select on pages, opportunities, solutions, awards, contract_vehicles, ai_t
 grant insert, update, delete on pages, opportunities, solutions, awards, contract_vehicles, ai_tools, prompts, resources, events, faqs,
   metrics, homepage_features, navigation_items, media_assets, portal_users, site_settings to authenticated;
 revoke insert, update, delete on audit_log, content_revisions from authenticated, anon;
-grant execute on function log_portal_event, restore_revision, publish_due to authenticated;
-revoke execute on function log_portal_event, restore_revision, publish_due from anon;
+grant execute on function log_portal_event, restore_revision, publish_due, portal_touch_sign_in to authenticated;
+revoke execute on function log_portal_event, restore_revision, publish_due, portal_touch_sign_in from anon;
 
 -- ----------------------------------------------------------------- public read views
 -- security_invoker → the RLS above decides which rows the caller sees. Column names map 1:1 to lib/data/types.ts.
