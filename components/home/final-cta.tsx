@@ -19,7 +19,7 @@ export function FinalCta() {
             { href: "/marketplace/providers", eyebrow: "Industry", title: "Submit your solution to the Marketplace", cta: "Start as a provider" },
           ].map((c, i) => (
             <Reveal key={c.href} delay={0.08 + i * 0.06}>
-              <Link href={c.href} className="group flex h-full flex-col rounded-xl border border-white/15 bg-white/[0.04] p-7 backdrop-blur-sm transition-[background-color,border-color] duration-(--duration-ui) hover:border-runway/70 hover:bg-white/[0.08]">
+              <Link href={c.href} className="group flex h-full flex-col rounded-xl border border-white/15 bg-navy/30 p-7 transition-[background-color,border-color] duration-(--duration-ui) hover:border-runway/70 hover:bg-navy/50">
                 <span className="eyebrow text-runway">{c.eyebrow}</span>
                 <span className="mt-4 text-xl font-semibold">{c.title}</span>
                 <span className="mt-8 flex items-center gap-2 font-semibold text-sky group-hover:text-white">
