@@ -11,7 +11,7 @@ const i = (n: number) => ({ "--i": n }) as CSSProperties;
 function StatIcon({ kind }: { kind: "cube" | "people" | "bolt" | "chart" }) {
   const p = { width: 26, height: 26, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.6, strokeLinecap: "round" as const, strokeLinejoin: "round" as const, "aria-hidden": true };
   return (
-    <span className="grid size-14 shrink-0 place-items-center rounded-sm bg-sky-tint text-cobalt">
+    <span className="grid size-11 shrink-0 place-items-center rounded-sm bg-sky-tint text-cobalt">
       {kind === "cube" && <svg {...p}><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9z" /><path d="m4 7.5 8 4.5 8-4.5M12 12v9" /></svg>}
       {kind === "people" && <svg {...p}><circle cx="9" cy="8" r="3" /><circle cx="17" cy="9" r="2.4" /><path d="M3.5 19a5.5 5.5 0 0 1 11 0M14.5 15.2a4.5 4.5 0 0 1 6 3.8" /></svg>}
       {kind === "bolt" && <svg {...p}><path d="M13 2 4 14h7l-1 8 9-12h-7z" /></svg>}
@@ -38,10 +38,10 @@ export function Hero({ now, metrics }: { now: Date; metrics: Metric[] }) {
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(60%_60%_at_78%_35%,rgb(127_189_242/0.45),transparent_70%),radial-gradient(40%_40%_at_10%_10%,rgb(255_255_255/0.9),transparent_70%)]" aria-hidden />
       <div className="absolute inset-0 -z-10 bg-grid-light opacity-60 [mask-image:radial-gradient(70%_60%_at_50%_40%,black,transparent)]" aria-hidden />
 
-      <div className="container-page grid items-center gap-12 pb-8 pt-[calc(var(--header-h)+2rem)] lg:grid-cols-12 lg:gap-6 lg:pb-10 lg:pt-[calc(var(--header-h)+2rem)]">
+      <div className="container-page grid items-center gap-10 pb-6 pt-[calc(var(--header-h)+1.25rem)] lg:grid-cols-12 lg:gap-6 lg:pb-6 lg:pt-[calc(var(--header-h)+1rem)]">
         {/* Copy */}
         <div className="relative z-10 lg:col-span-7 xl:col-span-6">
-          <h1 id="hero-title" className="text-[clamp(2.6rem,1.3rem+4vw,4.75rem)] font-extrabold leading-[1.03] lg:whitespace-nowrap tracking-[-0.04em] text-navy">
+          <h1 id="hero-title" className="text-[clamp(2.4rem,1.2rem+3.4vw,4rem)] font-extrabold leading-[1.05] lg:whitespace-nowrap tracking-[-0.04em] text-navy">
             <span className="enter block" style={i(1)}>Accelerating the</span>
             <span className="enter block" style={i(2)}>Acquisition of</span>
             <span className="enter block" style={i(3)}>
@@ -49,21 +49,21 @@ export function Hero({ now, metrics }: { now: Date; metrics: Metric[] }) {
               <span className="text-runway">.</span>
             </span>
           </h1>
-          <p className="enter mt-7 max-w-xl text-lead text-ink-muted" style={i(4)}>
+          <p className="enter mt-5 max-w-lg text-[1.0625rem] leading-relaxed text-ink-muted" style={i(4)}>
             Discover, assess, and acquire mission-ready AI, digital, and data-driven technologies through the Tradewinds ecosystem.
           </p>
-          <div className="enter mt-9 flex flex-wrap items-center gap-3" style={{ ...i(4), animationDuration: "500ms" }}>
-            <ButtonLink href="/marketplace" variant="accent" size="lg">Explore the Marketplace</ButtonLink>
-            <ButtonLink href="/marketplace/providers" variant="secondary" size="lg" arrow={false} className="bg-white">Submit a Solution</ButtonLink>
+          <div className="enter mt-7 flex flex-wrap items-center gap-3" style={{ ...i(4), animationDuration: "500ms" }}>
+            <ButtonLink href="/marketplace" variant="accent">Explore the Marketplace</ButtonLink>
+            <ButtonLink href="/marketplace/providers" variant="secondary" arrow={false} className="bg-white">Submit a Solution</ButtonLink>
           </div>
-          <div className="enter mt-5" style={i(5)}>
+          <div className="enter mt-4" style={i(5)}>
             <ButtonLink href="#how-it-works" variant="text">See how Tradewinds works</ButtonLink>
           </div>
         </div>
 
         {/* Collage — slanted left edge; two stripes beneath it slide in opposite directions */}
         <div className="relative lg:col-span-5 xl:col-span-6">
-          <div className="relative mx-auto w-full max-w-[640px] lg:mr-[-4%] lg:max-w-none">
+          <div className="relative mx-auto w-full max-w-[560px] lg:ml-auto lg:mr-0 lg:max-w-[600px]">
             {/* Dashed lines parallel to the cut, sliding in opposite directions (desktop only) */}
             <svg viewBox="0 0 100 94" preserveAspectRatio="none" className="pointer-events-none absolute inset-0 hidden h-full w-full lg:block" aria-hidden>
               {[
@@ -78,6 +78,8 @@ export function Hero({ now, metrics }: { now: Date; metrics: Metric[] }) {
                   strokeDasharray="5 3.5" className={`motion-safe:${l.cls}`}
                 />
               ))}
+              {/* thin dashed hairline along the slanted edge */}
+              <line x1={0} y1={62} x2={20} y2={104} stroke="#337DE5" strokeOpacity={0.5} strokeWidth={0.5} strokeDasharray="1.2 1.2" vectorEffect="non-scaling-stroke" />
             </svg>
             <div className="relative grid grid-cols-2 gap-3 lg:gap-4 lg:[clip-path:polygon(0_0,100%_0,100%_100%,20%_100%,0_62%)]">
               <div className="enter col-span-2 aspect-[16/8]" style={i(2)}>
@@ -95,15 +97,15 @@ export function Hero({ now, metrics }: { now: Date; metrics: Metric[] }) {
       </div>
 
       {/* Stats bar */}
-      <div className="container-page relative z-10 pb-12">
-        <div className="enter rounded-md border border-line bg-white lg:max-w-[640px]" style={i(6)}>
-          <ul className="grid divide-line sm:grid-cols-2 sm:divide-x">
-            {stats.map((s) => (
-              <li key={s.label} className="flex items-center gap-5 px-7 py-6">
+      <div className="container-page relative z-10 pb-10">
+        <div className="enter rounded-md border border-line bg-white shadow-card" style={i(6)}>
+          <ul className="grid divide-line sm:grid-cols-2 sm:divide-x lg:grid-cols-4">
+            {[...stats, ...stats].map((s, k) => (
+              <li key={`${s.label}-${k}`} className="flex items-center gap-4 px-6 py-5" aria-hidden={k >= stats.length || undefined}>
                 <StatIcon kind={s.icon} />
                 <p className="flex flex-col">
-                  <span className="text-[1.75rem] font-extrabold leading-none tracking-[-0.03em] text-navy tabular-nums">{s.value}</span>
-                  <span className="mt-1.5 text-[0.9375rem] text-ink-muted">{s.label}</span>
+                  <span className="text-[1.5rem] font-extrabold leading-none tracking-[-0.03em] text-navy tabular-nums">{s.value}</span>
+                  <span className="mt-1 text-sm text-ink-muted">{s.label}</span>
                 </p>
               </li>
             ))}
