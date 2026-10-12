@@ -72,7 +72,7 @@ export function Ecosystem({ vehicles }: { vehicles: ContractVehicle[] }) {
 
           <Reveal className="lg:col-span-5" delay={0.06}>
             <Pillar
-              href="/acquisition"
+              href="/contract-vehicles"
               title="Select the procurement pathway."
               body="Understand procurement vehicles and pathways — compared side by side."
               cta="Compare vehicles"
@@ -91,7 +91,7 @@ export function Ecosystem({ vehicles }: { vehicles: ContractVehicle[] }) {
 
           <Reveal className="lg:col-span-5" delay={0.12}>
             <Pillar
-              href="/ai-tools"
+              href="/ai-playground"
               title="Apply AI to acquisition work."
               body="Tools and a searchable prompt library that support effective acquisition workflows."
               cta="Browse AI tools"

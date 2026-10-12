@@ -1,37 +1,28 @@
 import type { AiTool } from "../types";
 
-/** ALL ILLUSTRATIVE until the program office supplies the approved tool catalog. */
+/**
+ * The AI Playground catalog as listed in the rebuild brief. Names are real tools on the
+ * current site; descriptions, access details and authorization levels are PENDING program-office
+ * content (status "pending") and are editable in the Employee Portal. Nothing here is invented.
+ */
+const t = (slug: string, name: string, category: string): AiTool => ({
+  slug, name, category,
+  summary: "Details pending program-office content.",
+  description: "This tool is listed in the Tradewinds AI Playground. Its description, intended audience, data-sensitivity guidance and access requirements will be published here once approved.",
+  useCases: [],
+  availability: "pending",
+  access: "Access requirements pending",
+  dataSensitivity: "Do not use with CUI, classified or export-controlled data unless the tool is explicitly authorized for it.",
+});
+
 export const tools: AiTool[] = [
-  { slug: "market-research-assistant", name: "Market Research Assistant", category: "Acquisition Planning", availability: "approved", access: "Government CAC required",
-    summary: "Drafts market research summaries from structured inputs and Marketplace search results.",
-    description: "Guides acquisition teams through market research, producing a structured summary that cites the sources reviewed and flags gaps for follow-up.",
-    useCases: ["Market research reports", "Sources-sought analysis", "Capability comparisons"] },
-  { slug: "requirements-translator", name: "Requirements Translator", category: "Requirements", availability: "approved", access: "Government CAC required",
-    summary: "Turns mission problem statements into outcome-based requirement language.",
-    description: "Helps program offices express needs as measurable outcomes rather than prescriptive specifications — the format best suited to Marketplace discovery.",
-    useCases: ["Problem statements", "Performance work statements", "Evaluation criteria drafts"] },
-  { slug: "pitch-video-checker", name: "Pitch Video Readiness Checker", category: "Submissions", availability: "external", access: "Public — hosted externally",
-    summary: "Checks a draft pitch outline against Marketplace submission guidance.",
-    description: "Solution providers paste their outline and receive a checklist-style review against submission guidance: length, problem framing, evidence and differentiation.",
-    useCases: ["Pre-submission review", "Resubmission planning"] },
-  { slug: "clause-compare", name: "Clause Compare", category: "Contracting", availability: "experimental", access: "Pilot users only",
-    summary: "Side-by-side comparison of contract clauses across document versions.",
-    description: "An experimental tool that highlights substantive differences between clause versions. Outputs require contracting officer review.",
-    useCases: ["Modification review", "Template alignment"] },
-  { slug: "acquisition-pathway-finder", name: "Acquisition Pathway Finder", category: "Acquisition Planning", availability: "approved", access: "Government CAC required",
-    summary: "Recommends candidate acquisition pathways based on requirement characteristics.",
-    description: "Asks a short series of questions about dollar value, urgency, maturity and scope, then outlines candidate pathways with considerations for each.",
-    useCases: ["Early acquisition strategy", "Vehicle selection"] },
-  { slug: "evaluation-notes-summarizer", name: "Evaluation Notes Summarizer", category: "Evaluation", availability: "experimental", access: "Pilot users only",
-    summary: "Consolidates evaluator notes into consistent strengths and weaknesses.",
-    description: "Experimental summarization of evaluator notes into a consistent structure. Never substitutes for evaluator judgment.",
-    useCases: ["Consensus preparation", "Debrief drafting"] },
-  { slug: "data-readiness-assessment", name: "Data Readiness Assessment", category: "Data", availability: "external", access: "Public — hosted externally",
-    summary: "Self-assessment of data maturity before an AI project begins.",
-    description: "A structured questionnaire that scores data availability, quality, governance and access, with recommended next steps.",
-    useCases: ["Project scoping", "Data-readiness planning"] },
-  { slug: "responsible-ai-checklist", name: "Responsible AI Checklist", category: "Governance", availability: "approved", access: "Public",
-    summary: "Interactive checklist aligned to responsible AI practices for acquisition.",
-    description: "Walks teams through responsible AI considerations to address during planning, evaluation and fielding.",
-    useCases: ["Planning reviews", "Vendor questions", "Fielding readiness"] },
-].map((t) => ({ ...t, sample: true }) as AiTool);
+  t("acqbot", "AcqBot", "Acquisition Assistant"),
+  t("foci-api", "FOCI API", "Risk & Compliance"),
+  t("genai-mil", "GenAI.mil", "Generative AI"),
+  t("procuresight", "ProcureSight", "Market Research"),
+  t("ai-acquisition-assistant", "AI Acquisition Assistant", "Acquisition Assistant"),
+  t("psc-predictor", "PSC Predictor", "Classification"),
+  t("aia-toolkit", "AIA Toolkit", "AI Assurance"),
+  t("turboinnovate", "TurboInnovate", "Innovation"),
+  t("psf-intelligence", "PSF Intelligence", "Market Research"),
+];

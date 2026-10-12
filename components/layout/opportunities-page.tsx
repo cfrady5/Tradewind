@@ -29,8 +29,8 @@ export async function OpportunitiesPage({ title, lead, crumbs, lockType, default
       </section>
       <NextSteps steps={[
         { eyebrow: "Industry", title: "Read the submission guide", href: "/marketplace/submission-guide" },
-        { eyebrow: "Learn", title: "Watch exemplar pitches", href: "/resources/exemplars" },
-        { eyebrow: "Questions", title: "Browse FAQs", href: "/resources/faqs" },
+        { eyebrow: "Learn", title: "Watch exemplar pitches", href: "/marketplace/exemplars" },
+        { eyebrow: "Questions", title: "Browse FAQs", href: "/marketplace/faqs" },
       ]} />
     </>
   );

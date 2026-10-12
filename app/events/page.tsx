@@ -10,7 +10,7 @@ import { formatDate } from "@/lib/data/opportunity-status";
 import type { EventItem } from "@/lib/data/types";
 
 export const revalidate = 300;
-export const metadata: Metadata = { title: "Events", description: "Upcoming Tradewinds events, workshops and office hours — plus recordings of past sessions.", alternates: { canonical: "/resources/events" } };
+export const metadata: Metadata = { title: "Events", description: "Upcoming Tradewinds events, workshops and office hours — plus recordings of past sessions.", alternates: { canonical: "/events" } };
 
 const time = (d: string) => new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", timeZone: "America/New_York", timeZoneName: "short" }).format(new Date(d));
 
@@ -43,7 +43,7 @@ export default async function Page() {
   const past = data.items.filter((e) => new Date(e.endsAt ?? e.startsAt) < now).sort((a, b) => b.startsAt.localeCompare(a.startsAt));
   return (
     <>
-      <PageHero title="Events" lead="Workshops, office hours and summits for buyers and solution providers." crumbs={[{ label: "Resources", href: "/resources" }, { label: "Events", href: "/resources/events" }]} compact />
+      <PageHero title="Events" lead="Workshops, office hours and summits for buyers and solution providers." crumbs={[{ label: "Events", href: "/events" }]} compact />
       <section className="bg-white">
         <div className="container-page py-14 md:py-20">
           <DataNotice source={data.source} what="the events list" className="mb-8" />
@@ -54,9 +54,9 @@ export default async function Page() {
         </div>
       </section>
       <NextSteps steps={[
-        { eyebrow: "Learn", title: "Videos & tutorials", href: "/resources/videos" },
+        { eyebrow: "Learn", title: "Videos & tutorials", href: "/marketplace/videos" },
         { eyebrow: "News", title: "Program updates", href: "/resources/news" },
-        { eyebrow: "Questions", title: "FAQs", href: "/resources/faqs" },
+        { eyebrow: "Questions", title: "FAQs", href: "/marketplace/faqs" },
       ]} />
     </>
   );

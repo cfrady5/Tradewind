@@ -66,7 +66,7 @@ export default async function Page() {
       </Section>
       <NextSteps steps={[
         { eyebrow: "Prepare", title: "Interactive submission guide", href: "/marketplace/submission-guide" },
-        { eyebrow: "Learn", title: "Watch exemplar pitches", href: "/resources/exemplars" },
+        { eyebrow: "Learn", title: "Watch exemplar pitches", href: "/marketplace/exemplars" },
         { eyebrow: "Open now", title: "Special Topics & notices", href: "/opportunities" },
       ]} />
     </>

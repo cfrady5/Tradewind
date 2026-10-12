@@ -7,7 +7,10 @@ import { useCallback, useEffect, useId, useRef, useState, type CSSProperties } f
 import { preload } from "react-dom";
 import { BrandLogo } from "@/components/brand/brand-logo";
 import { ArrowRight, ArrowUpRight, ChevronDown, Close, Menu } from "@/components/ui/icons";
-import { EXTERNAL, NAV } from "@/lib/site-config";
+import { EXTERNAL, NAV, PORTAL } from "@/lib/site-config";
+
+/** Header items: every top-level group except Home (the logo). */
+const ITEMS = NAV.filter((g) => g.href !== "/");
 import { cn } from "@/lib/cn";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -60,12 +63,12 @@ export function SiteHeader() {
     };
   }, [open, close]);
 
-  const activeIndex = NAV.findIndex((g) => pathname === g.href || pathname.startsWith(g.href + "/"));
+  const activeIndex = ITEMS.findIndex((g) => pathname === g.href || pathname.startsWith(g.href + "/"));
   const solid = scrolled || open !== null;
   // Pages whose hero is light get navy text at the top instead of the reversed treatment.
   const lightTop = pathname === "/";
   const light = solid || lightTop;
-  const group = open !== null ? NAV[open] : null;
+  const group = open !== null ? ITEMS[open] : null;
 
   const scheduleOpen = (i: number | null) => {
     clearTimeout(hoverTimer.current);
@@ -96,8 +99,23 @@ export function SiteHeader() {
 
           <nav aria-label="Primary" className="ml-auto hidden lg:block">
             <ul className="flex items-center gap-1">
-              {NAV.map((g, i) => (
-                <li key={g.label} className="relative" onMouseEnter={() => scheduleOpen(i)}>
+              {ITEMS.map((g, i) => (
+                <li key={g.label} className="relative" onMouseEnter={() => scheduleOpen(g.links.length ? i : null)}>
+                  {g.links.length === 0 ? (
+                    <Link
+                      href={g.href}
+                      aria-current={activeIndex === i ? "page" : undefined}
+                      className={cn(
+                        "relative flex h-10 items-center rounded-sm px-3.5 text-[0.9375rem] font-medium transition-colors duration-(--duration-micro)",
+                        light ? "hover:bg-navy/[0.05]" : "hover:bg-white/8",
+                      )}
+                    >
+                      {g.label}
+                      {activeIndex === i && (
+                        <motion.span layoutId="nav-active" className="absolute inset-x-3.5 -bottom-0.5 h-0.5 rounded-sm bg-runway" transition={{ duration: reduce ? 0 : 0.35, ease: EASE }} />
+                      )}
+                    </Link>
+                  ) : (
                   <button
                     ref={(el) => { triggerRefs.current[i] = el; }}
                     type="button"
@@ -127,6 +145,7 @@ export function SiteHeader() {
                       />
                     )}
                   </button>
+                  )}
                 </li>
               ))}
             </ul>
@@ -142,8 +161,8 @@ export function SiteHeader() {
                 solid ? "bg-cobalt text-white hover:bg-navy" : "bg-runway text-navy hover:bg-[#ffa957]",
               )}
             >
-              Marketplace Login
-              <ArrowUpRight width={16} height={16} className="transition-transform duration-(--duration-ui) group-group-hover:translate-x-0.5" />
+              Access Marketplace
+              <ArrowUpRight width={16} height={16} className="transition-transform duration-(--duration-ui) group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               <span className="sr-only">(opens external site)</span>
             </a>
             <MobileMenu solid={light} />
@@ -270,8 +289,13 @@ function MobileMenu({ solid }: { solid: boolean }) {
         </div>
         <nav aria-label="Mobile" className="container-page flex-1 overflow-y-auto py-4">
           <ul className="divide-y divide-line">
-            {NAV.map((g, k) => (
+            {ITEMS.map((g, k) => (
               <li key={g.label} className="menu-item" style={{ "--k": k } as CSSProperties}>
+                {g.links.length === 0 ? (
+                  <Link href={g.href} aria-current={pathname === g.href ? "page" : undefined} className="flex min-h-14 items-center text-lg font-semibold aria-[current=page]:text-cobalt">
+                    {g.label}
+                  </Link>
+                ) : (
                 <details className="group" open={pathname.startsWith(g.href)}>
                   <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between text-lg font-semibold [&::-webkit-details-marker]:hidden">
                     {g.label}
@@ -291,13 +315,19 @@ function MobileMenu({ solid }: { solid: boolean }) {
                     ))}
                   </ul>
                 </details>
+                )}
               </li>
             ))}
+            <li className="menu-item" style={{ "--k": ITEMS.length } as CSSProperties}>
+              <Link href={PORTAL.href} className="flex min-h-12 items-center gap-2 text-sm font-semibold text-ink-muted hover:text-navy">
+                {PORTAL.label}<ArrowRight width={14} height={14} />
+              </Link>
+            </li>
           </ul>
         </nav>
-        <div className="menu-item container-page grid shrink-0 gap-3 border-t border-line py-4" style={{ "--k": NAV.length } as CSSProperties}>
+        <div className="menu-item container-page grid shrink-0 gap-3 border-t border-line py-4" style={{ "--k": ITEMS.length + 1 } as CSSProperties}>
           <a href={EXTERNAL.marketplaceSignIn} target="_blank" rel="noopener noreferrer" className="flex h-12 items-center justify-center gap-2 rounded-sm bg-cobalt font-semibold text-white">
-            Marketplace Login <ArrowUpRight width={18} height={18} />
+            Access Marketplace <ArrowUpRight width={18} height={18} />
             <span className="sr-only">(opens external site)</span>
           </a>
           <Link href="/marketplace/providers" className="flex h-12 items-center justify-center rounded-sm border border-navy/20 font-semibold">

@@ -45,6 +45,9 @@ export type Solution = Base & {
   technologyCategory: string;
   solutionType: string;
   awardableSince: string; // YYYY-MM
+  aisle?: "General" | "SBIR/STTR" | "Prototype Transition";
+  businessSize?: "Small" | "Large" | "Non-traditional" | "Academia";
+  trl?: number;
 };
 
 export type VehicleStatus = "active" | "limited" | "historical" | "pending-confirmation";
@@ -67,7 +70,7 @@ export type ContractVehicle = Base & {
   pendingFields?: string[];
 };
 
-export type ToolAvailability = "approved" | "external" | "experimental";
+export type ToolAvailability = "approved" | "external" | "experimental" | "pending";
 export type AiTool = Base & {
   name: string;
   category: string;
@@ -77,6 +80,9 @@ export type AiTool = Base & {
   availability: ToolAvailability;
   access: string;
   accessUrl?: string;
+  dataSensitivity?: string;
+  authorizationLevel?: string;
+  owner?: string;
 };
 
 export type Prompt = Base & {

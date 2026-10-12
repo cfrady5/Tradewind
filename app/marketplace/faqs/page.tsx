@@ -7,7 +7,7 @@ import { DataNotice } from "@/components/ui/data-notice";
 import { getFaqs } from "@/lib/data";
 
 export const revalidate = 300;
-export const metadata: Metadata = { title: "FAQs", description: "Answers to common questions from government buyers and solution providers about Tradewinds.", alternates: { canonical: "/resources/faqs" } };
+export const metadata: Metadata = { title: "FAQs", description: "Answers to common questions from government buyers and solution providers about Tradewinds.", alternates: { canonical: "/marketplace/faqs" } };
 
 export default async function Page() {
   const data = await getFaqs();
@@ -17,7 +17,7 @@ export default async function Page() {
   };
   return (
     <>
-      <PageHero title="Frequently asked questions" lead="Search answers for buyers and providers. Every answer has its own link to share." crumbs={[{ label: "Resources", href: "/resources" }, { label: "FAQs", href: "/resources/faqs" }]} compact />
+      <PageHero title="Frequently asked questions" lead="Search answers for buyers and providers. Every answer has its own link to share." crumbs={[{ label: "Marketplace", href: "/marketplace" }, { label: "FAQs", href: "/marketplace/faqs" }]} compact />
       <section className="bg-white">
         <div className="container-page max-w-4xl py-14 md:py-20">
           <DataNotice source={data.source} what="the FAQ list" className="mb-8" />
@@ -25,7 +25,7 @@ export default async function Page() {
         </div>
       </section>
       <NextSteps steps={[
-        { eyebrow: "Support", title: "Contact the right team", href: "/about/contact" },
+        { eyebrow: "Support", title: "Contact the right team", href: "/contact" },
         { eyebrow: "Submit", title: "Submission guide", href: "/marketplace/submission-guide" },
         { eyebrow: "Buy", title: "For government buyers", href: "/marketplace/government" },
       ]} />

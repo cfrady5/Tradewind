@@ -9,11 +9,11 @@ import { EXTERNAL, SITE } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
-  title: { default: "Tradewinds — Accelerating the Acquisition of Innovation", template: "%s · Tradewinds" },
+  title: { default: "Tradewinds — Accelerating access to evaluated AI and data solutions", template: "%s · Tradewinds" },
   description: SITE.description,
   applicationName: SITE.name,
   alternates: { canonical: "/" },
-  openGraph: { type: "website", siteName: SITE.name, url: SITE.url, title: "Tradewinds — Accelerating the Acquisition of Innovation", description: SITE.description },
+  openGraph: { type: "website", siteName: SITE.name, url: SITE.url, title: "Tradewinds — Accelerating access to evaluated AI and data solutions", description: SITE.description },
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
 };

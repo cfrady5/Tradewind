@@ -71,8 +71,8 @@ export default async function Page() {
         </div>
       </Section>
       <NextSteps steps={[
-        { eyebrow: "Examples", title: "Exemplar submissions", href: "/resources/exemplars" },
-        { eyebrow: "Prompts", title: "Outline your pitch with AI", href: "/ai-tools/prompt-library?q=pitch" },
+        { eyebrow: "Examples", title: "Exemplar submissions", href: "/marketplace/exemplars" },
+        { eyebrow: "Prompts", title: "Outline your pitch with AI", href: "/ai-playground/prompt-library?q=pitch" },
         { eyebrow: "Opportunities", title: "Open calls", href: "/opportunities" },
       ]} />
     </>

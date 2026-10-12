@@ -16,13 +16,13 @@ export async function generateStaticParams() {
   return (await getVehicles()).items.map((v) => ({ slug: v.slug }));
 }
 
-export async function generateMetadata({ params }: PageProps<"/acquisition/vehicles/[slug]">): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps<"/contract-vehicles/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const { item } = await getBySlug(getVehicles, slug);
-  return item ? { title: `${item.shortName} — ${item.name}`, description: item.tagline, alternates: { canonical: `/acquisition/vehicles/${slug}` } } : {};
+  return item ? { title: `${item.shortName} — ${item.name}`, description: item.tagline, alternates: { canonical: `/contract-vehicles/${slug}` } } : {};
 }
 
-export default async function Page({ params }: PageProps<"/acquisition/vehicles/[slug]">) {
+export default async function Page({ params }: PageProps<"/contract-vehicles/[slug]">) {
   const { slug } = await params;
   const { item: v, source } = await getBySlug(getVehicles, slug);
   if (!v) notFound();
@@ -34,7 +34,7 @@ export default async function Page({ params }: PageProps<"/acquisition/vehicles/
       <PageHero
         title={<>{v.shortName}{v.shortName !== v.name && <span className="block text-[0.5em] font-semibold text-white/75">{v.name}</span>}</>}
         lead={v.tagline}
-        crumbs={[{ label: "Acquisition", href: "/acquisition" }, { label: "Contract Vehicles", href: "/acquisition/vehicles" }, { label: v.shortName, href: `/acquisition/vehicles/${v.slug}` }]}
+        crumbs={[{ label: "Contract Vehicles", href: "/contract-vehicles" }, { label: v.shortName, href: `/contract-vehicles/${v.slug}` }]}
         compact
       >
         <Badge tone={st.tone} dot>{st.label}</Badge>
@@ -99,9 +99,9 @@ export default async function Page({ params }: PageProps<"/acquisition/vehicles/
         </div>
       </section>
       <NextSteps steps={[
-        { eyebrow: "Compare", title: "All contract vehicles", href: "/acquisition/vehicles" },
+        { eyebrow: "Compare", title: "All contract vehicles", href: "/contract-vehicles" },
         { eyebrow: "Marketplace", title: "Awardable solutions", href: "/marketplace" },
-        { eyebrow: "Guides", title: "Acquisition guides", href: "/acquisition/guides" },
+        { eyebrow: "Guides", title: "Acquisition guides", href: "/contract-vehicles/guides" },
       ]} />
     </>
   );

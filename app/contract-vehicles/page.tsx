@@ -11,7 +11,7 @@ import { getVehicles } from "@/lib/data";
 import { VEHICLE_STATUS } from "@/lib/data/vehicle-status";
 
 export const revalidate = 300;
-export const metadata: Metadata = { title: "Contract Vehicles", description: "Compare CDAO contract vehicles: scope, purpose, eligible users, ordering and availability.", alternates: { canonical: "/acquisition/vehicles" } };
+export const metadata: Metadata = { title: "Contract Vehicles", description: "Compare CDAO contract vehicles: scope, purpose, eligible users, ordering and availability.", alternates: { canonical: "/contract-vehicles" } };
 
 export default async function Page() {
   const vehicles = await getVehicles();
@@ -20,7 +20,7 @@ export default async function Page() {
       <PageHero
         title="Contract vehicles"
         lead="Compare scope, purpose, eligible users, ordering processes and current availability."
-        crumbs={[{ label: "Acquisition", href: "/acquisition" }, { label: "Contract Vehicles", href: "/acquisition/vehicles" }]}
+        crumbs={[{ label: "Contract Vehicles", href: "/contract-vehicles" }]}
         compact
       />
       <Section>
@@ -28,7 +28,7 @@ export default async function Page() {
         <ul className="mb-14 grid gap-4 md:grid-cols-3">
           {vehicles.items.map((v) => (
             <li key={v.slug}>
-              <Link href={`/acquisition/vehicles/${v.slug}`} className="group flex h-full flex-col rounded-xl border border-line p-6 transition-[border-color,box-shadow] hover:border-signal/50 hover:shadow-lift">
+              <Link href={`/contract-vehicles/${v.slug}`} className="group flex h-full flex-col rounded-xl border border-line p-6 transition-[border-color,box-shadow] hover:border-signal/50 hover:shadow-lift">
                 <Badge tone={VEHICLE_STATUS[v.status].tone} dot className="self-start">{VEHICLE_STATUS[v.status].label}</Badge>
                 <span className="mt-5 text-2xl font-bold">{v.shortName}</span>
                 <span className="mt-1 text-sm font-medium text-ink-muted">{v.vehicleType}</span>
@@ -42,9 +42,9 @@ export default async function Page() {
         <VehicleCompare vehicles={vehicles.items} />
       </Section>
       <NextSteps steps={[
-        { eyebrow: "Overview", title: "Acquisition pathways", href: "/acquisition" },
-        { eyebrow: "Guides", title: "Official documents", href: "/acquisition/guides" },
-        { eyebrow: "Support", title: "Ordering questions", href: "/about/contact" },
+        { eyebrow: "Overview", title: "Acquisition pathways", href: "/contract-vehicles" },
+        { eyebrow: "Guides", title: "Official documents", href: "/contract-vehicles/guides" },
+        { eyebrow: "Support", title: "Ordering questions", href: "/contact" },
       ]} />
     </>
   );

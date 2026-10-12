@@ -10,16 +10,16 @@ import { DataNotice } from "@/components/ui/data-notice";
 import { getTools } from "@/lib/data";
 
 export const revalidate = 300;
-export const metadata: Metadata = { title: "AI Tools", description: "A catalog of AI tools that support acquisition workflows — clearly labeled as approved, externally hosted or experimental.", alternates: { canonical: "/ai-tools" } };
+export const metadata: Metadata = { title: "AI Playground", description: "A catalog of AI tools that support acquisition workflows — clearly labeled as approved, externally hosted or experimental.", alternates: { canonical: "/ai-playground" } };
 
 export default async function Page() {
   const data = await getTools();
   return (
     <>
       <PageHero
-        title="AI tools for acquisition work"
+        title="AI Playground"
         lead="Tools that support market research, requirements and evaluation, each labeled by approval status."
-        crumbs={[{ label: "AI Tools", href: "/ai-tools" }]}
+        crumbs={[{ label: "AI Playground", href: "/ai-playground" }]}
         compact
         aside={
           <dl className="grid gap-3 rounded-lg border border-line-dark bg-white/[0.04] p-5 text-sm">
@@ -29,7 +29,7 @@ export default async function Page() {
           </dl>
         }
       >
-        <ButtonLink href="/ai-tools/prompt-library" variant="accent">Open the prompt library</ButtonLink>
+        <ButtonLink href="/ai-playground/prompt-library" variant="accent">Open the prompt library</ButtonLink>
       </PageHero>
       <section className="bg-white">
         <div className="container-page py-14 md:py-20">
@@ -38,9 +38,9 @@ export default async function Page() {
         </div>
       </section>
       <NextSteps steps={[
-        { eyebrow: "Prompts", title: "Searchable prompt library", href: "/ai-tools/prompt-library" },
-        { eyebrow: "Acquisition", title: "Acquisition guides", href: "/acquisition/guides" },
-        { eyebrow: "Support", title: "Questions about a tool?", href: "/about/contact" },
+        { eyebrow: "Prompts", title: "Searchable prompt library", href: "/ai-playground/prompt-library" },
+        { eyebrow: "Acquisition", title: "Acquisition guides", href: "/contract-vehicles/guides" },
+        { eyebrow: "Support", title: "Questions about a tool?", href: "/contact" },
       ]} />
     </>
   );

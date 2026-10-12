@@ -13,7 +13,7 @@ export function Reveal({
   const Comp = motion[as] as typeof motion.div;
   if (reduce) {
     const Static = as;
-    return <Static className={className}>{children}</Static>;
+    return <Static className={className} id={rest.id}>{children}</Static>;
   }
   return (
     <Comp

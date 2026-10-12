@@ -87,8 +87,8 @@ export default async function Page() {
         </div>
       </Section>
       <NextSteps steps={[
-        { eyebrow: "Awards", title: "Awarded solutions", href: "/about/awarded-solutions" },
-        { eyebrow: "Marketplace", title: "Browse awardables", href: "/marketplace/solutions" },
+        { eyebrow: "Awards", title: "Awarded solutions", href: "/marketplace/awardees" },
+        { eyebrow: "Marketplace", title: "Browse awardables", href: "/marketplace/awardable-companies" },
         { eyebrow: "About", title: "The program", href: "/about" },
       ]} />
     </>

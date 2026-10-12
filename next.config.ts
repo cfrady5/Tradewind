@@ -33,15 +33,29 @@ const securityHeaders = [
 // Legacy Wix URLs → new information architecture (see docs/01-AUDIT.md §2).
 // Finalize against the full crawl before DNS cutover.
 const legacyRedirects: [string, string][] = [
+  // Wix-era URLs
   ["/solutions-marketplace", "/marketplace"],
   ["/tradewinds-opportunity", "/opportunities"],
   ["/other-opportunities", "/opportunities?type=external"],
-  ["/faqs", "/resources/faqs"],
-  ["/instructional-videos", "/resources/videos"],
-  ["/exemplar-videos", "/resources/exemplars"],
-  ["/events", "/resources/events"],
-  ["/cdao-vehicles", "/acquisition/vehicles"],
-  ["/cdao-vehicles/test-and-evaluation-services-blanket-purchase-agreement-bpa", "/acquisition/vehicles/test-and-evaluation"],
+  ["/faqs", "/marketplace/faqs"],
+  ["/instructional-videos", "/marketplace/videos"],
+  ["/exemplar-videos", "/marketplace/exemplars"],
+  ["/cdao-vehicles", "/contract-vehicles"],
+  ["/cdao-vehicles/test-and-evaluation-services-blanket-purchase-agreement-bpa", "/contract-vehicles/test-and-evaluation"],
+  // Routes from the first rebuild pass (information architecture revised Oct 2026)
+  ["/acquisition", "/contract-vehicles"],
+  ["/acquisition/vehicles", "/contract-vehicles"],
+  ["/acquisition/vehicles/:slug", "/contract-vehicles/:slug"],
+  ["/acquisition/guides", "/contract-vehicles/guides"],
+  ["/ai-tools", "/ai-playground"],
+  ["/ai-tools/:path*", "/ai-playground/:path*"],
+  ["/resources/videos", "/marketplace/videos"],
+  ["/resources/exemplars", "/marketplace/exemplars"],
+  ["/resources/faqs", "/marketplace/faqs"],
+  ["/resources/events", "/events"],
+  ["/about/contact", "/contact"],
+  ["/about/awarded-solutions", "/marketplace/awardees"],
+  ["/marketplace/solutions", "/marketplace/awardable-companies"],
 ];
 
 const nextConfig: NextConfig = {

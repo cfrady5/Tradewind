@@ -43,7 +43,7 @@ export default function Page() {
       <NextSteps steps={[
         { eyebrow: "Results", title: "Impact & results", href: "/about/impact" },
         { eyebrow: "Marketplace", title: "How the Marketplace works", href: "/marketplace" },
-        { eyebrow: "Contact", title: "Reach the team", href: "/about/contact" },
+        { eyebrow: "Contact", title: "Reach the team", href: "/contact" },
       ]} />
     </>
   );

@@ -9,8 +9,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [opps, tools, vehicles] = await Promise.all([getOpportunities(), getTools(), getVehicles()]);
   const dynamic = [
     ...opps.items.map((o) => `/opportunities/${o.slug}`),
-    ...tools.items.map((t) => `/ai-tools/${t.slug}`),
-    ...vehicles.items.map((v) => `/acquisition/vehicles/${v.slug}`),
+    ...tools.items.map((t) => `/ai-playground/${t.slug}`),
+    ...vehicles.items.map((v) => `/contract-vehicles/${v.slug}`),
   ];
   const now = new Date();
   return [...new Set([...staticPaths, ...dynamic])].map((p) => ({

@@ -7,7 +7,7 @@ import { DataNotice } from "@/components/ui/data-notice";
 import { getPrompts } from "@/lib/data";
 
 export const revalidate = 300;
-export const metadata: Metadata = { title: "Prompt Library", description: "Searchable, copy-ready prompts for acquisition and program work.", alternates: { canonical: "/ai-tools/prompt-library" } };
+export const metadata: Metadata = { title: "Prompt Library", description: "Searchable, copy-ready prompts for acquisition and program work.", alternates: { canonical: "/ai-playground/prompt-library" } };
 
 export default async function Page() {
   const data = await getPrompts();
@@ -16,7 +16,7 @@ export default async function Page() {
       <PageHero
         title="Prompt library"
         lead="Copy-ready prompts for requirements, market research, evaluation and communication — searchable and organized by task."
-        crumbs={[{ label: "AI Tools", href: "/ai-tools" }, { label: "Prompt Library", href: "/ai-tools/prompt-library" }]}
+        crumbs={[{ label: "AI Playground", href: "/ai-playground" }, { label: "Prompt Library", href: "/ai-playground/prompt-library" }]}
         compact
       />
       <section className="bg-white">
@@ -28,9 +28,9 @@ export default async function Page() {
         </div>
       </section>
       <NextSteps steps={[
-        { eyebrow: "AI Tools", title: "Browse the tool directory", href: "/ai-tools" },
+        { eyebrow: "AI Tools", title: "Browse the tool directory", href: "/ai-playground" },
         { eyebrow: "Requirements", title: "Write better problem statements", href: "/resources" },
-        { eyebrow: "Marketplace", title: "Find awardable solutions", href: "/marketplace/solutions" },
+        { eyebrow: "Marketplace", title: "Find awardable solutions", href: "/marketplace/awardable-companies" },
       ]} />
     </>
   );

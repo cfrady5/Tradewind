@@ -12,7 +12,7 @@ export default function NotFound() {
           <ButtonLink href="/" variant="accent">Go home</ButtonLink>
           <ButtonLink href="/marketplace" variant="secondary-dark" arrow={false}>Marketplace</ButtonLink>
           <ButtonLink href="/opportunities" variant="secondary-dark" arrow={false}>Opportunities</ButtonLink>
-          <ButtonLink href="/resources/faqs" variant="text-dark">FAQs</ButtonLink>
+          <ButtonLink href="/marketplace/faqs" variant="text-dark">FAQs</ButtonLink>
         </div>
       </div>
     </section>

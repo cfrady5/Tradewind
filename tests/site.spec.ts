@@ -2,13 +2,12 @@ import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
 const ROUTES = [
-  "/", "/marketplace", "/marketplace/solutions", "/marketplace/government", "/marketplace/providers", "/marketplace/submission-guide",
-  "/marketplace/sbir-sttr", "/marketplace/prototype-transition",
-  "/opportunities", "/opportunities/solutions-marketplace-collection", "/opportunities/special-topics", "/opportunities/shopping-notices", "/opportunities/archive",
-  "/acquisition", "/acquisition/vehicles", "/acquisition/vehicles/test-and-evaluation", "/acquisition/vehicles/draid", "/acquisition/guides",
-  "/ai-tools", "/ai-tools/market-research-assistant", "/ai-tools/prompt-library",
-  "/resources", "/resources/videos", "/resources/exemplars", "/resources/faqs", "/resources/events", "/resources/news",
-  "/about", "/about/impact", "/about/awarded-solutions", "/about/contact",
+  "/", "/marketplace", "/marketplace/awardable-companies", "/marketplace/awardees", "/marketplace/government", "/marketplace/providers",
+  "/marketplace/submission-guide", "/marketplace/videos", "/marketplace/exemplars", "/marketplace/faqs", "/marketplace/sbir-sttr", "/marketplace/prototype-transition",
+  "/opportunities", "/opportunities/solutions-marketplace-collection", "/opportunities/special-topics", "/opportunities/shopping-notices", "/opportunities/archive", "/opportunities/swarm-forge",
+  "/contract-vehicles", "/contract-vehicles/test-and-evaluation", "/contract-vehicles/draid", "/contract-vehicles/guides",
+  "/ai-playground", "/ai-playground/acqbot", "/ai-playground/prompt-library",
+  "/resources", "/resources/news", "/events", "/contact", "/about", "/about/impact", "/privacy",
 ];
 
 for (const route of ROUTES) {
@@ -57,7 +56,7 @@ test("unknown route returns branded 404", async ({ page }) => {
 });
 
 test("legacy Wix URLs redirect permanently", async ({ request }) => {
-  for (const [from, to] of [["/faqs", "/resources/faqs"], ["/solutions-marketplace", "/marketplace"], ["/cdao-vehicles", "/acquisition/vehicles"]]) {
+  for (const [from, to] of [["/faqs", "/marketplace/faqs"], ["/solutions-marketplace", "/marketplace"], ["/cdao-vehicles", "/contract-vehicles"]]) {
     const res = await request.get(from, { maxRedirects: 0 });
     expect(res.status()).toBe(308);
     expect(res.headers()["location"]).toBe(to);
@@ -80,7 +79,7 @@ test.describe("desktop navigation", () => {
     await trigger.focus();
     await page.keyboard.press("Enter");
     await expect(trigger).toHaveAttribute("aria-expanded", "true");
-    await expect(page.getByRole("link", { name: /Browse Awardables/ }).first()).toBeVisible();
+    await expect(page.getByRole("link", { name: /Awardable Companies/ }).first()).toBeVisible();
     await page.keyboard.press("Escape");
     await expect(trigger).toHaveAttribute("aria-expanded", "false");
     await expect(trigger).toBeFocused();
@@ -103,7 +102,7 @@ test.describe("mobile navigation", () => {
 });
 
 test("solutions filters sync to the URL and survive reload", async ({ page }) => {
-  await page.goto("/marketplace/solutions");
+  await page.goto("/marketplace/awardable-companies");
   await page.getByLabel("Search solutions").fill("imagery");
   await expect(page).toHaveURL(/q=imagery/);
   const status = page.getByRole("status");
@@ -124,7 +123,7 @@ test("opportunity status filter and archive", async ({ page }) => {
 test("prompt library copies a prompt", async ({ page, context, browserName, isMobile }) => {
   test.skip(browserName !== "chromium");
   if (!isMobile) await context.grantPermissions(["clipboard-read", "clipboard-write"]);
-  await page.goto("/ai-tools/prompt-library");
+  await page.goto("/ai-playground/prompt-library");
   await page.waitForLoadState("networkidle");
   await page.getByRole("button", { name: /Copy prompt: Write an outcome-based problem statement/ }).click();
   await expect(page.getByRole("button", { name: "Copied" }).first()).toBeVisible();
@@ -135,6 +134,6 @@ test("prompt library copies a prompt", async ({ page, context, browserName, isMo
 });
 
 test("FAQ deep link opens the answer", async ({ page }) => {
-  await page.goto("/resources/faqs#video-length");
+  await page.goto("/marketplace/faqs#video-length");
   await expect(page.locator("details#video-length")).toHaveAttribute("open", "");
 });

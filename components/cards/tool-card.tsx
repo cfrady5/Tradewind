@@ -8,6 +8,7 @@ export const AVAILABILITY: Record<ToolAvailability, { label: string; tone: Tone;
   approved: { label: "Approved", tone: "approved", description: "Officially approved for use" },
   external: { label: "Externally hosted", tone: "external", description: "Hosted by a third party — review its terms" },
   experimental: { label: "Experimental", tone: "experimental", description: "Pilot — outputs require human review" },
+  pending: { label: "Details pending", tone: "neutral", description: "Listing awaiting approved content" },
 };
 
 export function ToolCard({ tool, dark }: { tool: AiTool; dark?: boolean }) {
@@ -30,7 +31,7 @@ export function ToolCard({ tool, dark }: { tool: AiTool; dark?: boolean }) {
       </div>
       <p className={cn("mt-6 eyebrow", dark ? "text-ink-subtle" : "text-ink-muted")}>{tool.category}</p>
       <h3 className="mt-2 text-lg font-semibold">
-        <Link href={`/ai-tools/${tool.slug}`} className="after:absolute after:inset-0 after:rounded-lg focus-visible:outline-none">{tool.name}</Link>
+        <Link href={`/ai-playground/${tool.slug}`} className="after:absolute after:inset-0 after:rounded-lg focus-visible:outline-none">{tool.name}</Link>
       </h3>
       <p className={cn("mt-2 text-[0.9375rem]", dark ? "text-white/70" : "text-ink-muted")}>{tool.summary}</p>
       <div className={cn("mt-auto flex items-center justify-between border-t pt-4 text-sm", dark ? "border-line-dark text-ink-subtle" : "border-line text-ink-muted")}>

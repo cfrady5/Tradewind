@@ -6,21 +6,21 @@ import { Reveal } from "@/components/ui/reveal";
 import { ArrowRight, Building, Compass, Mail, Shield, Spark } from "@/components/ui/icons";
 import { EXTERNAL } from "@/lib/site-config";
 
-export const metadata: Metadata = { title: "Contact & Support", description: "Reach the right Tradewinds team for government assistance, submissions, Marketplace access or technical support.", alternates: { canonical: "/about/contact" } };
+export const metadata: Metadata = { title: "Contact & Support", description: "Reach the right Tradewinds team for government assistance, submissions, Marketplace access or technical support.", alternates: { canonical: "/contact" } };
 
 /** Routes only to published, approved channels. No form: requests are not collected by this site. */
 const ROUTES = [
   { icon: Building, title: "Government assistance", body: "Search strategy, acquisition pathways and award support for buyers.", email: EXTERNAL.successEmail, help: { label: "Buyer journey", href: "/marketplace/government" } },
   { icon: Spark, title: "Submission support", body: "Questions about preparing or submitting a pitch, or about assessment outcomes.", email: EXTERNAL.successEmail, help: { label: "Submission guide", href: "/marketplace/submission-guide" } },
-  { icon: Shield, title: "Marketplace access", body: "Account registration, sign-in and access issues for government users.", email: EXTERNAL.supportEmail, help: { label: "Access FAQs", href: "/resources/faqs?category=Government+Access" } },
-  { icon: Compass, title: "Technical support", body: "Problems with the portal, uploads or this website.", email: EXTERNAL.supportEmail, help: { label: "FAQs", href: "/resources/faqs" } },
+  { icon: Shield, title: "Marketplace access", body: "Account registration, sign-in and access issues for government users.", email: EXTERNAL.supportEmail, help: { label: "Access FAQs", href: "/marketplace/faqs?category=Government+Access" } },
+  { icon: Compass, title: "Technical support", body: "Problems with the portal, uploads or this website.", email: EXTERNAL.supportEmail, help: { label: "FAQs", href: "/marketplace/faqs" } },
   { icon: Mail, title: "General questions", body: "Anything else about the Tradewinds program.", email: EXTERNAL.successEmail, help: { label: "About Tradewinds", href: "/about" } },
 ];
 
 export default function Page() {
   return (
     <>
-      <PageHero title="Contact & support" lead="Select a topic to reach the appropriate team." crumbs={[{ label: "About", href: "/about" }, { label: "Contact & Support", href: "/about/contact" }]} compact />
+      <PageHero title="Contact & support" lead="Select a topic to reach the appropriate team." crumbs={[{ label: "Contact", href: "/contact" }]} compact />
       <Section>
         <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {ROUTES.map((r, i) => (

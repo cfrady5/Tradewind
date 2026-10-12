@@ -47,7 +47,7 @@ export default async function Page() {
       </Section>
       <Section tone="cloud">
         <Split title="Preparing an effective search">
-          <p>The strongest searches start from a clear mission problem rather than a product name. Use the <Link className="font-semibold text-cobalt hover:underline" href="/ai-tools/prompt-library">prompt library</Link> to draft outcome-based problem statements and vendor questions.</p>
+          <p>The strongest searches start from a clear mission problem rather than a product name. Use the <Link className="font-semibold text-cobalt hover:underline" href="/ai-playground/prompt-library">prompt library</Link> to draft outcome-based problem statements and vendor questions.</p>
           <p>If you need the market to come to you, a <strong>Shopping Notice</strong> or <strong>Special Topic</strong> can focus submissions on a specific challenge.</p>
           <div className="mt-8"><Callout title="Need help getting started?">Email <a href={`mailto:${EXTERNAL.successEmail}`}>{EXTERNAL.successEmail}</a> for acquisition support, or <a href={`mailto:${EXTERNAL.supportEmail}`}>{EXTERNAL.supportEmail}</a> for account access issues.</Callout></div>
         </Split>
@@ -58,9 +58,9 @@ export default async function Page() {
         </Split>
       </Section>
       <NextSteps steps={[
-        { eyebrow: "Acquisition", title: "Compare contract vehicles", href: "/acquisition/vehicles" },
-        { eyebrow: "Guides", title: "Acquisition guides & handbook", href: "/acquisition/guides" },
-        { eyebrow: "Browse", title: "Public solutions directory", href: "/marketplace/solutions" },
+        { eyebrow: "Acquisition", title: "Compare contract vehicles", href: "/contract-vehicles" },
+        { eyebrow: "Guides", title: "Acquisition guides & handbook", href: "/contract-vehicles/guides" },
+        { eyebrow: "Browse", title: "Public solutions directory", href: "/marketplace/awardable-companies" },
       ]} />
     </>
   );

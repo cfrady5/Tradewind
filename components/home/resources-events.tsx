@@ -28,7 +28,7 @@ export function ResourcesEvents({ events, resources, now }: { events: EventItem[
         <SectionHeader id="learn-title" title="Resources and events." />
         <div className="mt-14 grid gap-12 lg:grid-cols-3">
           <Reveal>
-            <ColHead title="Upcoming events" href="/resources/events" />
+            <ColHead title="Upcoming events" href="/events" />
             <ul className="divide-y divide-line">
               {upcoming.length === 0 && <li className="py-6 text-ink-muted">No upcoming events scheduled.</li>}
               {upcoming.map((e) => {

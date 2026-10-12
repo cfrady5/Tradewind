@@ -23,7 +23,7 @@ export function Results({ metrics }: { metrics: Metric[] }) {
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <ButtonLink href="/about/impact" variant="primary">View impact</ButtonLink>
-            <ButtonLink href="/about/awarded-solutions" variant="secondary" arrow={false}>Awarded solutions</ButtonLink>
+            <ButtonLink href="/marketplace/awardees" variant="secondary" arrow={false}>Awarded solutions</ButtonLink>
           </div>
         </Reveal>
 

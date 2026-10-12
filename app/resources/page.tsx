@@ -6,8 +6,8 @@ export const metadata: Metadata = { title: "Resource Library", description: "Gui
 
 export default function Page() {
   return <ResourcesPage title="Resource library" lead="Guides, videos, exemplars, documents and program news — searchable in one place." crumbs={[]} steps={[
-    { eyebrow: "Questions", title: "Searchable FAQs", href: "/resources/faqs" },
-    { eyebrow: "Events", title: "Upcoming sessions", href: "/resources/events" },
+    { eyebrow: "Questions", title: "Searchable FAQs", href: "/marketplace/faqs" },
+    { eyebrow: "Events", title: "Upcoming sessions", href: "/events" },
     { eyebrow: "Submit", title: "Submission guide", href: "/marketplace/submission-guide" },
   ]} />;
 }

@@ -18,8 +18,8 @@ export function ToolsPreview({ data }: { data: Loaded<AiTool> }) {
               lead="Approved, externally hosted and experimental tools, each labeled by status, plus a searchable prompt library."
             />
             <div className="mt-8 flex flex-wrap gap-3">
-              <ButtonLink href="/ai-tools" variant="accent">Browse AI tools</ButtonLink>
-              <ButtonLink href="/ai-tools/prompt-library" variant="secondary-dark" arrow={false}>Prompt library</ButtonLink>
+              <ButtonLink href="/ai-playground" variant="accent">Browse AI tools</ButtonLink>
+              <ButtonLink href="/ai-playground/prompt-library" variant="secondary-dark" arrow={false}>Prompt library</ButtonLink>
             </div>
           </div>
           <ul className="grid gap-4 sm:grid-cols-2 lg:col-span-8 lg:grid-cols-3">

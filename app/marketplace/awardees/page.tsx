@@ -8,13 +8,13 @@ import { formatDate } from "@/lib/data/opportunity-status";
 import { formatMetric } from "@/lib/format";
 
 export const revalidate = 300;
-export const metadata: Metadata = { title: "Awarded Solutions", description: "Public records of awards made through Tradewinds.", alternates: { canonical: "/about/awarded-solutions" } };
+export const metadata: Metadata = { title: "Awarded Solutions", description: "Public records of awards made through Tradewinds.", alternates: { canonical: "/marketplace/awardees" } };
 
 export default async function Page() {
   const data = await getAwards();
   return (
     <>
-      <PageHero title="Awarded solutions" lead="Public records of awards made through the Tradewinds ecosystem." crumbs={[{ label: "About", href: "/about" }, { label: "Awarded Solutions", href: "/about/awarded-solutions" }]} compact />
+      <PageHero title="Awardees" lead="Public records of awards made through the Tradewinds ecosystem." crumbs={[{ label: "Marketplace", href: "/marketplace" }, { label: "Awardees", href: "/marketplace/awardees" }]} compact />
       <Section>
         {data.items.length === 0 ? (
           <EmptyState title="Award records are awaiting an approved public dataset">
@@ -38,8 +38,8 @@ export default async function Page() {
       </Section>
       <NextSteps steps={[
         { eyebrow: "Impact", title: "Program metrics", href: "/about/impact" },
-        { eyebrow: "Marketplace", title: "Awardable solutions", href: "/marketplace/solutions" },
-        { eyebrow: "Acquisition", title: "How awards are made", href: "/acquisition" },
+        { eyebrow: "Marketplace", title: "Awardable solutions", href: "/marketplace/awardable-companies" },
+        { eyebrow: "Acquisition", title: "How awards are made", href: "/contract-vehicles" },
       ]} />
     </>
   );

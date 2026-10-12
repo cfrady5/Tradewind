@@ -14,13 +14,13 @@ export async function generateStaticParams() {
   return (await getTools()).items.map((t) => ({ slug: t.slug }));
 }
 
-export async function generateMetadata({ params }: PageProps<"/ai-tools/[slug]">): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps<"/ai-playground/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const { item } = await getBySlug(getTools, slug);
-  return item ? { title: item.name, description: item.summary, alternates: { canonical: `/ai-tools/${slug}` } } : {};
+  return item ? { title: item.name, description: item.summary, alternates: { canonical: `/ai-playground/${slug}` } } : {};
 }
 
-export default async function Page({ params }: PageProps<"/ai-tools/[slug]">) {
+export default async function Page({ params }: PageProps<"/ai-playground/[slug]">) {
   const { slug } = await params;
   const { item: t, source } = await getBySlug(getTools, slug);
   if (!t) notFound();
@@ -29,7 +29,7 @@ export default async function Page({ params }: PageProps<"/ai-tools/[slug]">) {
 
   return (
     <>
-      <PageHero title={t.name} lead={t.summary} crumbs={[{ label: "AI Tools", href: "/ai-tools" }, { label: t.name, href: `/ai-tools/${t.slug}` }]} compact>
+      <PageHero title={t.name} lead={t.summary} crumbs={[{ label: "AI Playground", href: "/ai-playground" }, { label: t.name, href: `/ai-playground/${t.slug}` }]} compact>
         <Badge tone={a.tone} dot>{a.label}</Badge>
         <Badge tone="neutral">{t.category}</Badge>
         {t.sample && <Badge tone="accent">Sample</Badge>}
@@ -40,10 +40,17 @@ export default async function Page({ params }: PageProps<"/ai-tools/[slug]">) {
             <DataNotice source={source} what="this tool listing" className="mb-10" />
             <h2 className="text-h3 font-bold">About this tool</h2>
             <p className="mt-4 max-w-prose text-lg leading-relaxed text-ink-muted">{t.description}</p>
-            <h2 className="mt-12 text-h3 font-bold">Use cases</h2>
-            <ul className="mt-5 grid gap-3 sm:grid-cols-2">
-              {t.useCases.map((u) => <li key={u} className="rounded-md border border-line bg-cloud/50 px-4 py-3 font-medium">{u}</li>)}
-            </ul>
+            {t.useCases.length > 0 && (
+              <>
+                <h2 className="mt-12 text-h3 font-bold">Use cases</h2>
+                <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+                  {t.useCases.map((u) => <li key={u} className="rounded-md border border-line bg-cloud/50 px-4 py-3 font-medium">{u}</li>)}
+                </ul>
+              </>
+            )}
+            {t.dataSensitivity && (
+              <p className="mt-10 flex gap-3 rounded-md border border-runway/50 bg-runway-tint p-4 text-sm text-navy"><span className="eyebrow mt-0.5 shrink-0 text-[#8a4100]">Data sensitivity</span>{t.dataSensitivity}</p>
+            )}
           </div>
           <aside className="lg:col-span-4">
             <div className="rounded-lg border border-line p-6">
@@ -68,9 +75,9 @@ export default async function Page({ params }: PageProps<"/ai-tools/[slug]">) {
         )}
       </section>
       <NextSteps steps={[
-        { eyebrow: "AI Tools", title: "All tools", href: "/ai-tools" },
-        { eyebrow: "Prompts", title: "Prompt library", href: "/ai-tools/prompt-library" },
-        { eyebrow: "Support", title: "Contact the team", href: "/about/contact" },
+        { eyebrow: "AI Tools", title: "All tools", href: "/ai-playground" },
+        { eyebrow: "Prompts", title: "Prompt library", href: "/ai-playground/prompt-library" },
+        { eyebrow: "Support", title: "Contact the team", href: "/contact" },
       ]} />
     </>
   );

@@ -68,10 +68,10 @@ export default async function MarketplacePage() {
       <Section>
         <div className="grid gap-5 lg:grid-cols-2">
           {[
-            { href: "/marketplace/government", eyebrow: "Government buyers", title: "Discover and acquire", body: "Government users with a .gov or .mil email sign in to search awardable pitch videos by title or company and move toward award with their contracting office.", dark: true },
-            { href: "/marketplace/providers", eyebrow: "Solution providers", title: "Get assessed and discovered", body: "U.S. businesses, non-traditional contractors and academia — and certain foreign entities — submit pitches for assessment.", dark: false },
+            { id: "government", href: "/marketplace/government", eyebrow: "Government buyers", title: "Discover and acquire", body: "Government users with a .gov or .mil email sign in to search awardable pitch videos by title or company and move toward award with their contracting office.", dark: true },
+            { id: "providers", href: "/marketplace/providers", eyebrow: "Solution providers", title: "Get assessed and discovered", body: "U.S. businesses, non-traditional contractors and academia — and certain foreign entities — submit pitches for assessment.", dark: false },
           ].map((c, i) => (
-            <Reveal key={c.href} delay={i * 0.06}>
+            <Reveal key={c.href} id={c.id} delay={i * 0.06} className="scroll-mt-28">
               <Link href={c.href} className={c.dark ? "on-dark group flex h-full flex-col rounded-xl bg-navy p-10 text-white transition-shadow hover:shadow-glow" : "group flex h-full flex-col rounded-xl border border-line bg-cloud/60 p-10 transition-[border-color,box-shadow] hover:border-signal/50 hover:shadow-lift"}>
                 <span className={c.dark ? "eyebrow text-runway" : "eyebrow text-cobalt"}>{c.eyebrow}</span>
                 <h2 className="mt-4 text-h3 font-bold">{c.title}</h2>
@@ -89,19 +89,19 @@ export default async function MarketplacePage() {
         <Split title="What awardable status means">
           <p>Awardable means a solution&rsquo;s pitch was assessed by an expert panel and met the Marketplace&rsquo;s criteria. It makes the solution discoverable to government buyers and eligible to pursue an award.</p>
           <p><strong>It is not a contract award</strong>, an endorsement, or a guarantee of one. Buyers still determine mission fit, negotiate terms and award through their contracting office.</p>
-          <div className="mt-8"><Callout title="Acquisition pathways">Buying activities select an appropriate award mechanism with their contracting office. See <Link href="/acquisition">Acquisition</Link> for pathways and contract vehicles.</Callout></div>
+          <div className="mt-8"><Callout title="Acquisition pathways">Buying activities select an appropriate award mechanism with their contracting office. See <Link href="/contract-vehicles">Acquisition</Link> for pathways and contract vehicles.</Callout></div>
         </Split>
       </Section>
 
       <Section>
         <Split title="Marketplace FAQs">
           <FaqList faqs={faqs.items.filter((f) => f.category === "Marketplace" || f.category === "Government Access")} />
-          <div className="mt-8"><ButtonLink href="/resources/faqs" variant="text">All FAQs</ButtonLink></div>
+          <div className="mt-8"><ButtonLink href="/marketplace/faqs" variant="text">All FAQs</ButtonLink></div>
         </Split>
       </Section>
 
       <NextSteps steps={[
-        { eyebrow: "Browse", title: "Awardable solutions directory", href: "/marketplace/solutions" },
+        { eyebrow: "Browse", title: "Awardable solutions directory", href: "/marketplace/awardable-companies" },
         { eyebrow: "Submit", title: "Submission guide", href: "/marketplace/submission-guide" },
         { eyebrow: "Now open", title: "Current opportunities", href: "/opportunities" },
       ]} />

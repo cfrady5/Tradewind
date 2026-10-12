@@ -43,7 +43,7 @@ export function VehicleCompare({ vehicles }: { vehicles: ContractVehicle[] }) {
               <td />
               {vehicles.map((v) => (
                 <td key={v.slug} className="p-5">
-                  <Link href={`/acquisition/vehicles/${v.slug}`} className="group inline-flex items-center gap-1.5 font-semibold text-cobalt hover:text-navy">
+                  <Link href={`/contract-vehicles/${v.slug}`} className="group inline-flex items-center gap-1.5 font-semibold text-cobalt hover:text-navy">
                     {v.shortName} details<ArrowRight width={16} height={16} className="transition-transform group-hover:translate-x-1" />
                   </Link>
                 </td>
@@ -62,7 +62,7 @@ export function VehicleCompare({ vehicles }: { vehicles: ContractVehicle[] }) {
                 <div key={r.label}><dt className="text-xs font-semibold uppercase tracking-[0.12em] text-ink-muted">{r.label}</dt><dd className="mt-1">{r.get(v)}</dd></div>
               ))}
             </dl>
-            <Link href={`/acquisition/vehicles/${v.slug}`} className="mt-6 inline-flex items-center gap-1.5 font-semibold text-cobalt">Details<ArrowRight width={16} height={16} /></Link>
+            <Link href={`/contract-vehicles/${v.slug}`} className="mt-6 inline-flex items-center gap-1.5 font-semibold text-cobalt">Details<ArrowRight width={16} height={16} /></Link>
           </li>
         ))}
       </ul>

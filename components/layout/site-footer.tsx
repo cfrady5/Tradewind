@@ -25,7 +25,7 @@ export function SiteFooter() {
             </p>
           </div>
         </div>
-        <nav aria-label="Footer" className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:col-span-9 lg:grid-cols-6">
+        <nav aria-label="Footer" className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4 lg:col-span-9">
           {FOOTER_COLUMNS.map((col) => (
             <div key={col.label}>
               <h2 className="eyebrow text-ink-subtle">{col.label}</h2>
@@ -43,8 +43,8 @@ export function SiteFooter() {
       <div className="container-page flex flex-col gap-4 border-t border-line-dark py-8 text-xs text-ink-subtle sm:flex-row sm:items-center sm:justify-between">
         <p>© {new Date().getFullYear()} Tradewinds · Chief Digital and Artificial Intelligence Office</p>
         <ul className="flex flex-wrap gap-x-6 gap-y-2">
-          <li><Link href="/about/contact" className="hover:text-white">Contact</Link></li>
-          <li><Link href="/resources/faqs" className="hover:text-white">FAQs</Link></li>
+          <li><Link href="/privacy" className="hover:text-white">Privacy</Link></li>
+          <li><Link href="/contact" className="hover:text-white">Contact</Link></li>
           <li><Link href="/sitemap.xml" className="hover:text-white" prefetch={false}>Sitemap</Link></li>
           <li><a href={EXTERNAL.linkedIn} target="_blank" rel="noopener noreferrer" className="hover:text-white">LinkedIn<span className="sr-only"> (opens external site)</span></a></li>
         </ul>

@@ -31,7 +31,7 @@ export function FaqDirectory({ items }: { items: Faq[] }) {
       <div className="mt-10">
         <ResultsBar count={filtered.length} total={items.length} noun="questions" active={active} onClear={clear} />
         {filtered.length === 0 ? (
-          <div className="mt-8"><EmptyState title="No matching questions">Still stuck? <a className="font-semibold text-cobalt" href="/about/contact">Contact the team</a>.</EmptyState></div>
+          <div className="mt-8"><EmptyState title="No matching questions">Still stuck? <a className="font-semibold text-cobalt" href="/contact">Contact the team</a>.</EmptyState></div>
         ) : (
           <div>
             {filtered.map((f) => (

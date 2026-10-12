@@ -134,7 +134,7 @@ export default async function OpportunityPage({ params }: PageProps<"/opportunit
       <NextSteps steps={[
         { eyebrow: "Opportunities", title: "See all open opportunities", href: "/opportunities" },
         { eyebrow: "Industry", title: "Prepare with the submission guide", href: "/marketplace/submission-guide" },
-        { eyebrow: "Questions", title: "Read the FAQs", href: "/resources/faqs" },
+        { eyebrow: "Questions", title: "Read the FAQs", href: "/marketplace/faqs" },
       ]} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     </>

@@ -13,7 +13,7 @@ export const revalidate = 300;
 export const metadata: Metadata = {
   title: "Browse Awardable Solutions",
   description: "Search public information about solutions determined awardable in the Tradewinds Solutions Marketplace.",
-  alternates: { canonical: "/marketplace/solutions" },
+  alternates: { canonical: "/marketplace/awardable-companies" },
 };
 
 export default async function SolutionsPage() {
@@ -21,9 +21,9 @@ export default async function SolutionsPage() {
   return (
     <>
       <PageHero
-        title="Browse awardable solutions"
+        title="Awardable companies"
         lead="Search public information about solutions determined awardable through the Tradewinds assessment process."
-        crumbs={[{ label: "Marketplace", href: "/marketplace" }, { label: "Browse Awardables", href: "/marketplace/solutions" }]}
+        crumbs={[{ label: "Marketplace", href: "/marketplace" }, { label: "Awardable Companies", href: "/marketplace/awardable-companies" }]}
         compact
       />
       <section className="bg-white">
@@ -46,7 +46,7 @@ export default async function SolutionsPage() {
       </section>
       <NextSteps steps={[
         { eyebrow: "Government", title: "How buyers use the Marketplace", href: "/marketplace/government" },
-        { eyebrow: "Acquisition", title: "Compare contract vehicles", href: "/acquisition/vehicles" },
+        { eyebrow: "Acquisition", title: "Compare contract vehicles", href: "/contract-vehicles" },
         { eyebrow: "Industry", title: "Get your solution assessed", href: "/marketplace/providers" },
       ]} />
     </>
