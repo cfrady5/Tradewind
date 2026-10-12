@@ -1,31 +1,25 @@
 import { cn } from "@/lib/cn";
 
 /**
- * Background motif: the approved Tradewinds monogram with radial lines whose pulses
- * travel slowly in toward its centre. The monogram is the official PNG export, placed
- * as an <image> — never redrawn. Pure SVG/CSS; pulses are hidden under reduced motion.
+ * Background motif: the approved Tradewinds monogram, lit from within.
+ * The official PNG export is used as a luminance mask, so bands of light contracting
+ * toward the centre illuminate the mark's own strokes — the logo is never redrawn.
+ * Pure SVG/CSS; the pulses are hidden under reduced motion (a steady mark remains).
  */
 const W = 1200;
 const H = 800;
-const LOGO_W = 220;
+const LOGO_W = 260;
 const LOGO_H = Math.round(LOGO_W * (160 / 166)); // intrinsic ratio of the exported monogram
-const LINES = 18;
-const R_OUT = 1000; // comfortably beyond the viewBox on every side
-const R_IN = LOGO_W * 0.78; // pulses vanish just outside the mark
 // Centre of the mark per placement, chosen to sit clear of foreground content.
 const CENTRE = { cta: { cx: 960, cy: 400 }, page: { cx: 900, cy: 295 } };
+const PULSES = [0, 2.4, 4.8]; // seconds of stagger across a 7.2s cycle
 
 export function MonogramField({ variant = "cta", className }: { variant?: "cta" | "page"; className?: string }) {
   const { cx, cy } = CENTRE[variant];
   const id = `mf-${variant}`;
-  const lines = Array.from({ length: LINES }, (_, i) => {
-    const a = ((i / LINES) * 360 + 7) * (Math.PI / 180);
-    return {
-      i,
-      x1: cx + Math.cos(a) * R_OUT, y1: cy + Math.sin(a) * R_OUT,
-      x2: cx + Math.cos(a) * R_IN, y2: cy + Math.sin(a) * R_IN,
-    };
-  });
+  const x = cx - LOGO_W / 2;
+  const y = cy - LOGO_H / 2;
+  const reach = LOGO_W * 0.8; // pulse starts just outside the mark and ends at its centre
 
   return (
     <svg
@@ -36,53 +30,32 @@ export function MonogramField({ variant = "cta", className }: { variant?: "cta" 
       focusable="false"
     >
       <defs>
-        <radialGradient id={`${id}-line`} gradientUnits="userSpaceOnUse" cx={cx} cy={cy} r={R_OUT}>
-          <stop offset="0" stopColor="#7FBDF2" stopOpacity="0.32" />
-          <stop offset="0.45" stopColor="#7FBDF2" stopOpacity="0.1" />
+        <mask id={`${id}-mask`} maskUnits="userSpaceOnUse" x={x} y={y} width={LOGO_W} height={LOGO_H}>
+          <image href="/brand/tradewinds-monogram-white.png" x={x} y={y} width={LOGO_W} height={LOGO_H} />
+        </mask>
+        {/* A thin bright band near the rim of a circle; scaling the circle down moves the band inward. */}
+        <radialGradient id={`${id}-band`} cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0.78" stopColor="#7FBDF2" stopOpacity="0" />
+          <stop offset="0.9" stopColor="#FFFFFF" stopOpacity="0.95" />
           <stop offset="1" stopColor="#7FBDF2" stopOpacity="0" />
-        </radialGradient>
-        <radialGradient id={`${id}-halo`} cx="0.5" cy="0.5" r="0.5">
-          <stop offset="0" stopColor="#004AAD" stopOpacity="0.3" />
-          <stop offset="1" stopColor="#004AAD" stopOpacity="0" />
         </radialGradient>
       </defs>
 
-      {/* Ambient cast behind the mark */}
-      <circle cx={cx} cy={cy} r={LOGO_W * 1.2} fill={`url(#${id}-halo)`} />
+      {/* The mark at rest */}
+      <image href="/brand/tradewinds-monogram-white.png" x={x} y={y} width={LOGO_W} height={LOGO_H} opacity="0.3" />
 
-      {/* Static radial lines, fading outward */}
-      <g stroke={`url(#${id}-line)`} strokeWidth="1" vectorEffect="non-scaling-stroke">
-        {lines.map((l) => <line key={l.i} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} />)}
-      </g>
-
-      {/* Pulses: short dashes travelling from the edge toward the centre */}
-      <g stroke="#7FBDF2" strokeWidth="1.5" strokeLinecap="round" className="motion-reduce:hidden">
-        {lines.map((l) => (
-          <line
-            key={l.i}
-            x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2}
-            pathLength={1}
-            strokeDasharray="0.05 0.95"
-            strokeDashoffset="1"
-            className="animate-[travel_9s_linear_infinite_both]"
-            style={{ animationDelay: `${(l.i * 1.37) % 9}s`, animationDuration: `${8 + (l.i % 4)}s` }}
+      {/* Light travelling inward through the mark's strokes */}
+      <g mask={`url(#${id}-mask)`} className="motion-reduce:hidden">
+        {PULSES.map((delay) => (
+          <circle
+            key={delay}
+            cx={cx} cy={cy} r={reach}
+            fill={`url(#${id}-band)`}
+            className="origin-center [transform-box:fill-box] animate-[contract_7.2s_var(--ease-in-out)_infinite_both]"
+            style={{ animationDelay: `${delay}s` }}
           />
         ))}
       </g>
-
-      {/* Arrival ring, breathing slowly */}
-      <circle
-        cx={cx} cy={cy} r={R_IN} fill="none" stroke="#7FBDF2" strokeOpacity="0.22" strokeWidth="1"
-        vectorEffect="non-scaling-stroke"
-        className="origin-center [transform-box:fill-box] motion-safe:animate-[breathe_6s_var(--ease-in-out)_infinite]"
-      />
-
-      {/* The approved monogram */}
-      <image
-        href="/brand/tradewinds-monogram-white.png"
-        x={cx - LOGO_W / 2} y={cy - LOGO_H / 2} width={LOGO_W} height={LOGO_H}
-        opacity="0.42"
-      />
     </svg>
   );
 }

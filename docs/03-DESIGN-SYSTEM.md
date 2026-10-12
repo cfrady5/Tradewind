@@ -57,7 +57,7 @@ Signature: headlines that end in a period render it in Runway Orange (`component
 
 ## Graphic language
 - **Official logo** (`components/brand/brand-logo.tsx`): full-color lockup on light, reversed on dark, monogram for compact/decorative use. Never redrawn.
-- **Monogram field** (`components/brand/monogram-field.tsx`): the approved monogram (official PNG, never redrawn) set into a field of radial lines whose pulses travel slowly in toward its centre. Pure SVG/CSS; used on interior page headers, the final CTA and the 404.
+- **Monogram field** (`components/brand/monogram-field.tsx`): the approved monogram (official PNG, never redrawn) lit from within — the image is used as a luminance mask so bands of light contracting toward the centre illuminate its own strokes. Pure SVG/CSS; used on interior page headers, the final CTA and the 404.
 - **Orbital journey** (`components/home/how-it-works.tsx`): four concentric rings ~15% populated with empty nodes, spinning in alternating directions — Assess highlights a few, Connect pulls them out to a holding orbit, Acquire draws three of them into the centre.
 - **Monogram watermark** (footer) and **Cobalt/Signal band** echo the guideline stationery and page furniture.
 
