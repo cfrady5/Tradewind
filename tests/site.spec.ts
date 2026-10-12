@@ -49,6 +49,20 @@ for (const route of ROUTES) {
   });
 }
 
+test("every route fits a 320px phone without horizontal scrolling", async ({ browser, isMobile }) => {
+  test.skip(!isMobile, "runs once, in the mobile project");
+  test.setTimeout(120_000);
+  const page = await browser.newPage({ viewport: { width: 320, height: 568 }, isMobile: true, hasTouch: true, baseURL: test.info().project.use.baseURL });
+  const wide: string[] = [];
+  for (const route of [...ROUTES, "/employee"]) {
+    await page.goto(route);
+    const { sw, iw } = await page.evaluate(() => ({ sw: document.documentElement.scrollWidth, iw: document.documentElement.clientWidth }));
+    if (sw > iw) wide.push(`${route} (${sw}px)`);
+  }
+  expect(wide).toEqual([]);
+  await page.close();
+});
+
 test("unknown route returns branded 404", async ({ page }) => {
   const res = await page.goto("/does-not-exist");
   expect(res?.status()).toBe(404);
@@ -86,28 +100,161 @@ test.describe("desktop navigation", () => {
   });
 });
 
-test("full-screen menu opens on every width, lists nested pages and navigates", async ({ page }) => {
-  await page.goto("/");
+/* ------------------------------------------------------------------ mobile navigation */
+const openMenu = async (page: import("@playwright/test").Page, path = "/") => {
+  await page.goto(path);
   await page.waitForLoadState("networkidle");
   await page.getByRole("button", { name: "Open menu" }).click();
   const dialog = page.getByRole("dialog", { name: "Site menu" });
   await expect(dialog).toBeVisible();
-  await expect(dialog.getByRole("link", { name: "Awardable Companies" })).toBeVisible();
-  await expect(dialog.getByRole("link", { name: "Employee Portal" })).toBeVisible();
-  await expect(dialog.getByRole("link", { name: /Access the Marketplace/ })).toBeVisible();
-  await dialog.getByRole("link", { name: "Special Topics" }).click();
-  await expect(page).toHaveURL(/\/opportunities\/special-topics$/);
-  await expect(dialog).toBeHidden();
-});
+  return dialog;
+};
 
-test("full-screen menu closes with Escape", async ({ page }) => {
-  await page.goto("/marketplace");
-  await page.waitForLoadState("networkidle");
-  await page.getByRole("button", { name: "Open menu" }).click();
-  const dialog = page.getByRole("dialog", { name: "Site menu" });
-  await expect(dialog).toBeVisible();
-  await page.keyboard.press("Escape");
-  await expect(dialog).toBeHidden();
+test.describe("mobile navigation", () => {
+  test("opens collapsed with focus on Close (no keyboard), and every destination is reachable", async ({ page }) => {
+    const dialog = await openMenu(page);
+    await expect(page.getByRole("button", { name: "Close menu" })).toBeFocused();
+    await expect(dialog.getByRole("searchbox", { name: "Search Tradewinds" })).not.toBeFocused();
+    for (const name of ["Marketplace", "Opportunities", "AI Playground", "Contract Vehicles"]) {
+      await expect(dialog.getByRole("button", { name })).toHaveAttribute("aria-expanded", "false");
+    }
+    for (const name of ["Home", "Events", "Contact", "Employee Portal"]) await expect(dialog.getByRole("link", { name, exact: true })).toBeVisible();
+    await expect(dialog.getByRole("link", { name: "Special Topics" })).toBeHidden();
+    // Every child link from the shared config is present (expanding each group in turn).
+    const groups = { Marketplace: 8, Opportunities: 4, "AI Playground": 11, "Contract Vehicles": 4 };
+    for (const [name, count] of Object.entries(groups)) {
+      await dialog.getByRole("button", { name }).click();
+      await expect(dialog.getByRole("region", { name })).toBeVisible();
+      await expect(dialog.getByRole("region", { name }).getByRole("link")).toHaveCount(count);
+    }
+  });
+
+  test("only one section is expanded at a time and tapping it again collapses it", async ({ page }) => {
+    const dialog = await openMenu(page);
+    const market = dialog.getByRole("button", { name: "Marketplace" });
+    const ai = dialog.getByRole("button", { name: "AI Playground" });
+    await market.click();
+    await expect(market).toHaveAttribute("aria-expanded", "true");
+    await ai.click();
+    await expect(ai).toHaveAttribute("aria-expanded", "true");
+    await expect(market).toHaveAttribute("aria-expanded", "false");
+    await ai.click();
+    await expect(ai).toHaveAttribute("aria-expanded", "false");
+  });
+
+  test("navigates from the accordion and closes, restoring page scroll", async ({ page }) => {
+    const dialog = await openMenu(page);
+    await expect.poll(() => page.evaluate(() => document.documentElement.hasAttribute("data-scroll-locked"))).toBe(true);
+    await dialog.getByRole("button", { name: "Opportunities" }).click();
+    await dialog.getByRole("link", { name: "Special Topics" }).click();
+    await expect(page).toHaveURL(/\/opportunities\/special-topics$/);
+    await expect(dialog).toBeHidden();
+    await expect.poll(() => page.evaluate(() => document.documentElement.hasAttribute("data-scroll-locked"))).toBe(false);
+    expect(await page.evaluate(() => getComputedStyle(document.body).overflow)).not.toBe("hidden");
+  });
+
+  test("marks the current section and page", async ({ page }) => {
+    const dialog = await openMenu(page, "/marketplace/faqs");
+    const market = dialog.getByRole("button", { name: /Marketplace.*current section/ });
+    await expect(market).toBeVisible();
+    await market.click();
+    await expect(dialog.getByRole("link", { name: /FAQs/ })).toHaveAttribute("aria-current", "page");
+  });
+
+  test("search ranks destinations per the brief", async ({ page }) => {
+    const dialog = await openMenu(page);
+    const box = dialog.getByRole("searchbox", { name: "Search Tradewinds" });
+    const results = dialog.getByRole("region", { name: "Search results" }).getByRole("link");
+    await box.fill("award");
+    await expect(dialog.getByText("Search results — 2 matches")).toBeVisible();
+    await expect(results).toHaveText([/Awardable Companies\s*Marketplace/, /Awardees\s*Marketplace/]);
+    await box.fill("Prompt");
+    await expect(results).toHaveText([/Prompt Library/]);
+    await box.fill("contract");
+    await expect(results).toHaveText([/Contract Vehicles Overview/, /DRAID/, /AI Talent 2\.0/, /T&E/]);
+    await box.fill("AI");
+    await expect(results.first()).toContainText("AI Playground");
+    await box.fill("genai mil");
+    await expect(results).toHaveText([/GenAI\.mil/]);
+    await box.fill("zzqx");
+    await expect(dialog.getByText("No matching pages")).toBeVisible();
+    await expect(dialog.getByText("Try a different search term.")).toBeVisible();
+  });
+
+  test("search results navigate, and clearing search restores the accordion state", async ({ page }) => {
+    const dialog = await openMenu(page);
+    await dialog.getByRole("button", { name: "Contract Vehicles" }).click();
+    const box = dialog.getByRole("searchbox", { name: "Search Tradewinds" });
+    await box.fill("faq");
+    await expect(dialog.getByRole("navigation", { name: "Main" })).toHaveCount(0);
+    await dialog.getByRole("button", { name: "Clear search" }).click();
+    await expect(box).toHaveValue("");
+    await expect(box).toBeFocused();
+    await expect(dialog.getByRole("button", { name: "Contract Vehicles" })).toHaveAttribute("aria-expanded", "true");
+    await box.fill("prompt");
+    await box.press("Enter");
+    await expect(page).toHaveURL(/\/ai-playground\/prompt-library$/);
+    await expect(dialog).toBeHidden();
+  });
+
+  test("Escape clears an active search before closing, and focus returns to the menu button", async ({ page }) => {
+    const dialog = await openMenu(page);
+    const box = dialog.getByRole("searchbox", { name: "Search Tradewinds" });
+    await box.fill("events");
+    await page.keyboard.press("Escape");
+    await expect(box).toHaveValue("");
+    await expect(dialog).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(dialog).toBeHidden();
+    await expect(page.getByRole("button", { name: "Open menu" })).toBeFocused();
+  });
+
+  test("arrow keys move from the search field through results", async ({ page, isMobile }) => {
+    test.skip(isMobile, "hardware keyboard behavior");
+    const dialog = await openMenu(page);
+    const box = dialog.getByRole("searchbox", { name: "Search Tradewinds" });
+    await box.fill("award");
+    await box.press("ArrowDown");
+    await expect(dialog.getByRole("link", { name: /Awardable Companies/ })).toBeFocused();
+    await page.keyboard.press("ArrowDown");
+    await expect(dialog.getByRole("link", { name: /Awardees/ })).toBeFocused();
+    await page.keyboard.press("ArrowUp");
+    await page.keyboard.press("ArrowUp");
+    await expect(box).toBeFocused();
+  });
+
+  test("open menu has no serious accessibility violations", async ({ page }) => {
+    const dialog = await openMenu(page);
+    await dialog.getByRole("button", { name: "Marketplace" }).click();
+    await page.waitForTimeout(400);
+    const axe = await new AxeBuilder({ page }).include("dialog[open]").withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"]).analyze();
+    expect(axe.violations.filter((v) => v.impact === "serious" || v.impact === "critical").map((v) => v.id)).toEqual([]);
+  });
+
+  for (const [w, h] of [[320, 568], [375, 667], [390, 844], [430, 932], [844, 390], [768, 1024]] as const) {
+    test(`fits ${w}×${h}: no horizontal overflow, 44px targets, actions reachable`, async ({ browser }) => {
+      const page = await browser.newPage({ viewport: { width: w, height: h }, hasTouch: true, baseURL: test.info().project.use.baseURL });
+      const dialog = await openMenu(page);
+      await dialog.getByRole("button", { name: "AI Playground" }).click();
+      await page.waitForTimeout(400);
+      const m = await page.evaluate(() => {
+        const d = document.querySelector("dialog[open]") as HTMLElement;
+        const small = [...d.querySelectorAll<HTMLElement>("a, button, input")]
+          .filter((el) => el.offsetParent && !el.closest("[inert]"))
+          .map((el) => el.getBoundingClientRect())
+          .filter((r) => r.height < 43.5);
+        return { sw: d.scrollWidth, cw: d.clientWidth, docSw: document.documentElement.scrollWidth, iw: innerWidth, small: small.length };
+      });
+      expect(m.sw).toBeLessThanOrEqual(m.cw);
+      expect(m.docSw).toBeLessThanOrEqual(m.iw);
+      expect(m.small).toBe(0);
+      // The CTA is reachable: pinned, or at the end of the list on short screens.
+      const cta = dialog.getByRole("link", { name: /Access the Marketplace/ });
+      await cta.scrollIntoViewIfNeeded();
+      await expect(cta).toBeVisible();
+      await page.close();
+    });
+  }
 });
 
 test("solutions filters sync to the URL and survive reload", async ({ page }) => {

@@ -6,7 +6,7 @@ _Last updated: 2026-10-12_
 - Design system: official palette with AA-verified pairings, Montserrat (self-hosted), spacing/grid, motion tokens, reduced-motion support.
 - Official logos (full-color + reversed lockups, monogram, favicon/apple icon) from the approved brand files.
 - Information architecture per the Oct 2026 rebuild brief: Marketplace (overview, instructional videos, exemplars, FAQs, awardable companies, awardees, aisles), Opportunities (+ Swarm Forge), AI Playground (tool catalog, prompt library, nine named tools), Contract Vehicles, Events, Contact, Employee Portal; permanent redirects from Wix-era and first-pass URLs. The brief's dark tactical treatment was built, reviewed and reverted on the owner's instruction — the approved light system stays.
-- Global navigation: sticky compressing header, keyboard-accessible mega menus on wide screens (Enter/↓/Esc, focus return), direct Events/Contact links, animated active indicator, a full-screen `<dialog>` overlay menu at every width (brief §5: large uppercase rows, dividers, indented children, full-width Access the Marketplace button, staggered entrance), persistent **Access Marketplace** CTA. Four-column footer.
+- Global navigation: sticky compressing header; keyboard-accessible mega menus from 1280px (Enter/↓/Esc, focus return); direct Events/Contact links; persistent **Access Marketplace** CTA. Menu (all widths): a native `<dialog>` drawer that slides in from the right with a fixed header, a "Search Tradewinds…" field, single-open accordions, ranked client-side search with highlighted matches and an empty state, and a fixed action bar that adapts to small, landscape and keyboard-open viewports (visualViewport). Escape clears search then closes; focus is trapped and restored; the page behind is inert and scroll-locked; current section and page are marked with color, an orange indicator and `aria-current`.
 - Homepage: all 10 sections; light hero with tilted media collage, mission card, converging pathway lines and a stats bar built from real metrics; CSS hero entrance, animated converging-pathways motif, a GSAP-pinned four-ring orbital journey (continuous spin; scroll-scrubbed selection, deterministic in reverse) with a stage-based fallback on mobile and under reduced motion.
 - Directory pattern (URL-synced search/facets/sort, live counts, empty states, pagination) used by Awardable Solutions, Opportunities (+ Special Topics, Shopping Notices, Archive views), AI Tools, Prompt Library (expand + copy with fallback), Resources (+ Videos, Exemplars, News) and FAQs (deep-linkable answers).
 - Opportunity status logic: open/upcoming/closed computed from dates; the monthly Marketplace collection deadline (12:00 pm ET, last day of month, DST-aware) is computed live; closed items move to the Archive automatically.
@@ -51,7 +51,9 @@ The light theme stays; page layouts now follow the rebuild brief section by sect
 | `npm run lint` | 0 errors, 0 warnings |
 | `npm run typecheck` | Pass |
 | `next build` | Pass — all routes static/ISR |
-| Playwright (desktop 1440 + Pixel 7) | **99 passed**, 1 skipped (the keyboard mega-menu test runs on desktop only) |
+| Playwright (desktop 1440 + Pixel 7) | **125 passed**, 3 skipped (device-specific tests run once); navigation tests stable across 3 repeats |
+| Menu at 320×568, 375×667, 390×844, 430×932, 844×390, 768×1024 | No overflow, every control ≥ 44px, CTA reachable |
+| Every route at 320px | No horizontal scrolling (fixed: how-it-works stage tabs, Marketplace path cards, long button labels, contact emails, impact-page screen-reader table) |
 | axe-core WCAG 2.0/2.1/2.2 A+AA on all 31 tested routes × 2 viewports | 0 serious/critical violations |
 | Employee portal: unconfigured screen, anonymous redirects, robots exclusion | Pass |
 | Viewport overflow (no element beyond viewport, no horizontal scroll) | Pass on all routes, both viewports |

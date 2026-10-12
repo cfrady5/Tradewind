@@ -47,11 +47,13 @@ export default async function Page() {
                 </div>
               ))}
             </div>
-            <table className="sr-only">
+            <div className="sr-only">
+            <table>
               <caption>Submissions and awardable determinations</caption>
               <thead><tr><th scope="col">Metric</th><th scope="col">Value</th></tr></thead>
               <tbody>{funnel.map((m) => <tr key={m.key}><th scope="row">{m.label}</th><td>{formatMetric(m.value, m.format)}</td></tr>)}</tbody>
             </table>
+            </div>
           </figure>
         )}
 

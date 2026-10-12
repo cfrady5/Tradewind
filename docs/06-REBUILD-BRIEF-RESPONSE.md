@@ -27,13 +27,19 @@ excluded from indexing by robots.txt and per-page `noindex`.
 
 ## 2. Wireframes (text)
 
-**Header (all pages).** Logo · compact top-level links on wide screens (Marketplace, Opportunities,
-AI Playground and Contract Vehicles open a mega menu; Events and Contact are direct links) · persistent
-**Access Marketplace** button · **Menu** button at every width. Menu opens the brief's full-screen
-overlay in the site's navy: logo top left, Close top right, large uppercase parent rows with hairline
-dividers, indented child links, the Employee Portal link, and a full-width orange **Access the
-Marketplace** button. Rows stagger in; Escape and Close reverse the animation. The bar turns solid
+**Header (all pages).** Logo · compact top-level links on screens 1280px and wider (Marketplace,
+Opportunities, AI Playground and Contract Vehicles open a mega menu; Events and Contact are direct
+links) · persistent **Access Marketplace** button · a menu button at every width. The bar turns solid
 white on scroll and the wordmark swaps to the full-colour lockup.
+
+**Menu (mobile navigation overhaul, Oct 2026).** A navy sheet that slides in from the right —
+full-screen on phones, a 420px panel on tablets and desktop. Three regions: (A) fixed header with the
+logo, a 44px close control and the "Search Tradewinds…" field; (B) the scrolling list — Home, Events
+and Contact as direct links, the four sections as single-open accordions — or, while typing, ranked
+search results; (C) a fixed action bar with the Employee Portal link and a 52px Access the Marketplace
+button. On small phones only the CTA stays pinned; in landscape or with the keyboard open the actions
+join the end of the list. Search is client-side over the same navigation config (titles, categories,
+aliases), ranked exact → prefix → title words → aliases → category, with highlighted matches.
 
 **Homepage (brief §6.1, §11) — only the listed elements.** Hero (headline, one-sentence explanation,
 Access Marketplace / Submit a Solution / View Opportunities, photo collage) with the four-metric grid
@@ -141,7 +147,8 @@ select restricted columns; the portal reads through `portal_content` for cross-t
 
 ## 6. Component list
 
-Public: `SiteHeader` (desktop links + mega menu, full-screen `OverlayMenu`), `SiteFooter`, `PageHero`,
+Public: `SiteHeader` (desktop links + mega menu), `MobileNav` (drawer, accordion, menu search over
+`lib/nav-search.ts`), `SiteFooter`, `PageHero`,
 `Breadcrumbs`, `Hero`, `ChoosePath`, `Why`, `HowItWorks` (orbital animation), `FeaturedOpportunities`,
 `Vehicles`, `ToolsPreview`, `Results` (proof), `FinalCta`, `MonogramField`, `BrandLogo`, `DotTitle`,
 `ButtonLink`, `Badge`, `Counter`, `Reveal`, `DataNotice`, `EmptyState`, `Accordion`, `SectionHeader`,
@@ -180,7 +187,7 @@ version history on every record.
 
 | Phase | Scope | Status |
 | --- | --- | --- |
-| 1 | Information architecture, navigation (full-screen overlay), redirects, copy | Done |
+| 1 | Information architecture, navigation (accordion drawer with search), redirects, copy | Done |
 | 2 | Marketplace section pages, directories, FAQs, videos, exemplars | Done (illustrative records labeled until approved data arrives) |
 | 3 | Opportunities + Swarm Forge, Contract Vehicles, AI Playground | Done (nine tools listed as pending content) |
 | 4 | Supabase schema, RLS, workflow, audit, media, search | Done and validated in PGlite; **project provisioning blocked by the Supabase free-plan limit** |

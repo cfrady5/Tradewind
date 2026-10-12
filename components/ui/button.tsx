@@ -22,8 +22,8 @@ const variants: Record<Variant, string> = {
   "text-dark": "text-sky hover:text-white px-0",
 };
 const sizes: Record<Size, string> = {
-  md: "h-11 px-5 text-[0.9375rem]",
-  lg: "h-13 px-6 text-base",
+  md: "min-h-11 py-2 px-5 text-[0.9375rem]",
+  lg: "min-h-13 py-2 px-6 text-base",
 };
 
 type Props = {
@@ -39,7 +39,7 @@ type Props = {
 export function ButtonLink({ href, variant = "primary", size = "md", children, external, arrow = true, className, ...rest }: Props) {
   const isText = variant === "text" || variant === "text-dark";
   const classes = cn(
-    "group inline-flex items-center justify-center gap-2 rounded-sm font-semibold tracking-[-0.005em] whitespace-nowrap",
+    "group inline-flex items-center justify-center gap-2 rounded-sm text-center font-semibold tracking-[-0.005em] sm:whitespace-nowrap",
     "transition-[background-color,border-color,color,box-shadow] duration-(--duration-ui) ease-(--ease-out)",
     !isText && sizes[size],
     isText && "h-auto",

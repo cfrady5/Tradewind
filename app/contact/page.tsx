@@ -34,7 +34,7 @@ export default function Page() {
             <Mail className="text-runway" width={28} height={28} />
             <h2 className="mt-5 text-xl font-bold">Helpdesk</h2>
             <p className="mt-2 text-white/75">Account, access and technical questions.</p>
-            <a href={mail(EXTERNAL.supportEmail, "Helpdesk")} className="mt-6 text-lg font-semibold text-sky hover:text-white hover:underline">{EXTERNAL.supportEmail}</a>
+            <a href={mail(EXTERNAL.supportEmail, "Helpdesk")} className="mt-6 text-lg font-semibold text-sky [overflow-wrap:anywhere] hover:text-white hover:underline">{EXTERNAL.supportEmail}</a>
           </Reveal>
           <Reveal delay={0.06} className="flex flex-col rounded-xl border border-line p-8">
             <Calendar className="text-cobalt" width={28} height={28} />
@@ -63,8 +63,8 @@ export default function Page() {
               <r.icon className="text-cobalt" width={28} height={28} />
               <h3 className="mt-5 text-xl font-bold">{r.title}</h3>
               <p className="mt-2 text-ink-muted">{r.body}</p>
-              <a href={mail(r.email, r.title)} className="mt-6 inline-flex items-center gap-2 font-semibold text-cobalt hover:underline">
-                <Mail width={18} height={18} />{r.email}
+              <a href={mail(r.email, r.title)} className="mt-6 inline-flex min-w-0 items-center gap-2 font-semibold text-cobalt [overflow-wrap:anywhere] hover:underline">
+                <Mail width={18} height={18} className="shrink-0" />{r.email}
               </a>
               <Link href={r.help.href} className="group mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold text-ink-muted hover:text-navy">
                 Self-serve: {r.help.label}<ArrowRight width={14} height={14} className="transition-transform group-hover:translate-x-1" />

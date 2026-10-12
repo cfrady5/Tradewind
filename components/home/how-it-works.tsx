@@ -346,7 +346,7 @@ export function HowItWorks() {
                   <OrbitSvg register={register} />
                 </div>
               </div>
-              <div className="mt-3 flex items-center gap-1 border-t border-line-dark pt-3 sm:gap-2 sm:pt-4" role="group" aria-label="Journey stages">
+              <div className="mt-3 grid grid-cols-2 gap-1 border-t border-line-dark pt-3 sm:flex sm:items-center sm:gap-2 sm:pt-4" role="group" aria-label="Journey stages">
                 {STAGES.map((s, i) => (
                   <button
                     key={s.key}

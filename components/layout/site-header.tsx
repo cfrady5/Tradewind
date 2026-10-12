@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { useCallback, useEffect, useId, useRef, useState, type CSSProperties } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { preload } from "react-dom";
 import { BrandLogo } from "@/components/brand/brand-logo";
-import { ArrowRight, ArrowUpRight, ChevronDown, Close, Menu } from "@/components/ui/icons";
-import { EXTERNAL, NAV, PORTAL } from "@/lib/site-config";
+import { MobileNav } from "@/components/layout/mobile-nav";
+import { ArrowRight, ArrowUpRight, ChevronDown } from "@/components/ui/icons";
+import { EXTERNAL, NAV } from "@/lib/site-config";
 
 /** Header items: every top-level group except Home (the logo). */
 const ITEMS = NAV.filter((g) => g.href !== "/");
@@ -77,6 +78,7 @@ export function SiteHeader() {
 
   return (
     <header
+      data-site-header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,color] duration-(--duration-ui) ease-(--ease-out)",
         solid ? "bg-white/92 text-navy shadow-[0_1px_0_var(--color-line)] backdrop-blur-xl" : light ? "bg-transparent text-navy" : "on-dark bg-transparent text-white",
@@ -165,7 +167,7 @@ export function SiteHeader() {
               <ArrowUpRight width={16} height={16} className="transition-transform duration-(--duration-ui) group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               <span className="sr-only">(opens external site)</span>
             </a>
-            <OverlayMenu light={light} />
+            <MobileNav light={light} />
           </div>
         </div>
 
@@ -237,134 +239,5 @@ export function SiteHeader() {
         </AnimatePresence>
       </div>
     </header>
-  );
-}
-
-/**
- * Full-site menu (rebuild brief §5): a full-screen navy overlay with large uppercase parent rows,
- * hairline dividers, indented child links and a full-width Access the Marketplace button.
- * Available at every width. Native <dialog> gives focus trapping, Escape and an inert page;
- * CSS handles the enter/exit and the staggered rows (instant under reduced motion).
- */
-function OverlayMenu({ light }: { light: boolean }) {
-  const ref = useRef<HTMLDialogElement>(null);
-  const pathname = usePathname();
-  const reduce = useReducedMotion();
-  const [open, setOpen] = useState(false);
-
-  const openMenu = () => {
-    ref.current?.showModal();
-    setOpen(true);
-  };
-  // Play the exit animation, then close the native dialog.
-  const closeMenu = useCallback(() => {
-    const el = ref.current;
-    if (!el?.open) return;
-    setOpen(false);
-    if (reduce) { el.close(); return; }
-    const done = () => { el.close(); el.removeEventListener("animationend", done); };
-    el.addEventListener("animationend", done);
-  }, [reduce]);
-
-  useEffect(() => { closeMenu(); }, [pathname, closeMenu]);
-
-  let k = 0;
-  const row = () => ({ "--k": k++ }) as CSSProperties;
-  const isCurrent = (href: string) => pathname === href || (href !== "/" && pathname.startsWith(href + "/"));
-
-  return (
-    <>
-      <button
-        type="button"
-        onClick={openMenu}
-        className={cn("group flex h-10 items-center gap-2 rounded-sm px-2.5 text-sm font-semibold transition-colors", light ? "hover:bg-navy/[0.05]" : "hover:bg-white/10")}
-        aria-label="Open menu"
-        aria-haspopup="dialog"
-      >
-        {/* Text label only while the compact link row is hidden; the icon is always there. */}
-        <span className="hidden sm:inline xl:hidden">Menu</span>
-        <Menu className="transition-transform duration-(--duration-ui) group-hover:scale-x-110" />
-      </button>
-      <dialog
-        ref={ref}
-        aria-label="Site menu"
-        data-state={open ? "open" : "closed"}
-        className="menu-overlay on-dark m-0 h-dvh max-h-none w-full max-w-none bg-navy-900 p-0 text-white backdrop:bg-navy-900/50 open:flex open:flex-col"
-        onCancel={(e) => { e.preventDefault(); closeMenu(); }}
-      >
-        <div className="pointer-events-none absolute inset-0 bg-grid-fine opacity-60 [mask-image:radial-gradient(80%_70%_at_50%_0%,black,transparent)]" aria-hidden />
-        <div className="relative border-b border-line-dark">
-          <div className="container-page flex h-19 items-center justify-between">
-            <BrandLogo variant="wordmark-reversed" decorative className="w-[160px] sm:w-[186px]" />
-            <button type="button" onClick={closeMenu} className="group flex h-10 items-center gap-2 rounded-sm px-2.5 text-sm font-semibold hover:bg-white/10" aria-label="Close menu" autoFocus>
-              <span className="hidden sm:inline">Close</span>
-              <Close className="transition-transform duration-(--duration-ui) ease-(--ease-out) group-hover:rotate-90" />
-            </button>
-          </div>
-        </div>
-
-        <nav aria-label="All pages" className="relative min-h-0 flex-1 overflow-y-auto overscroll-contain">
-          <ul className="container-page">
-            {NAV.map((g) => (
-              <li key={g.label} className="menu-row border-b border-line-dark" style={row()}>
-                <Link
-                  href={g.href}
-                  aria-current={pathname === g.href ? "page" : undefined}
-                  className={cn(
-                    "group flex items-center justify-between gap-6 py-4 text-[clamp(1.5rem,1.1rem+1.6vw,2.5rem)] font-extrabold uppercase leading-none tracking-[-0.01em] transition-colors duration-(--duration-micro) sm:py-5",
-                    isCurrent(g.href) ? "text-sky" : "text-white hover:text-sky",
-                  )}
-                >
-                  <span className="flex items-center gap-4">
-                    {isCurrent(g.href) && <span className="h-0.5 w-6 bg-runway" aria-hidden />}
-                    {g.label}
-                  </span>
-                  <ArrowRight className="shrink-0 -translate-x-2 text-runway opacity-0 transition-[opacity,transform] duration-(--duration-ui) group-hover:translate-x-0 group-hover:opacity-100" />
-                </Link>
-                {g.links.length > 0 && (
-                  <ul className="grid gap-x-8 border-l border-line-dark pb-5 pl-5 sm:grid-cols-2 lg:ml-1 lg:grid-cols-4 lg:pl-8">
-                    {g.links.map((l) => (
-                      <li key={l.href}>
-                        <Link
-                          href={l.href}
-                          aria-current={pathname === l.href ? "page" : undefined}
-                          className={cn(
-                            "link-underline inline-block py-1.5 text-[0.9375rem] transition-colors",
-                            pathname === l.href ? "font-semibold text-white" : "text-white/70 hover:text-white",
-                          )}
-                        >
-                          {l.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-            ))}
-            <li className="menu-row" style={row()}>
-              <Link href={PORTAL.href} className="group inline-flex items-center gap-2 py-5 text-xs font-semibold uppercase tracking-[0.16em] text-ink-subtle transition-colors hover:text-white">
-                {PORTAL.label}
-                <ArrowRight width={14} height={14} className="transition-transform group-hover:translate-x-1" />
-              </Link>
-            </li>
-          </ul>
-        </nav>
-
-        <div className="menu-row relative border-t border-line-dark" style={row()}>
-          <div className="container-page py-4">
-            <a
-              href={EXTERNAL.marketplaceSignIn}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex h-14 w-full items-center justify-center gap-2 rounded-sm bg-runway text-base font-bold uppercase tracking-[0.08em] text-navy transition-colors duration-(--duration-ui) hover:bg-[#ffa957]"
-            >
-              Access the Marketplace
-              <ArrowUpRight className="transition-transform duration-(--duration-ui) group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-              <span className="sr-only">(opens external site)</span>
-            </a>
-          </div>
-        </div>
-      </dialog>
-    </>
   );
 }

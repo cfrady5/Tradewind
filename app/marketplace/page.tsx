@@ -29,7 +29,7 @@ const PATHS = [
   {
     id: "government", label: "I am a government user", title: "Find evaluated capability. Move to award.", dark: false,
     steps: ["Sign in or register with an eligible .gov or .mil email.", "Search awardable solutions by need, title or company.", "Review pitch videos and supporting information.", "Contact the provider or request acquisition support.", "Move toward award with your contracting office."],
-    primary: { label: "Access the Marketplace", href: EXTERNAL.marketplaceSignIn, external: true }, secondary: { label: "Buyer guide", href: "/marketplace/government" },
+    primary: { label: "Access Marketplace", href: EXTERNAL.marketplaceSignIn, external: true }, secondary: { label: "Buyer guide", href: "/marketplace/government" },
   },
 ];
 
@@ -69,7 +69,7 @@ export default async function MarketplacePage() {
         <div className="mt-14 grid gap-5 lg:grid-cols-2">
           {PATHS.map((p, i) => (
             <Reveal key={p.id} id={p.id} delay={i * 0.06} className="scroll-mt-28">
-              <div className={p.dark ? "on-dark relative flex h-full flex-col overflow-hidden rounded-xl bg-navy p-8 text-white md:p-10" : "relative flex h-full flex-col rounded-xl border border-line bg-cloud/60 p-8 md:p-10"}>
+              <div className={p.dark ? "on-dark relative flex h-full flex-col overflow-hidden rounded-xl bg-navy p-6 text-white sm:p-8 md:p-10" : "relative flex h-full flex-col rounded-xl border border-line bg-cloud/60 p-6 sm:p-8 md:p-10"}>
                 {p.dark && <span className="absolute inset-0 bg-grid-fine opacity-60" aria-hidden />}
                 <span className={p.dark ? "relative eyebrow text-runway" : "relative eyebrow text-cobalt"}>{p.label}</span>
                 <h2 className="relative mt-4 text-h3 font-bold">{p.title}</h2>
