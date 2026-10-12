@@ -30,6 +30,8 @@ export function Hero({ now, metrics }: { now: Date; metrics: Metric[] }) {
   const stats = [
     awardable && { icon: "cube" as const, value: formatMetric(awardable.value, awardable.format), label: "Solutions determined awardable" },
     activities && { icon: "people" as const, value: formatMetric(activities.value, activities.format), label: "Participating DoW activities" },
+    { icon: "bolt" as const, value: "Faster", label: "Acquisition pathways" },
+    { icon: "chart" as const, value: "Stronger", label: "Mission outcomes" },
   ].filter(Boolean) as { icon: "cube" | "people" | "bolt" | "chart"; value: string; label: string }[];
 
   return (
@@ -64,24 +66,7 @@ export function Hero({ now, metrics }: { now: Date; metrics: Metric[] }) {
         {/* Collage — slanted left edge; two stripes beneath it slide in opposite directions */}
         <div className="relative lg:col-span-5 xl:col-span-6">
           <div className="relative mx-auto w-full max-w-[560px] lg:ml-auto lg:mr-0 lg:max-w-[600px]">
-            {/* Dashed lines parallel to the cut, sliding in opposite directions (desktop only) */}
-            <svg viewBox="0 0 100 94" preserveAspectRatio="none" className="pointer-events-none absolute inset-0 hidden h-full w-full lg:block" aria-hidden>
-              {[
-                { d: 4, cls: "animate-[dash-fwd_6s_linear_infinite]", c: "#7FBDF2", o: 0.55 },
-                { d: 8.5, cls: "animate-[dash-back_6s_linear_infinite]", c: "#337DE5", o: 0.3 },
-                { d: 13, cls: "animate-[dash-fwd_8s_linear_infinite]", c: "#7FBDF2", o: 0.35 },
-              ].map((l) => (
-                <line
-                  key={l.d}
-                  x1={-l.d} y1={62} x2={20 - l.d} y2={104}
-                  stroke={l.c} strokeOpacity={l.o} strokeWidth={2.4} strokeLinecap="round"
-                  strokeDasharray="5 3.5" className={`motion-safe:${l.cls}`}
-                />
-              ))}
-              {/* thin dashed hairline along the slanted edge */}
-              <line x1={0} y1={62} x2={20} y2={104} stroke="#337DE5" strokeOpacity={0.5} strokeWidth={0.5} strokeDasharray="1.2 1.2" vectorEffect="non-scaling-stroke" />
-            </svg>
-            <div className="relative grid grid-cols-2 gap-3 lg:gap-4 lg:[clip-path:polygon(0_0,100%_0,100%_100%,20%_100%,0_62%)]">
+            <div className="relative grid grid-cols-2 gap-3 lg:gap-4 lg:[clip-path:polygon(0_0,100%_0,100%_100%,10%_100%,0_80%)]">
               <div className="enter col-span-2 aspect-[16/8]" style={i(2)}>
                 <HeroTile name="jet" priority sizes="(min-width:1024px) 720px, 100vw" className="h-full w-full" />
               </div>
@@ -100,8 +85,8 @@ export function Hero({ now, metrics }: { now: Date; metrics: Metric[] }) {
       <div className="container-page relative z-10 pb-10">
         <div className="enter rounded-md border border-line bg-white shadow-card" style={i(6)}>
           <ul className="grid divide-line sm:grid-cols-2 sm:divide-x lg:grid-cols-4">
-            {[...stats, ...stats].map((s, k) => (
-              <li key={`${s.label}-${k}`} className="flex items-center gap-4 px-6 py-5" aria-hidden={k >= stats.length || undefined}>
+            {stats.map((s) => (
+              <li key={s.label} className="flex items-center gap-4 px-6 py-5">
                 <StatIcon kind={s.icon} />
                 <p className="flex flex-col">
                   <span className="text-[1.5rem] font-extrabold leading-none tracking-[-0.03em] text-navy tabular-nums">{s.value}</span>
