@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { Pathways } from "@/components/brand/pathways";
+import { MonogramField } from "@/components/brand/monogram-field";
 import { ArrowRight } from "@/components/ui/icons";
 import { Reveal } from "@/components/ui/reveal";
 
 export function FinalCta() {
   return (
     <section aria-labelledby="cta-title" className="on-dark relative isolate overflow-hidden bg-hero text-white">
-      <Pathways variant="cta" className="absolute inset-0 -z-10 h-full w-full" />
+      <MonogramField variant="cta" className="absolute inset-0 -z-10 h-full w-full" />
       <div className="container-page section-y">
         <Reveal className="max-w-3xl">
           <h2 id="cta-title" className="text-display font-extrabold">

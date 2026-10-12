@@ -57,7 +57,7 @@ Signature: headlines that end in a period render it in Runway Orange (`component
 
 ## Graphic language
 - **Official logo** (`components/brand/brand-logo.tsx`): full-color lockup on light, reversed on dark, monogram for compact/decorative use. Never redrawn.
-- **Converging pathways** (`components/brand/pathways.tsx`): technology pathways converge on a focal node and resolve into one orange outcome vector — Discover → Assess → Connect → Acquire. Pure SVG/CSS; variants `hero`, `page`, `cta`.
+- **Monogram field** (`components/brand/monogram-field.tsx`): the approved monogram (official PNG, never redrawn) set into a field of radial lines whose pulses travel slowly in toward its centre. Pure SVG/CSS; used on interior page headers, the final CTA and the 404.
 - **Orbital journey** (`components/home/how-it-works.tsx`): four concentric rings ~15% populated with empty nodes, spinning in alternating directions — Assess highlights a few, Connect pulls them out to a holding orbit, Acquire draws three of them into the centre.
 - **Monogram watermark** (footer) and **Cobalt/Signal band** echo the guideline stationery and page furniture.
 
@@ -74,7 +74,7 @@ Navigation (header + mega menu + mobile dialog), footer, breadcrumbs (with JSON-
 | `--ease-out` | cubic-bezier(.22,1,.36,1) | Default — decisive, no bounce |
 
 Patterns:
-1. **Page load** — CSS-only staggered rise (`enter` utility, 90ms stagger) so it starts at first paint; CTAs arrive within ~0.5s and are interactive immediately. Pathways draw in (`pathLength`-normalized SVG), then signal pulses travel toward the focal node.
+1. **Page load** — CSS-only staggered rise (`enter` utility, 90ms stagger) so it starts at first paint; CTAs arrive within ~0.5s and are interactive immediately. The homepage hero's pathway lines fade in behind the collage.
 2. **Scroll reveals** — `Reveal` / `Stagger` (Motion `whileInView`, once, 18–24px rise).
 3. **Scrollytelling** — How-it-Works pins its two-column block with GSAP ScrollTrigger and scrubs one master timeline (320vh) through four stages; the rings spin continuously on a clock (paused off-screen, off under reduced motion) while every selection attribute is a pure function of scroll progress, so reverse scrolling replays the selection exactly. Below 1024px, on short viewports, or under reduced motion the section is stage-based instead: steps in view select the stage and the visual tweens (or jumps) to that stage's resting state.
 4. **Hover** — arrow nudges, underline draw (`link-underline`), border/elevation shifts, small `-translate-y-0.5` on cards; no tilt or large scale.

@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
 import { Breadcrumbs, type Crumb } from "@/components/ui/breadcrumbs";
-import { Pathways } from "@/components/brand/pathways";
+import { MonogramField } from "@/components/brand/monogram-field";
 import { cn } from "@/lib/cn";
 import { DotTitle } from "@/components/brand/dot-title";
 
-/** Interior page header — Navy band with the pathways motif receding to the right. */
+/** Interior page header — Navy band with the monogram field set to the right. */
 export function PageHero({
   title, lead, crumbs, children, aside, compact,
 }: {
@@ -18,7 +18,7 @@ export function PageHero({
   return (
     <section className="on-dark relative isolate overflow-hidden bg-hero text-white">
       <div className="absolute inset-0 -z-10 bg-grid-fine [mask-image:linear-gradient(to_bottom,black,transparent)]" aria-hidden />
-      <Pathways variant="page" className="absolute inset-y-0 right-[-18%] -z-10 hidden h-full w-[85%] opacity-70 md:block" />
+      <MonogramField variant="page" className="absolute inset-0 -z-10 hidden h-full w-full md:block" />
       <div className={cn("container-page pt-[calc(var(--header-h)+2.5rem)]", compact ? "pb-14" : "pb-20 md:pb-24")}>
         <Breadcrumbs items={crumbs} />
         <div className="mt-10 grid gap-10 lg:grid-cols-12 lg:items-end">
