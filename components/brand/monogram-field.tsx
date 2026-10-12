@@ -1,14 +1,16 @@
 import { cn } from "@/lib/cn";
+import { MONOGRAM_RATIO, MONOGRAM_VIEWBOX, MonogramPaths } from "./monogram";
 
 /**
- * Background motif: the approved Tradewinds monogram, oversized and cropped by the
- * section edges, lit from within. The official PNG export is used as a luminance mask,
- * so a horizontal band of light rising from the bottom fills the mark's own strokes —
- * the logo is never redrawn. Pure SVG/CSS; the sweep is hidden under reduced motion.
+ * Background motif: the Tradewinds monogram, oversized and cropped by the section
+ * edges, lit from within. The vector mark (components/brand/monogram.tsx) is used both
+ * as the resting image and as a luminance mask, so a horizontal band of light rising
+ * from the bottom fills its strokes — pixel-sharp at any size. Pure SVG/CSS; the sweep
+ * is hidden under reduced motion.
  */
 const W = 1200;
 const H = 800;
-const RATIO = 160 / 166; // intrinsic ratio of the exported monogram
+const RATIO = MONOGRAM_RATIO;
 // Placement per surface: the mark deliberately runs past the right and bottom edges.
 const PLACE = { cta: { cx: 900, cy: 415, w: 664 }, page: { cx: 930, cy: 385, w: 560 } };
 
@@ -29,7 +31,7 @@ export function MonogramField({ variant = "cta", className }: { variant?: "cta" 
     >
       <defs>
         <mask id={`${id}-mask`} maskUnits="userSpaceOnUse" x={x} y={y} width={LOGO_W} height={LOGO_H}>
-          <image href="/brand/tradewinds-monogram-white.png" x={x} y={y} width={LOGO_W} height={LOGO_H} />
+          <svg viewBox={MONOGRAM_VIEWBOX} x={x} y={y} width={LOGO_W} height={LOGO_H} color="#fff"><MonogramPaths /></svg>
         </mask>
         {/* A bright leading edge with a soft fill trailing below it; translating upward fills the mark from the bottom. */}
         <linearGradient id={`${id}-sweep`} x1="0" y1="0" x2="0" y2="1">
@@ -41,7 +43,7 @@ export function MonogramField({ variant = "cta", className }: { variant?: "cta" 
       </defs>
 
       {/* The mark at rest */}
-      <image href="/brand/tradewinds-monogram-white.png" x={x} y={y} width={LOGO_W} height={LOGO_H} opacity="0.26" />
+      <svg viewBox={MONOGRAM_VIEWBOX} x={x} y={y} width={LOGO_W} height={LOGO_H} color="#fff" opacity="0.26"><MonogramPaths /></svg>
 
       {/* Light rising from the bottom through the mark's strokes */}
       <g mask={`url(#${id}-mask)`} className="motion-reduce:hidden">

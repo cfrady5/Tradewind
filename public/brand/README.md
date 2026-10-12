@@ -7,9 +7,8 @@ Exported from the approved files supplied with the *Tradewinds Brand Guidelines 
 |---|---|---|
 | `tradewinds-wordmark-navy.png` | TSMlogo-dark.png, trimmed, 96px tall | Full lockup on white / Cloud Gray |
 | `tradewinds-wordmark-reversed.png` | Tradewinds WHITE.png, trimmed, 96px tall | Full lockup on Navy / dark |
-| `tradewinds-monogram-blue.png` | Monogram cropped from the full-color lockup | Compact use on light surfaces |
-| `tradewinds-monogram-white.png` | Monogram cropped from the reversed lockup | Approved monogram tiles, watermarks on dark |
-| `../../app/icon.png`, `../../app/apple-icon.png` | White monogram on Cobalt tile (approved variation, guidelines p.2) | Favicon / home-screen icon |
+| `tradewinds-monogram-*.png` | Cropped from the lockups — **superseded** by the vector in `components/brand/monogram.tsx`; kept for reference only |
+| `../../app/icon.png`, `../../app/apple-icon.png` | Rendered from the vector monogram on a Cobalt tile (approved variation, guidelines p.2) | Favicon / home-screen icon |
 
 The artwork is only trimmed, cropped and resized — never redrawn or recolored.
 If true vector (SVG) masters become available, drop them in and update `components/brand/brand-logo.tsx`.

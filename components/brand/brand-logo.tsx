@@ -1,11 +1,12 @@
 import { cn } from "@/lib/cn";
+import { Monogram } from "./monogram";
 
 /**
  * Official Tradewinds logo artwork (Brand Guidelines, Sep 24 2026), exported from the
  * approved source files by scripts/export-brand-assets.py. Never recreate the logo in text or CSS.
  *  - wordmark-navy:     blue monogram + navy wordmark — white / Cloud Gray surfaces
  *  - wordmark-reversed: all-white lockup — Navy / dark surfaces
- *  - monogram-*:        monogram alone, for compact or decorative use
+ *  - monogram-*:        monogram alone (vector), for compact or decorative use
  */
 type Variant = "wordmark-navy" | "wordmark-reversed" | "monogram-blue" | "monogram-white";
 
@@ -17,6 +18,14 @@ const files: Record<Variant, { src: string; w: number; h: number }> = {
 };
 
 export function BrandLogo({ variant, className, decorative, priority }: { variant: Variant; className?: string; decorative?: boolean; priority?: boolean }) {
+  if (variant === "monogram-blue" || variant === "monogram-white") {
+    return (
+      <Monogram
+        className={cn("block h-auto select-none", variant === "monogram-blue" ? "text-signal" : "text-white", className)}
+        title={decorative ? undefined : "Tradewinds"}
+      />
+    );
+  }
   const f = files[variant];
   return (
     // Plain <img>: tiny pre-sized PNGs; intrinsic width/height reserve space (no CLS).

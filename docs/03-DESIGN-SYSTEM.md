@@ -56,7 +56,7 @@ Signature: headlines that end in a period render it in Runway Orange (`component
 - **Tone:** professional and mission-oriented. Headlines are declarative statements ("Rigorous assessment. Documented outcomes."), not slogans; no wordplay, em-dash asides or marketing superlatives.
 
 ## Graphic language
-- **Official logo** (`components/brand/brand-logo.tsx`): full-color lockup on light, reversed on dark, monogram for compact/decorative use. Never redrawn.
+- **Official logo** (`components/brand/brand-logo.tsx`): full-color lockup on light, reversed on dark (official PNGs at ≥3× display size). The **monogram is vector** (`components/brand/monogram.tsx`, geometry measured from the approved artwork) for backgrounds, watermarks and icons at any size.
 - **Monogram field** (`components/brand/monogram-field.tsx`): the approved monogram (official PNG, never redrawn) lit from within — oversized and cropped by the section edges; the image is used as a luminance mask so a horizontal band of light rising from the bottom fills its own strokes. Pure SVG/CSS; used on interior page headers, the final CTA and the 404.
 - **Orbital journey** (`components/home/how-it-works.tsx`): four concentric rings ~15% populated with empty nodes, spinning in alternating directions — Assess highlights a few, Connect pulls them out to a holding orbit, Acquire draws three of them into the centre.
 - **Monogram watermark** (footer) and **Cobalt/Signal band** echo the guideline stationery and page furniture.
