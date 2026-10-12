@@ -100,13 +100,12 @@ function nodeFrame(n: Node, p: number, t: number): NodeFrame {
 
   const hi = HIGHLIGHT.indexOf(n.id);
   const chosen = CHOSEN.indexOf(n.id);
-  const acquire = seg(p, 0.76, 0.9);
-
   if (hi === -1) {
     // The wider field recedes as the story narrows.
     opacity *= lerp(1, 0.45, smooth(seg(p, 0.27, 0.4)));
-    opacity *= lerp(1, 0.65, smooth(seg(p, 0.52, 0.65)));
-    opacity *= 1 - 0.4 * acquire;
+    // Once the pull-in begins the background field fades out completely so nothing
+    // overlaps the gathered nodes; it fades back in as the user scrolls up.
+    opacity *= 1 - smooth(seg(p, 0.54, 0.7));
     return { x, y, color, opacity, glow };
   }
 
