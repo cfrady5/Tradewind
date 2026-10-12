@@ -8,13 +8,13 @@ import { cn } from "@/lib/cn";
  * otherwise an on-brand illustrated fallback so the layout never shows a broken or empty slot.
  * Photos are interim until ARI-approved imagery is supplied (see docs/05-STATUS.md).
  */
-export type TileName = "jet" | "satellite" | "network" | "ship";
+export type TileName = "jet" | "launch" | "network" | "ship";
 
 const ALT: Record<TileName, string> = {
-  jet: "Aircraft flying above the clouds at sunset",
-  satellite: "Satellite orbiting Earth",
-  network: "Abstract data network",
-  ship: "Naval ship at sea at sunset",
+  jet: "Fighter aircraft in flight",
+  launch: "Rocket lifting off from the launch pad",
+  network: "Abstract wave of data points",
+  ship: "Aircraft carrier in harbour",
 };
 
 function findPhoto(name: TileName) {
@@ -25,7 +25,7 @@ function findPhoto(name: TileName) {
 }
 
 export function HeroTile({ name, className, sizes, priority }: { name: TileName; className?: string; sizes: string; priority?: boolean }) {
-  const photo = name === "network" ? null : findPhoto(name);
+  const photo = findPhoto(name);
   return (
     <div className={cn("relative overflow-hidden rounded-md bg-navy shadow-lift ring-1 ring-navy/15", className)}>
       {photo ? (
@@ -57,9 +57,9 @@ function Fallback({ name }: { name: TileName }) {
         </g>
       </svg>
     );
-  if (name === "satellite")
+  if (name === "launch")
     return (
-      <svg viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 h-full w-full" role="img" aria-label={ALT.satellite}>
+      <svg viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 h-full w-full" role="img" aria-label={ALT.launch}>
         <defs><radialGradient id="t-earth" cx=".5" cy="1.35" r="1"><stop offset=".55" stopColor="#004AAD" /><stop offset=".62" stopColor="#7FBDF2" stopOpacity=".7" /><stop offset=".66" stopColor="#011c2f" stopOpacity="0" /></radialGradient></defs>
         <rect width="300" height="400" fill="#011c2f" />
         {Array.from({ length: 60 }, (_, i) => <circle key={i} cx={(i * 97) % 300} cy={(i * 53) % 260} r={i % 7 === 0 ? 1.4 : 0.7} fill="#fff" opacity={0.3 + ((i * 13) % 7) / 10} />)}

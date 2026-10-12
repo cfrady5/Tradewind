@@ -108,9 +108,9 @@ export function Hero({ now, metrics }: { now: Date; metrics: Metric[] }) {
                   <HeroTile name="jet" priority sizes="(min-width:1024px) 300px, 45vw" className="h-full w-full" />
                 </div>
                 <div className="enter absolute left-[51%] top-[1%] h-[45%] w-[30%]" style={i(3)}>
-                  <HeroTile name="satellite" sizes="(min-width:1024px) 200px, 30vw" className="h-full w-full" />
+                  <HeroTile name="launch" sizes="(min-width:1024px) 200px, 30vw" className="h-full w-full" />
                 </div>
-                <div className="enter absolute left-[84%] top-[6%] h-[39%] w-[22%]" style={i(4)}>
+                <div className="enter absolute left-[83%] top-[6%] h-[39%] w-[17%]" style={i(4)}>
                   <HeroTile name="network" sizes="(min-width:1024px) 150px, 22vw" className="h-full w-full" />
                 </div>
                 <div className="enter absolute left-[38%] top-[48%] h-[42%] w-[66%]" style={i(5)}>

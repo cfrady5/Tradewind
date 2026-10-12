@@ -1,14 +1,15 @@
 # Homepage hero photography
 
-Drop photos here with these exact names (webp, jpg or png). They replace the illustrated
-fallback tiles automatically on the next build — no code changes.
+Current files (supplied by the program team, Oct 2026):
 
-| File | Tile | Shape |
+| File | Tile | Source |
 |---|---|---|
-| `jet.(webp|jpg|png)` | Aircraft above clouds | landscape ~4:3 |
-| `satellite.(webp|jpg|png)` | Satellite over Earth | portrait ~3:4 |
-| `ship.(webp|jpg|png)` | Naval ship at sea | landscape ~16:10 |
+| `jet.webp` | Fighter aircraft | supplied photo, cropped 3:2 |
+| `launch.webp` | Rocket launch | supplied photo, cropped 3:4 |
+| `network.webp` | Data wave | supplied graphic, cropped ~5:8 |
+| `ship.webp` | Aircraft carrier | supplied photo, cropped 7:4 |
 
-The fourth tile (data network) is intentional brand art and has no photo slot.
-Use ARI-approved imagery when available; any interim/AI-generated images must be replaced before launch.
-Keep each file under ~300 KB (1200px on the long edge is plenty).
+Replace any file with the same name to swap a tile; if a file is missing the tile falls back to on-brand illustrated art.
+Confirm image licensing / release approval before launch (two photos show real military aircraft markings).
+
+`alt/telescope.webp` (radio telescope under stars, 3:4) is supplied and cropped but not currently placed; rename it to `launch.webp` to swap it into the portrait tile.
