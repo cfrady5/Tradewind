@@ -20,7 +20,7 @@ export function FeaturedOpportunities({ data, now }: { data: Loaded<Opportunity>
     .slice(0, 3);
 
   return (
-    <section aria-labelledby="opps-title" className="section-y bg-cloud">
+    <section aria-labelledby="opps-title" className="section-y bg-white">
       <div className="container-page">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <Reveal><h2 id="opps-title" className="text-h2 font-bold"><DotTitle>{"Opportunities."}</DotTitle></h2></Reveal>

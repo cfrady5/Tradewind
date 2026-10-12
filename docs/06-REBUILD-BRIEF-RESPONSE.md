@@ -44,12 +44,12 @@ aliases), ranked exact → prefix → title words → aliases → category, with
 **Homepage (brief §6.1, §11) — only the listed elements.** Hero (headline, one-sentence explanation,
 Access Marketplace / Submit a Solution / View Opportunities, photo collage) with the four-metric grid
 directly beneath → pathway strip (government buyers, solution providers, acquisition professionals:
-one line each) → why (velocity, compliance, access: one line each) → Marketplace (one-sentence
-explanation, the four-stage orbital animation, one CTA) → opportunities (three cards: featured and
+one line each) → why (velocity, compliance, access: one line each) → opportunities (three cards: featured and
 active notices, link to all) → contract vehicles (DRAID, AI Talent 2.0, T&E cards) → AI Playground
 (three featured tools, prompt library link) → proof (testimonial, participating organizations) → final
 CTA (Access Marketplace, Submit a Solution, Contact). The brief's hero eyebrow is omitted at the
-owner's earlier request to remove section labels.
+owner's earlier request to remove section labels, and the brief's "How the Marketplace works" section was
+removed at the owner's request (the Marketplace page covers it).
 
 **Section pages.** Each follows the brief's recommended section order: Marketplace overview (two-path
 entry, five-step process, metrics, resource hub, aisles, year in review, CTA); instructional videos
@@ -149,7 +149,7 @@ select restricted columns; the portal reads through `portal_content` for cross-t
 
 Public: `SiteHeader` (desktop links + mega menu), `MobileNav` (drawer, accordion, menu search over
 `lib/nav-search.ts`), `SiteFooter`, `PageHero`,
-`Breadcrumbs`, `Hero`, `ChoosePath`, `Why`, `HowItWorks` (orbital animation), `FeaturedOpportunities`,
+`Breadcrumbs`, `Hero`, `ChoosePath`, `Why`, `FeaturedOpportunities`,
 `Vehicles`, `ToolsPreview`, `Results` (proof), `FinalCta`, `MonogramField`, `BrandLogo`, `DotTitle`,
 `ButtonLink`, `Badge`, `Counter`, `Reveal`, `DataNotice`, `EmptyState`, `Accordion`, `SectionHeader`,
 directory controls and directories (solutions, awardees, opportunities, tools, prompts, FAQs,
