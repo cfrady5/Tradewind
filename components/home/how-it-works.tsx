@@ -49,7 +49,7 @@ const SIGNAL = "#337DE5";
 const RUNWAY = "#F9943B";
 const SKY = "#7FBDF2";
 const NODE_R = 7;
-const FILL = 0.3; // share of each ring's circumference occupied by nodes
+const FILL = 0.15; // share of each ring's circumference occupied by nodes
 
 type Ring = { r: number; color: string; dir: 1 | -1; speed: number };
 const RINGS: Ring[] = [
@@ -71,8 +71,8 @@ const NODES: Node[] = RINGS.flatMap((ring, ri) => {
 });
 
 // Assess highlights these; Connect pulls them out; Acquire takes three of them.
-const HIGHLIGHT = ["r0n2", "r0n9", "r0n17", "r0n25", "r1n4", "r1n15", "r2n3", "r2n11"];
-const CHOSEN = ["r0n9", "r1n15", "r2n3"];
+const HIGHLIGHT = ["r0n1", "r0n5", "r0n9", "r0n13", "r1n2", "r1n8", "r2n1", "r2n6"];
+const CHOSEN = ["r0n5", "r1n8", "r2n1"];
 const STAGING_R = 42; // holding orbit inside the innermost ring
 const CLUSTER_R = 24; // final cluster around the centre
 

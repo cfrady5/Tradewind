@@ -57,7 +57,7 @@ Signature: headlines that end in a period render it in Runway Orange (`component
 ## Graphic language
 - **Official logo** (`components/brand/brand-logo.tsx`): full-color lockup on light, reversed on dark, monogram for compact/decorative use. Never redrawn.
 - **Converging pathways** (`components/brand/pathways.tsx`): technology pathways converge on a focal node and resolve into one orange outcome vector — Discover → Assess → Connect → Acquire. Pure SVG/CSS; variants `hero`, `page`, `cta`.
-- **Orbital journey** (`components/home/how-it-works.tsx`): four concentric rings ~30% populated with empty nodes, spinning in alternating directions — Assess highlights a few, Connect pulls them out to a holding orbit, Acquire draws three of them into the centre.
+- **Orbital journey** (`components/home/how-it-works.tsx`): four concentric rings ~15% populated with empty nodes, spinning in alternating directions — Assess highlights a few, Connect pulls them out to a holding orbit, Acquire draws three of them into the centre.
 - **Monogram watermark** (footer) and **Cobalt/Signal band** echo the guideline stationery and page furniture.
 
 ## Components (`components/`)
