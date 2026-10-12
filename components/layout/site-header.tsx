@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { preload } from "react-dom";
 import { BrandLogo } from "@/components/brand/brand-logo";
 import { ArrowRight, ArrowUpRight, ChevronDown, Close, Menu } from "@/components/ui/icons";
 import { EXTERNAL, NAV } from "@/lib/site-config";
@@ -22,6 +23,9 @@ export function SiteHeader() {
   const panelId = useId();
 
   useEffect(() => {
+    // Both lockups are preloaded so the swap on scroll never shows an empty slot.
+    preload("/brand/tradewinds-wordmark-navy.png", { as: "image" });
+    preload("/brand/tradewinds-wordmark-reversed.png", { as: "image" });
     const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -86,10 +90,8 @@ export function SiteHeader() {
           )}
         >
           <Link href="/" className="shrink-0 rounded-sm" aria-label="Tradewinds home">
-            <span className="relative block w-[160px] sm:w-[186px]">
-              <BrandLogo variant="wordmark-reversed" priority={!lightTop} className={cn("w-full transition-opacity duration-(--duration-ui)", light && "opacity-0")} decorative={light} />
-              <BrandLogo variant="wordmark-navy" priority={lightTop} className={cn("absolute inset-0 w-full transition-opacity duration-(--duration-ui)", !light && "opacity-0")} decorative={!light} />
-            </span>
+            {/* One image whose source switches: full-colour lockup on light/solid headers, reversed on dark. */}
+            <BrandLogo variant={light ? "wordmark-navy" : "wordmark-reversed"} priority className="w-[160px] sm:w-[186px]" />
           </Link>
 
           <nav aria-label="Primary" className="ml-auto hidden lg:block">
