@@ -3,8 +3,6 @@ import { Suspense } from "react";
 import { PageHero } from "@/components/layout/page-hero";
 import { NextSteps } from "@/components/layout/next-steps";
 import { ToolsDirectory } from "@/components/directory/tools-directory";
-import { AVAILABILITY } from "@/components/cards/tool-card";
-import { Badge } from "@/components/ui/badge";
 import { ButtonLink } from "@/components/ui/button";
 import { DataNotice } from "@/components/ui/data-notice";
 import { getTools } from "@/lib/data";
@@ -21,13 +19,6 @@ export default async function Page() {
         lead="Tools that support market research, requirements and evaluation, each labeled by approval status."
         crumbs={[{ label: "AI Playground", href: "/ai-playground" }]}
         compact
-        aside={
-          <dl className="grid gap-3 rounded-lg border border-line-dark bg-white/[0.04] p-5 text-sm">
-            {Object.values(AVAILABILITY).map((a) => (
-              <div key={a.label} className="flex items-center justify-between gap-4"><dt><Badge tone={a.tone} dot>{a.label}</Badge></dt><dd className="text-right text-white/75">{a.description}</dd></div>
-            ))}
-          </dl>
-        }
       >
         <ButtonLink href="/ai-playground/prompt-library" variant="accent">Open the prompt library</ButtonLink>
       </PageHero>
