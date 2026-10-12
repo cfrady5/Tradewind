@@ -57,7 +57,7 @@ Signature: headlines that end in a period render it in Runway Orange (`component
 ## Graphic language
 - **Official logo** (`components/brand/brand-logo.tsx`): full-color lockup on light, reversed on dark, monogram for compact/decorative use. Never redrawn.
 - **Converging pathways** (`components/brand/pathways.tsx`): technology pathways converge on a focal node and resolve into one orange outcome vector — Discover → Assess → Connect → Acquire. Pure SVG/CSS; variants `hero`, `page`, `cta`.
-- **Journey visual** (`components/home/how-it-works.tsx`): the same node vocabulary transforms through four stages.
+- **Orbital journey** (`components/home/how-it-works.tsx`): four concentric rings with ten empty nodes — the field narrows, a match is scanned and identified, and one orange node settles at the centre.
 - **Monogram watermark** (footer) and **Cobalt/Signal band** echo the guideline stationery and page furniture.
 
 ## Components (`components/`)
@@ -75,7 +75,7 @@ Navigation (header + mega menu + mobile dialog), footer, breadcrumbs (with JSON-
 Patterns:
 1. **Page load** — CSS-only staggered rise (`enter` utility, 90ms stagger) so it starts at first paint; CTAs arrive within ~0.5s and are interactive immediately. Pathways draw in (`pathLength`-normalized SVG), then signal pulses travel toward the focal node.
 2. **Scroll reveals** — `Reveal` / `Stagger` (Motion `whileInView`, once, 18–24px rise).
-3. **Scrollytelling** — the How-it-Works visual is `position: sticky` (no scroll hijacking); an IntersectionObserver maps the step in view to the stage; stage tabs jump to steps.
+3. **Scrollytelling** — How-it-Works pins its two-column block with GSAP ScrollTrigger and scrubs one master timeline (320vh) through four stages; every attribute of the four-ring orbital SVG is a pure function of progress, so reverse scrolling replays exactly. Below 1024px, on short viewports, or under reduced motion the section is stage-based instead: steps in view select the stage and the visual tweens (or jumps) to that stage's resting state.
 4. **Hover** — arrow nudges, underline draw (`link-underline`), border/elevation shifts, small `-translate-y-0.5` on cards; no tilt or large scale.
 5. **Navigation** — header compresses 76→64px and turns solid on scroll; active-section underline uses a shared `layoutId`; mega menu content cross-slides between sections.
 6. **Page transitions** — React `<ViewTransition>` crossfade (220ms) via the browser View Transitions API; no-op where unsupported.

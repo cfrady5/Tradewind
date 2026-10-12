@@ -5,7 +5,7 @@
 |---|---|---|
 | Framework | Next.js 16 (App Router, Turbopack), React 19, TypeScript | Server Components by default → minimal hydration; ISR for content. |
 | Styling | Tailwind CSS v4 with brand tokens in `app/globals.css` (`@theme`) | One source of truth for color, type, spacing, motion. |
-| Motion | `motion` (Motion for React) for component motion; CSS transitions for micro-interactions; SVG for brand graphics | No GSAP needed — scroll sequences use `useScroll`. Keeps JS small. |
+| Motion | `motion` (Motion for React) for component motion; CSS transitions for micro-interactions; SVG for brand graphics; GSAP ScrollTrigger only for the pinned, scrubbed How-it-Works sequence | GSAP is loaded by that one client component; everything else stays CSS/Motion. |
 | Data / CMS | **Supabase (Postgres + Storage + Auth)** for all structured content | Per program direction, Supabase hosts all data. Content tables carry draft/publish/archive status, scheduled publishing, revisions, SEO fields and role-based editing via RLS. |
 | Fonts | Montserrat, self-hosted via `@fontsource-variable/montserrat` | No runtime calls to Google; works in restricted networks. |
 | Hosting | Vercel (pending approval) — app is portable to any Node host | See security notes in `04-OPERATIONS.md`. |
