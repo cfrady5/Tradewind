@@ -37,30 +37,44 @@ const STAGES = [
 ] as const;
 
 /* ------------------------------------------------------------------ geometry
- * One progress value p ∈ [0,1] determines every attribute below, so the same
- * scroll position always produces the same frame — forward or reverse.
- * 0–.25 Discover · .25–.5 Assess · .5–.75 Connect · .75–1 Acquire
+ * Two inputs drive every frame:
+ *   t — seconds on a clock: the rings spin continuously, independent of scroll.
+ *   p — scroll progress ∈ [0,1]: selection state only. Same p ⇒ same selection,
+ *       so scrolling backwards reverses it exactly.
+ * 0–.25 Discover · .25–.5 Assess (highlight) · .5–.75 Connect (pull out) · .75–1 Acquire (select)
  */
 const SIZE = 600;
 const C = SIZE / 2;
 const SIGNAL = "#337DE5";
 const RUNWAY = "#F9943B";
-const NODE_R = 9;
+const SKY = "#7FBDF2";
+const NODE_R = 7;
+const FILL = 0.3; // share of each ring's circumference occupied by nodes
 
-type Ring = { r: number; color: string; dir: 1 | -1; turns: number; start: number; count: number };
+type Ring = { r: number; color: string; dir: 1 | -1; speed: number };
 const RINGS: Ring[] = [
-  { r: 240, color: SIGNAL, dir: 1, turns: 0.75, start: -90, count: 4 },
-  { r: 185, color: RUNWAY, dir: -1, turns: 0.9, start: -30, count: 3 },
-  { r: 130, color: SIGNAL, dir: 1, turns: 1.1, start: 20, count: 2 },
-  { r: 74, color: RUNWAY, dir: -1, turns: 1.3, start: -90, count: 1 },
+  { r: 240, color: SIGNAL, dir: 1, speed: 4.5 },   // deg/s — outer clockwise
+  { r: 185, color: RUNWAY, dir: -1, speed: 6 },
+  { r: 130, color: SIGNAL, dir: 1, speed: 8 },
+  { r: 74, color: RUNWAY, dir: -1, speed: 11 },
 ];
 
 type Node = { id: string; ring: number; base: number };
-const NODES: Node[] = RINGS.flatMap((ring, ri) =>
-  Array.from({ length: ring.count }, (_, k) => ({ id: `r${ri}n${k}`, ring: ri, base: ring.start + (360 / ring.count) * k })),
-);
-const CANDIDATES = ["r0n0", "r0n2"]; // shortlisted in Assess
-const CHOSEN = "r0n0"; // becomes the match in Connect, the award in Acquire
+const NODES: Node[] = RINGS.flatMap((ring, ri) => {
+  const count = Math.round((FILL * 2 * Math.PI * ring.r) / (NODE_R * 2));
+  const step = 360 / count;
+  return Array.from({ length: count }, (_, k) => {
+    // Deterministic jitter so the population reads as organic, never overlapping.
+    const jitter = (Math.sin((ri + 1) * 7.3 + k * 2.1) * 0.5) * step * 0.45;
+    return { id: `r${ri}n${k}`, ring: ri, base: ri * 23 + k * step + jitter };
+  });
+});
+
+// Assess highlights these; Connect pulls them out; Acquire takes three of them.
+const HIGHLIGHT = ["r0n2", "r0n9", "r0n17", "r0n25", "r1n4", "r1n15", "r2n3", "r2n11"];
+const CHOSEN = ["r0n9", "r1n15", "r2n3"];
+const STAGING_R = 42; // holding orbit inside the innermost ring
+const CLUSTER_R = 24; // final cluster around the centre
 
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 const seg = (p: number, a: number, b: number) => clamp01((p - a) / (b - a));
@@ -69,124 +83,98 @@ const inOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2,
 const bump = (p: number, center: number, width: number) => Math.max(0, 1 - Math.abs(p - center) / width);
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 const rad = (deg: number) => (deg * Math.PI) / 180;
+const polar = (r: number, deg: number) => ({ x: C + r * Math.cos(rad(deg)), y: C + r * Math.sin(rad(deg)) });
 
-/** Cumulative rotation of a ring. Angular velocity ∝ (1-p)^1.4: fast in Discover,
- *  decelerating through Assess, slow in Connect, near-stop in Acquire. */
-const rotation = (ring: Ring, p: number) => ring.dir * ring.turns * 360 * (1 - Math.pow(1 - p, 2.4));
-const angleOn = (ri: number, base: number, p: number) => base + rotation(RINGS[ri], p);
+/** Spin eases toward a near-stop once the award is made. */
+const spinScale = (p: number) => 1 - 0.7 * smooth(seg(p, 0.78, 0.95));
 
-type NodeFrame = { x: number; y: number; color: string; opacity: number; glow: number; r: number };
+type NodeFrame = { x: number; y: number; color: string; opacity: number; glow: number };
 
-function nodeFrame(n: Node, p: number): NodeFrame {
-  const own = RINGS[n.ring];
-  let color = own.color;
-  let opacity = n.ring === 0 ? 0.95 : 0.7;
+function nodeFrame(n: Node, p: number, t: number): NodeFrame {
+  const ring = RINGS[n.ring];
+  const orbit = polar(ring.r, n.base + ring.dir * ring.speed * t * spinScale(p));
+  let { x, y } = orbit;
+  let color = ring.color;
+  let opacity = n.ring === 0 ? 0.9 : 0.7;
   let glow = 0;
-  let radius = own.r;
-  let angle = angleOn(n.ring, n.base, p);
 
-  const isCand = CANDIDATES.includes(n.id);
-  const isChosen = n.id === CHOSEN;
-  const acquire = seg(p, 0.76, 0.91);
+  const hi = HIGHLIGHT.indexOf(n.id);
+  const chosen = CHOSEN.indexOf(n.id);
+  const acquire = seg(p, 0.76, 0.9);
 
-  if (n.ring === 0) {
-    if (!isCand) {
-      // The field narrows: unselected outer nodes dim rather than vanish.
-      opacity = lerp(0.95, 0.3, smooth(seg(p, 0.27, 0.4)));
-    } else {
-      // Shortlisted: emphasised, then carried in to ring 2.
-      glow = smooth(seg(p, 0.27, 0.38));
-      opacity = 1;
-      const toR2 = inOut(seg(p, 0.36, 0.5));
-      radius = lerp(RINGS[0].r, RINGS[1].r, toR2);
-      angle = lerp(angleOn(0, n.base, p), angleOn(1, n.base, p), toR2);
-
-      if (isChosen) {
-        // The match: turns orange as the scan passes, then descends to ring 3.
-        const toR3 = inOut(seg(p, 0.64, 0.75));
-        radius = lerp(radius, RINGS[2].r, toR3);
-        angle = lerp(angle, angleOn(2, n.base, p), toR3);
-        const orange = smooth(seg(p, 0.6, 0.68));
-        color = orange > 0.5 ? RUNWAY : SIGNAL;
-        glow = Math.max(glow, orange);
-        // Award: from orbit to the centre.
-        const toCenter = inOut(seg(p, 0.78, 0.92));
-        radius = lerp(radius, 0, toCenter);
-        glow = Math.max(glow, toCenter);
-      } else {
-        // The runner-up recedes once the match is identified.
-        opacity = lerp(1, 0.4, smooth(seg(p, 0.62, 0.72)));
-        glow *= 1 - smooth(seg(p, 0.6, 0.7));
-        opacity *= 1 - 0.55 * acquire;
-      }
-    }
-  } else {
-    opacity *= 1 - 0.55 * acquire;
+  if (hi === -1) {
+    // The wider field recedes as the story narrows.
+    opacity *= lerp(1, 0.45, smooth(seg(p, 0.27, 0.4)));
+    opacity *= lerp(1, 0.65, smooth(seg(p, 0.52, 0.65)));
+    opacity *= 1 - 0.4 * acquire;
+    return { x, y, color, opacity, glow };
   }
 
-  // Connect: nodes light briefly as the scanning line crosses them.
-  const scan = scanFrame(p);
-  if (scan.opacity > 0 && !(isChosen && p > 0.64)) {
-    const d = Math.abs((((angle - scan.angle) % 360) + 540) % 360 - 180);
-    const flash = Math.max(0, 1 - d / 22) * scan.opacity;
-    glow = Math.max(glow, flash * 0.9);
-    opacity = Math.min(1, opacity + flash * 0.5);
+  // Assess — highlighted.
+  glow = smooth(seg(p, 0.27 + hi * 0.012, 0.37 + hi * 0.012));
+  opacity = 1;
+
+  // Connect — pulled out of its ring onto a slow holding orbit.
+  const pull = inOut(seg(p, 0.5 + hi * 0.012, 0.64 + hi * 0.012));
+  const hold = polar(STAGING_R, hi * (360 / HIGHLIGHT.length) + 9 * t * spinScale(p));
+  x = lerp(x, hold.x, pull);
+  y = lerp(y, hold.y, pull);
+  color = pull > 0.5 ? SKY : color;
+
+  if (chosen === -1) {
+    // Pulled but not selected: stays in the holding orbit and fades back.
+    opacity = lerp(1, 0.3, smooth(seg(p, 0.8, 0.9)));
+    glow *= 1 - smooth(seg(p, 0.78, 0.86));
+    return { x, y, color, opacity, glow };
   }
 
-  return { x: C + radius * Math.cos(rad(angle)), y: C + radius * Math.sin(rad(angle)), color, opacity, glow, r: NODE_R };
-}
-
-function scanFrame(p: number) {
-  const t = seg(p, 0.52, 0.72);
-  const opacity = Math.min(smooth(seg(p, 0.5, 0.54)), 1 - smooth(seg(p, 0.7, 0.75)));
-  return { angle: -90 + 360 * t, opacity: opacity * 0.9 };
+  // Acquire — three are selected and drawn into the centre.
+  const orange = smooth(seg(p, 0.77 + chosen * 0.015, 0.83 + chosen * 0.015));
+  color = orange > 0.5 ? RUNWAY : color;
+  const gather = inOut(seg(p, 0.82 + chosen * 0.015, 0.93 + chosen * 0.015));
+  const final = polar(CLUSTER_R, -90 + chosen * 120 + 6 * t * spinScale(p));
+  x = lerp(x, final.x, gather);
+  y = lerp(y, final.y, gather);
+  glow = Math.max(glow, orange);
+  return { x, y, color, opacity: 1, glow };
 }
 
 function ringFrame(ri: number, p: number) {
   const base = 0.2;
-  const illuminate = ri === 1 ? 0.35 * bump(p, 0.43, 0.1) : 0; // the active ring glows briefly in Assess
+  const illuminate = 0.3 * bump(p, 0.33, 0.1) * (ri === 0 ? 1 : 0.4); // outer ring lifts as highlights appear
   const fade = 1 - 0.45 * seg(p, 0.76, 0.9);
-  return { opacity: (base + illuminate) * fade, width: ri === 1 && illuminate > 0 ? 1 + illuminate : 1 };
+  return { opacity: (base + illuminate) * fade };
 }
 
 function pulseFrame(p: number) {
-  const t = seg(p, 0.88, 1);
-  return { r: lerp(12, 120, inOut(t)), opacity: t > 0 ? 0.55 * (1 - t) : 0 };
+  const t = seg(p, 0.9, 1);
+  return { r: lerp(20, 130, inOut(t)), opacity: t > 0 ? 0.5 * (1 - t) : 0 };
 }
 
 /* ------------------------------------------------------------- SVG (memoised)
- * Rendered once at p = 0 for SSR; afterwards updated imperatively through refs
- * so scroll frames never re-render React.
+ * Rendered once at t = 0, p = 0 for SSR; afterwards updated imperatively through
+ * refs on a GSAP ticker so frames never re-render React.
  */
 type Refs = {
   nodes: Map<string, { g: SVGGElement; glow: SVGCircleElement; ring: SVGCircleElement }>;
   rings: SVGCircleElement[];
-  scan: SVGLineElement | null;
   pulse: SVGCircleElement | null;
 };
 
-function paint(refs: Refs, p: number, glowScale: number) {
+function paint(refs: Refs, p: number, t: number, glowScale: number) {
   RINGS.forEach((_, ri) => {
     const el = refs.rings[ri];
-    if (!el) return;
-    const f = ringFrame(ri, p);
-    el.setAttribute("stroke-opacity", f.opacity.toFixed(3));
-    el.setAttribute("stroke-width", f.width.toFixed(2));
+    if (el) el.setAttribute("stroke-opacity", ringFrame(ri, p).opacity.toFixed(3));
   });
   for (const n of NODES) {
     const el = refs.nodes.get(n.id);
     if (!el) continue;
-    const f = nodeFrame(n, p);
+    const f = nodeFrame(n, p, t);
     el.g.setAttribute("transform", `translate(${f.x.toFixed(2)} ${f.y.toFixed(2)})`);
     el.g.setAttribute("opacity", f.opacity.toFixed(3));
     el.ring.setAttribute("stroke", f.color);
     el.glow.setAttribute("fill", f.color);
     el.glow.setAttribute("fill-opacity", (f.glow * 0.16 * glowScale).toFixed(3));
-  }
-  if (refs.scan) {
-    const s = scanFrame(p);
-    refs.scan.setAttribute("transform", `rotate(${s.angle.toFixed(2)} ${C} ${C})`);
-    refs.scan.setAttribute("stroke-opacity", s.opacity.toFixed(3));
   }
   if (refs.pulse) {
     const pu = pulseFrame(p);
@@ -198,56 +186,34 @@ function paint(refs: Refs, p: number, glowScale: number) {
 type Register = {
   ring: (i: number, el: SVGCircleElement | null) => void;
   node: (id: string, el: SVGGElement | null) => void;
-  scan: (el: SVGLineElement | null) => void;
   pulse: (el: SVGCircleElement | null) => void;
 };
 
 const OrbitSvg = memo(function OrbitSvg({ register }: { register: Register }) {
-  const p0 = 0;
   return (
     <svg viewBox={`0 0 ${SIZE} ${SIZE}`} className="h-full w-full" aria-hidden="true" focusable="false">
-      <defs>
-        <linearGradient id="orbit-scan" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stopColor="#7FBDF2" stopOpacity="0" />
-          <stop offset="1" stopColor="#7FBDF2" />
-        </linearGradient>
-      </defs>
-
       {RINGS.map((ring, ri) => (
         <circle
           key={ring.r}
           ref={(el) => register.ring(ri, el)}
           cx={C} cy={C} r={ring.r}
-          fill="none" stroke={ring.color} strokeWidth={1} strokeOpacity={ringFrame(ri, p0).opacity}
+          fill="none" stroke={ring.color} strokeWidth={1} strokeOpacity={ringFrame(ri, 0).opacity}
           vectorEffect="non-scaling-stroke"
         />
       ))}
 
-      <line
-        ref={(el) => register.scan(el)}
-        x1={C} y1={C} x2={C + RINGS[0].r + 10} y2={C}
-        stroke="url(#orbit-scan)" strokeWidth={1} strokeOpacity={0} strokeLinecap="round"
-        transform={`rotate(-90 ${C} ${C})`}
-        vectorEffect="non-scaling-stroke"
-      />
-
       <circle
         ref={(el) => register.pulse(el)}
-        cx={C} cy={C} r={12} fill="none" stroke={RUNWAY} strokeWidth={1.25} strokeOpacity={0}
+        cx={C} cy={C} r={20} fill="none" stroke={RUNWAY} strokeWidth={1.25} strokeOpacity={0}
         vectorEffect="non-scaling-stroke"
       />
 
       {NODES.map((n) => {
-        const f = nodeFrame(n, p0);
+        const f = nodeFrame(n, 0, 0);
         return (
-          <g
-            key={n.id}
-            ref={(el) => register.node(n.id, el)}
-            transform={`translate(${f.x.toFixed(2)} ${f.y.toFixed(2)})`}
-            opacity={f.opacity}
-          >
+          <g key={n.id} ref={(el) => register.node(n.id, el)} transform={`translate(${f.x.toFixed(2)} ${f.y.toFixed(2)})`} opacity={f.opacity}>
             <circle r={NODE_R * 2.6} fill={f.color} fillOpacity={0} />
-            <circle r={NODE_R} fill="#022C49" stroke={f.color} strokeWidth={1.75} vectorEffect="non-scaling-stroke" />
+            <circle r={NODE_R} fill="#022C49" stroke={f.color} strokeWidth={1.5} vectorEffect="non-scaling-stroke" />
           </g>
         );
       })}
@@ -261,17 +227,17 @@ const stageCenter = (i: number) => (i + 0.5) / 4;
 export function HowItWorks() {
   const [stage, setStage] = useState(0);
   const reduce = useReducedMotion();
-  const refs = useRef<Refs>({ nodes: new Map(), rings: [], scan: null, pulse: null });
+  const refs = useRef<Refs>({ nodes: new Map(), rings: [], pulse: null });
   const [register] = useState<Register>(() => ({
     ring: (i, el) => { if (el) refs.current.rings[i] = el; },
     node: (id, el) => {
       if (!el) { refs.current.nodes.delete(id); return; }
       refs.current.nodes.set(id, { g: el, glow: el.firstElementChild as SVGCircleElement, ring: el.lastElementChild as SVGCircleElement });
     },
-    scan: (el) => { refs.current.scan = el; },
     pulse: (el) => { refs.current.pulse = el; },
   }));
   const pinRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const stepRefs = useRef<(HTMLLIElement | null)[]>([]);
   const triggerRef = useRef<ScrollTrigger | null>(null);
   const proxyRef = useRef({ p: 0 });
@@ -281,13 +247,26 @@ export function HowItWorks() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     const coarse = window.matchMedia("(max-width: 1023px)").matches;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const glowScale = coarse ? 0.5 : 1;
+    let clock = 0;
     const draw = (p: number) => {
-      paint(refs.current, p, glowScale);
+      paint(refs.current, p, clock, glowScale);
       const s = Math.min(3, Math.floor(p * 4));
       if (s !== stageRef.current) { stageRef.current = s; setStage(s); }
     };
     draw(0);
+
+    // Continuous spin: runs only while the section is on screen, never under reduced motion.
+    let visible = false;
+    const tick = (_time: number, delta: number) => {
+      if (!visible) return;
+      clock += delta / 1000;
+      draw(proxyRef.current.p);
+    };
+    const vis = new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { rootMargin: "100px" });
+    if (sectionRef.current) vis.observe(sectionRef.current);
+    if (!reducedMotion) gsap.ticker.add(tick);
 
     const mm = gsap.matchMedia();
 
@@ -330,7 +309,11 @@ export function HowItWorks() {
       return () => io.disconnect();
     });
 
-    return () => mm.revert();
+    return () => {
+      gsap.ticker.remove(tick);
+      vis.disconnect();
+      mm.revert();
+    };
   }, []);
 
   const goTo = (i: number) => {
@@ -343,7 +326,7 @@ export function HowItWorks() {
   };
 
   return (
-    <section id="how-it-works" aria-labelledby="how-title" className="on-dark relative bg-navy text-white">
+    <section ref={sectionRef} id="how-it-works" aria-labelledby="how-title" className="on-dark relative bg-navy text-white">
       <div className="absolute inset-0 bg-grid-fine opacity-60 [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)]" aria-hidden />
       <div className="container-page relative section-y">
         <div className="max-w-3xl">
