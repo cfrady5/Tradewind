@@ -75,7 +75,7 @@ export function SiteHeader() {
         solid ? "bg-white/92 text-navy shadow-[0_1px_0_var(--color-line)] backdrop-blur-xl" : light ? "bg-transparent text-navy" : "on-dark bg-transparent text-white",
       )}
     >
-      <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-[60] focus:rounded-full focus:bg-runway focus:px-4 focus:py-2 focus:font-semibold focus:text-navy">
+      <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-[60] focus:rounded-sm focus:bg-runway focus:px-4 focus:py-2 focus:font-semibold focus:text-navy">
         Skip to content
       </a>
       <div ref={navRef} onMouseLeave={() => scheduleOpen(null)}>
@@ -110,7 +110,7 @@ export function SiteHeader() {
                       }
                     }}
                     className={cn(
-                      "relative flex h-10 items-center gap-1 rounded-full px-3.5 text-[0.9375rem] font-medium transition-colors duration-(--duration-micro)",
+                      "relative flex h-10 items-center gap-1 rounded-sm px-3.5 text-[0.9375rem] font-medium transition-colors duration-(--duration-micro)",
                       light ? "hover:bg-navy/[0.05]" : "hover:bg-white/8",
                       open === i && (light ? "bg-cloud" : "bg-white/8"),
                     )}
@@ -120,7 +120,7 @@ export function SiteHeader() {
                     {activeIndex === i && (
                       <motion.span
                         layoutId="nav-active"
-                        className="absolute inset-x-3.5 -bottom-0.5 h-0.5 rounded-full bg-runway"
+                        className="absolute inset-x-3.5 -bottom-0.5 h-0.5 rounded-sm bg-runway"
                         transition={{ duration: reduce ? 0 : 0.35, ease: EASE }}
                       />
                     )}
@@ -136,12 +136,12 @@ export function SiteHeader() {
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
-                "group hidden h-10 items-center gap-1.5 rounded-full px-4 text-sm font-semibold transition-colors duration-(--duration-ui) sm:inline-flex",
+                "group hidden h-10 items-center gap-1.5 rounded-sm px-4 text-sm font-semibold transition-colors duration-(--duration-ui) sm:inline-flex",
                 solid ? "bg-cobalt text-white hover:bg-navy" : "bg-runway text-navy hover:bg-[#ffa957]",
               )}
             >
               Marketplace Login
-              <ArrowUpRight width={16} height={16} className="transition-transform duration-(--duration-ui) group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              <ArrowUpRight width={16} height={16} className="transition-transform duration-(--duration-ui) group-group-hover:translate-x-0.5" />
               <span className="sr-only">(opens external site)</span>
             </a>
             <MobileMenu solid={light} />
@@ -201,7 +201,6 @@ export function SiteHeader() {
                       className="group relative col-span-3 flex flex-col justify-between overflow-hidden rounded-lg bg-navy p-6 text-white"
                     >
                       <span className="absolute inset-0 bg-grid-fine opacity-60" aria-hidden />
-                      <span className="absolute -right-10 -top-10 size-40 rounded-full bg-cobalt/60 blur-2xl" aria-hidden />
                       <span className="relative eyebrow text-runway">{group.feature.eyebrow}</span>
                       <span className="relative mt-10 text-xl font-semibold leading-tight">{group.feature.title}</span>
                       <span className="relative mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-sky">
@@ -230,7 +229,7 @@ function MobileMenu({ solid }: { solid: boolean }) {
       <button
         type="button"
         onClick={() => ref.current?.showModal()}
-        className={cn("grid size-10 place-items-center rounded-full lg:hidden", solid ? "hover:bg-cloud" : "hover:bg-white/10")}
+        className={cn("grid size-10 place-items-center rounded-sm lg:hidden", solid ? "hover:bg-cloud" : "hover:bg-white/10")}
         aria-label="Open menu"
         aria-haspopup="dialog"
       >
@@ -244,7 +243,7 @@ function MobileMenu({ solid }: { solid: boolean }) {
       >
         <div className="container-page flex h-16 shrink-0 items-center justify-between border-b border-line">
           <BrandLogo variant="wordmark-navy" className="w-[160px]" />
-          <button type="button" onClick={() => ref.current?.close()} className="grid size-10 place-items-center rounded-full hover:bg-cloud" aria-label="Close menu" autoFocus>
+          <button type="button" onClick={() => ref.current?.close()} className="grid size-10 place-items-center rounded-sm hover:bg-cloud" aria-label="Close menu" autoFocus>
             <Close />
           </button>
         </div>
@@ -276,11 +275,11 @@ function MobileMenu({ solid }: { solid: boolean }) {
           </ul>
         </nav>
         <div className="container-page grid shrink-0 gap-3 border-t border-line py-4">
-          <a href={EXTERNAL.marketplaceSignIn} target="_blank" rel="noopener noreferrer" className="flex h-12 items-center justify-center gap-2 rounded-full bg-cobalt font-semibold text-white">
+          <a href={EXTERNAL.marketplaceSignIn} target="_blank" rel="noopener noreferrer" className="flex h-12 items-center justify-center gap-2 rounded-sm bg-cobalt font-semibold text-white">
             Marketplace Login <ArrowUpRight width={18} height={18} />
             <span className="sr-only">(opens external site)</span>
           </a>
-          <Link href="/marketplace/providers" className="flex h-12 items-center justify-center rounded-full border border-navy/20 font-semibold">
+          <Link href="/marketplace/providers" className="flex h-12 items-center justify-center rounded-sm border border-navy/20 font-semibold">
             Submit a Solution
           </Link>
         </div>

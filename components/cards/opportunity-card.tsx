@@ -14,7 +14,7 @@ export function OpportunityCard({ o, status, now, variant = "card" }: { o: Oppor
   return (
     <article
       className={cn(
-        "group relative flex rounded-lg border border-line bg-white transition-[border-color,box-shadow,transform] duration-(--duration-ui) ease-(--ease-out) hover:-translate-y-0.5 hover:border-signal/50 hover:shadow-lift focus-within:border-signal",
+        "group relative flex rounded-lg border border-line bg-white transition-[border-color,box-shadow,transform] duration-(--duration-ui) ease-(--ease-out) hover:border-signal/50 hover:shadow-lift focus-within:border-signal",
         variant === "row" ? "flex-col gap-6 p-6 md:flex-row md:items-center md:gap-10 md:p-8" : "flex-col p-6",
       )}
     >

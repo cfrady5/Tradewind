@@ -34,7 +34,7 @@ Derived neutrals (legibility only): `navy-900` #011C2F, `ink-muted` #4A5E6D, `in
 Every route is scanned by axe-core (WCAG 2.0/2.1/2.2 A+AA) in the test suite.
 
 ### Gradients
-`bg-hero` (Navy-900 → Navy → Cobalt glow), `text-gradient-sky` (white → Sky → Signal), Signal → Sky (data bars), Runway → light orange (rare). Used in heroes, data viz and ambient light only.
+`bg-hero` (Navy-900 → Navy with a restrained Cobalt cast), Signal → Sky (data bars). Headline accents are solid Sky or Cobalt, never gradient text.
 
 ## Typography — Montserrat (self-hosted variable font)
 | Token | Size | Weight | Use |
@@ -52,7 +52,8 @@ Signature: headlines that end in a period render it in Runway Orange (`component
 ## Layout
 - `container-page`: max 1360px, fluid 20–48px gutters. 12-column grids at `lg`.
 - `section-y`: fluid 72–144px vertical rhythm. Sections alternate **navy → white → cloud** for rhythm; never all-dark.
-- Radii: 4 / 8 / 12 / 20 / 28px. Shadows: `card`, `lift`, `glow` (dark surfaces) — restrained.
+- Radii: 2 / 4 / 6 / 8 / 10px — squared geometry throughout; no pill buttons or badges. Elevation is hairline: `card` (1px rule), `lift` (rule + faint drop), `glow` (1px Sky ring on dark). No blurred orbs or gradient text.
+- **Tone:** professional and mission-oriented. Headlines are declarative statements ("Rigorous assessment. Documented outcomes."), not slogans; no wordplay, em-dash asides or marketing superlatives.
 
 ## Graphic language
 - **Official logo** (`components/brand/brand-logo.tsx`): full-color lockup on light, reversed on dark, monogram for compact/decorative use. Never redrawn.

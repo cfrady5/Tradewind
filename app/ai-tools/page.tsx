@@ -18,7 +18,7 @@ export default async function Page() {
     <>
       <PageHero
         title="AI tools for acquisition work"
-        lead="Discover tools that support market research, requirements, evaluation and more — each clearly labeled by approval status."
+        lead="Tools that support market research, requirements and evaluation, each labeled by approval status."
         crumbs={[{ label: "AI Tools", href: "/ai-tools" }]}
         compact
         aside={

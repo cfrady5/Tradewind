@@ -8,7 +8,7 @@ export function AccordionItem({ id, title, children, defaultOpen, className }: {
     <details id={id} open={defaultOpen} className={cn("group scroll-mt-32 border-b border-line", className)}>
       <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-5 text-left text-[1.0625rem] font-semibold transition-colors hover:text-cobalt [&::-webkit-details-marker]:hidden">
         <span>{title}</span>
-        <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-full border border-line transition-[transform,background-color] duration-(--duration-ui) ease-(--ease-out) group-open:rotate-180 group-open:bg-navy group-open:text-white">
+        <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-sm border border-line transition-[transform,background-color] duration-(--duration-ui) ease-(--ease-out) group-open:rotate-180 group-open:bg-navy group-open:text-white">
           <ChevronDown width={16} height={16} />
         </span>
       </summary>

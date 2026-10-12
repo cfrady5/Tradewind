@@ -27,13 +27,13 @@ function findPhoto(name: TileName) {
 export function HeroTile({ name, className, sizes, priority }: { name: TileName; className?: string; sizes: string; priority?: boolean }) {
   const photo = name === "network" ? null : findPhoto(name);
   return (
-    <div className={cn("relative overflow-hidden rounded-[18px] bg-navy shadow-[0_24px_60px_-20px_rgb(2_44_73/0.45)] ring-1 ring-white/60", className)}>
+    <div className={cn("relative overflow-hidden rounded-md bg-navy shadow-lift ring-1 ring-navy/15", className)}>
       {photo ? (
         <Image src={photo} alt={ALT[name]} fill sizes={sizes} priority={priority} className="object-cover" />
       ) : (
         <Fallback name={name} />
       )}
-      <span className="pointer-events-none absolute inset-0 rounded-[18px] ring-1 ring-inset ring-white/10" aria-hidden />
+      <span className="pointer-events-none absolute inset-0 rounded-md ring-1 ring-inset ring-white/10" aria-hidden />
     </div>
   );
 }

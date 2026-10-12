@@ -9,5 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <OpportunitiesPage title="Opportunities" lead="Every open call for solutions in one place — with live status, deadlines and sponsors." crumbs={[]} />;
+  return <OpportunitiesPage title="Opportunities" lead="Open calls for solutions with status, deadlines and sponsoring organizations." crumbs={[]} />;
 }

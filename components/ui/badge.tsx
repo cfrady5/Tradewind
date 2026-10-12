@@ -24,7 +24,7 @@ const dots: Partial<Record<Tone, string>> = {
 
 export function Badge({ tone = "neutral", children, className, dot }: { tone?: Tone; children: ReactNode; className?: string; dot?: boolean }) {
   return (
-    <span className={cn("inline-flex h-6 items-center gap-1.5 rounded-full px-2.5 text-xs font-semibold ring-1 ring-inset", tones[tone], className)}>
+    <span className={cn("inline-flex h-6 items-center gap-1.5 rounded-sm px-2.5 text-xs font-semibold ring-1 ring-inset", tones[tone], className)}>
       {dot && dots[tone] && (
         <span className="relative flex size-1.5">
           {tone === "open" && <span className={cn("absolute inset-0 rounded-full opacity-60 motion-safe:animate-ping", dots[tone])} />}

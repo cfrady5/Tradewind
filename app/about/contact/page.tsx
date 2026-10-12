@@ -20,7 +20,7 @@ const ROUTES = [
 export default function Page() {
   return (
     <>
-      <PageHero title="Contact & support" lead="Pick the topic that fits — we'll route you to the right team." crumbs={[{ label: "About", href: "/about" }, { label: "Contact & Support", href: "/about/contact" }]} compact />
+      <PageHero title="Contact & support" lead="Select a topic to reach the appropriate team." crumbs={[{ label: "About", href: "/about" }, { label: "Contact & Support", href: "/about/contact" }]} compact />
       <Section>
         <ul className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {ROUTES.map((r, i) => (

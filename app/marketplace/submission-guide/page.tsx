@@ -20,7 +20,7 @@ export default async function Page() {
   return (
     <>
       <PageHero
-        title="Everything you need to submit with confidence."
+        title="Submission requirements and readiness."
         lead="Work through the checklist, review requirements and timing, then submit through the official portal."
         crumbs={[{ label: "Marketplace", href: "/marketplace" }, { label: "Submission Guide", href: "/marketplace/submission-guide" }]}
         compact

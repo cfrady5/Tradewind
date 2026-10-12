@@ -41,7 +41,7 @@ function CopyButton({ text, label }: { text: string; label: string }) {
         setTimeout(() => setState("idle"), 2200);
       }}
       className={cn(
-        "inline-flex h-9 shrink-0 items-center gap-2 rounded-full px-4 text-sm font-semibold transition-colors duration-(--duration-micro)",
+        "inline-flex h-9 shrink-0 items-center gap-2 rounded-sm px-4 text-sm font-semibold transition-colors duration-(--duration-micro)",
         state === "done" ? "bg-[#e3f4ea] text-[#155c34]" : state === "failed" ? "bg-runway-tint text-[#8a4100]" : "bg-navy text-white hover:bg-cobalt",
       )}
       aria-label={state === "done" ? "Copied" : state === "failed" ? "Copy failed — expand and select the text" : `Copy prompt: ${label}`}

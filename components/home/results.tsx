@@ -17,9 +17,9 @@ export function Results({ metrics }: { metrics: Metric[] }) {
     <section aria-labelledby="results-title" className="section-y bg-white">
       <div className="container-page grid gap-14 lg:grid-cols-12 lg:items-center">
         <Reveal className="lg:col-span-6">
-          <h2 id="results-title" className="text-h2 font-bold"><DotTitle>{"A rigorous bar — and real acquisition outcomes."}</DotTitle></h2>
+          <h2 id="results-title" className="text-h2 font-bold"><DotTitle>{"Rigorous assessment. Documented outcomes."}</DotTitle></h2>
           <p className="mt-6 max-w-xl text-lead text-ink-muted">
-            Every awardable solution has been assessed by experts before a buyer ever sees it. That rigor is what lets acquisition teams move with confidence.
+            Every awardable solution is assessed by a peer and subject-matter-expert panel before it reaches a buyer.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <ButtonLink href="/about/impact" variant="primary">View impact</ButtonLink>

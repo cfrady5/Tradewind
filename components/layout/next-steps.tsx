@@ -5,7 +5,7 @@ import { Reveal } from "@/components/ui/reveal";
 export type Step = { eyebrow: string; title: string; href: string; description?: string };
 
 /** End-of-page module so no page is a dead end. */
-export function NextSteps({ title = "Where to go next", steps }: { title?: string; steps: Step[] }) {
+export function NextSteps({ title = "Related", steps }: { title?: string; steps: Step[] }) {
   return (
     <section aria-labelledby="next-steps" className="border-t border-line bg-cloud">
       <div className="container-page py-16 md:py-20">

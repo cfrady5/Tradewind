@@ -49,7 +49,7 @@ export default async function Page() {
         </div>
       </Section>
       <Section tone="dark">
-        <SectionHeader dark title="Evidence beats adjectives." />
+        <SectionHeader dark title="What strong submissions demonstrate." />
         <div className="mt-12">
           <FeatureList dark items={[
             { title: "A precise mission problem", body: "Name the operational problem and who has it — not just the technology category." },

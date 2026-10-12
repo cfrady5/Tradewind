@@ -39,7 +39,7 @@ type Props = {
 export function ButtonLink({ href, variant = "primary", size = "md", children, external, arrow = true, className, ...rest }: Props) {
   const isText = variant === "text" || variant === "text-dark";
   const classes = cn(
-    "group inline-flex items-center justify-center gap-2 rounded-full font-semibold tracking-[-0.005em] whitespace-nowrap",
+    "group inline-flex items-center justify-center gap-2 rounded-sm font-semibold tracking-[-0.005em] whitespace-nowrap",
     "transition-[background-color,border-color,color,box-shadow] duration-(--duration-ui) ease-(--ease-out)",
     !isText && sizes[size],
     isText && "h-auto",
@@ -56,7 +56,7 @@ export function ButtonLink({ href, variant = "primary", size = "md", children, e
           height={18}
           className={cn(
             "shrink-0 transition-transform duration-(--duration-ui) ease-(--ease-out)",
-            external ? "group-hover:-translate-y-0.5 group-hover:translate-x-0.5" : "group-hover:translate-x-1",
+            external ? "group-group-hover:translate-x-0.5" : "group-hover:translate-x-1",
           )}
         />
       )}

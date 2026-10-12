@@ -34,8 +34,8 @@ export function Ecosystem({ vehicles }: { vehicles: ContractVehicle[] }) {
     <section aria-labelledby="eco-title" className="section-y bg-white">
       <div className="container-page">
         <SectionHeader
-          id="eco-title" title="Everything acquisition teams need, connected."
-          lead="Three pillars, one system: find assessed technology, choose the right pathway, and work faster with purpose-built tools."
+          id="eco-title" title="An integrated acquisition ecosystem."
+          lead="Assessed technology, defined procurement pathways, and tools that support the acquisition workforce."
           align="split"
         />
 
@@ -73,7 +73,7 @@ export function Ecosystem({ vehicles }: { vehicles: ContractVehicle[] }) {
           <Reveal className="lg:col-span-5" delay={0.06}>
             <Pillar
               href="/acquisition"
-              title="Choose the right pathway."
+              title="Select the procurement pathway."
               body="Understand procurement vehicles and pathways — compared side by side."
               cta="Compare vehicles"
               className="bg-cloud/60"
@@ -92,7 +92,7 @@ export function Ecosystem({ vehicles }: { vehicles: ContractVehicle[] }) {
           <Reveal className="lg:col-span-5" delay={0.12}>
             <Pillar
               href="/ai-tools"
-              title="Work smarter with AI."
+              title="Apply AI to acquisition work."
               body="Tools and a searchable prompt library that support effective acquisition workflows."
               cta="Browse AI tools"
             >

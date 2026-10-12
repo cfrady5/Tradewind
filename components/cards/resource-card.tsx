@@ -32,7 +32,7 @@ export function ResourceCard({ r }: { r: Resource }) {
   const cls = "group relative flex h-full flex-col rounded-lg border border-line bg-white p-6 transition-[border-color,box-shadow,transform] duration-(--duration-ui) ease-(--ease-out)";
   if (!r.url) return <article className={cls}>{inner}<p className="mt-4 text-xs text-ink-muted">Link awaiting approved content.</p></article>;
   return (
-    <article className={`${cls} hover:-translate-y-0.5 hover:border-signal/50 hover:shadow-lift`}>
+    <article className={`${cls} hover:border-signal/50 hover:shadow-lift`}>
       {inner}
       <a href={r.url} target="_blank" rel="noopener noreferrer" className="absolute inset-0 rounded-lg" aria-label={`${r.title} (opens external site)`}>
         <ArrowUpRight className="absolute right-5 top-5 hidden" />

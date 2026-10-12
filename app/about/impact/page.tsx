@@ -20,7 +20,7 @@ export default async function Page() {
 
   return (
     <>
-      <PageHero title="Impact & results" lead="Program performance reported with its period, source and verification status — never rounded up, never invented." crumbs={[{ label: "About", href: "/about" }, { label: "Impact", href: "/about/impact" }]} compact />
+      <PageHero title="Impact & results" lead="Program performance reported with period, source and verification status." crumbs={[{ label: "About", href: "/about" }, { label: "Impact", href: "/about/impact" }]} compact />
       <Section>
         <DataNotice source={data.source} what="metric data" className="mb-10" />
         <dl className="grid gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
@@ -41,8 +41,8 @@ export default async function Page() {
               {funnel.map((m, i) => (
                 <div key={m.key}>
                   <div className="flex justify-between text-sm font-semibold"><span>{m.label}</span><span className="tabular-nums">{formatMetric(m.value, m.format)}</span></div>
-                  <div className="mt-2 h-4 overflow-hidden rounded-full bg-cloud">
-                    <div className={i ? "h-full rounded-full bg-runway" : "h-full rounded-full bg-cobalt"} style={{ width: `${(m.value / max) * 100}%` }} />
+                  <div className="mt-2 h-4 overflow-hidden rounded-sm bg-cloud">
+                    <div className={i ? "h-full rounded-sm bg-runway" : "h-full rounded-sm bg-cobalt"} style={{ width: `${(m.value / max) * 100}%` }} />
                   </div>
                 </div>
               ))}

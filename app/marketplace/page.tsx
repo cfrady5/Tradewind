@@ -25,7 +25,7 @@ export default async function MarketplacePage() {
   return (
     <>
       <PageHero
-        title={<>Assessed once. <span className="text-gradient-sky">Awardable when you need it</span><span className="text-runway">.</span></>}
+        title={<>Competitively assessed. <span className="text-gradient-sky">Readily awardable</span><span className="text-runway">.</span></>}
         lead="A digital repository of post-competition, readily awardable pitch videos — giving government buyers a single place to find AI, digital and data-analytics solutions."
         crumbs={[{ label: "Marketplace", href: "/marketplace" }]}
         aside={m.awardable && (
@@ -86,7 +86,7 @@ export default async function MarketplacePage() {
       </Section>
 
       <Section tone="cloud">
-        <Split title="What “awardable” means — and doesn't">
+        <Split title="What awardable status means">
           <p>Awardable means a solution&rsquo;s pitch was assessed by an expert panel and met the Marketplace&rsquo;s criteria. It makes the solution discoverable to government buyers and eligible to pursue an award.</p>
           <p><strong>It is not a contract award</strong>, an endorsement, or a guarantee of one. Buyers still determine mission fit, negotiate terms and award through their contracting office.</p>
           <div className="mt-8"><Callout title="Acquisition pathways">Buying activities select an appropriate award mechanism with their contracting office. See <Link href="/acquisition">Acquisition</Link> for pathways and contract vehicles.</Callout></div>

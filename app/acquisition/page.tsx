@@ -17,7 +17,7 @@ export default async function Page() {
   return (
     <>
       <PageHero
-        title="Choose the right pathway to award."
+        title="Procurement pathways to award."
         lead="Tradewinds connects discovery to procurement: the Solutions Marketplace for assessed solutions, and CDAO contract vehicles for services, talent and test."
         crumbs={[{ label: "Acquisition", href: "/acquisition" }]}
       >
@@ -36,12 +36,12 @@ export default async function Page() {
         </div>
       </Section>
       <Section tone="cloud">
-        <SectionHeader title="Compare at a glance" />
+        <SectionHeader title="Vehicle comparison" />
         <DataNotice source={vehicles.source} what="vehicle information" className="mt-8" />
         <div className="mt-10"><VehicleCompare vehicles={vehicles.items} /></div>
       </Section>
       <Section>
-        <Split title="Clear status on every vehicle">
+        <Split title="Current and historical status">
           <p>Each vehicle page separates <strong>current ordering guidance</strong> from <strong>historical information</strong>. Where details are being confirmed with the program office, the page says so rather than presenting outdated information as current.</p>
         </Split>
       </Section>

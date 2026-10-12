@@ -17,7 +17,7 @@ export function ProcessSteps({ steps, dark }: { steps: ProcessStep[]; dark?: boo
           <div className="relative flex items-center md:mb-6">
             <span
               className={cn(
-                "relative z-10 grid size-10 shrink-0 place-items-center rounded-full font-mono text-sm font-bold",
+                "relative z-10 grid size-10 shrink-0 place-items-center rounded-sm font-mono text-sm font-bold",
                 i === steps.length - 1 ? "bg-runway text-navy" : dark ? "bg-cobalt text-white" : "bg-navy text-white",
               )}
             >

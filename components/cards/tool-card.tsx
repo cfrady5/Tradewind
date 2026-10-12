@@ -15,7 +15,7 @@ export function ToolCard({ tool, dark }: { tool: AiTool; dark?: boolean }) {
   return (
     <article
       className={cn(
-        "group relative flex h-full flex-col rounded-lg border p-6 transition-[border-color,background-color,transform] duration-(--duration-ui) ease-(--ease-out) hover:-translate-y-0.5",
+        "group relative flex h-full flex-col rounded-lg border p-6 transition-[border-color,background-color,transform] duration-(--duration-ui) ease-(--ease-out)",
         dark ? "border-line-dark bg-white/[0.03] hover:border-sky/40 hover:bg-white/[0.06]" : "border-line bg-white hover:border-signal/50 hover:shadow-lift",
       )}
     >

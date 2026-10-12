@@ -9,14 +9,13 @@ export function ToolsPreview({ data }: { data: Loaded<AiTool> }) {
   const featured = data.items.slice(0, 3);
   return (
     <section aria-labelledby="tools-title" className="on-dark relative overflow-hidden bg-navy-900 text-white">
-      <div className="absolute -left-40 top-1/3 size-[36rem] rounded-full bg-cobalt/25 blur-3xl" aria-hidden />
       <div className="container-page relative section-y">
         <div className="grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-4">
             <SectionHeader
               dark
               id="tools-title" title="Tools built for acquisition work."
-              lead="Approved, externally hosted and experimental tools — clearly labeled — plus a searchable prompt library."
+              lead="Approved, externally hosted and experimental tools, each labeled by status, plus a searchable prompt library."
             />
             <div className="mt-8 flex flex-wrap gap-3">
               <ButtonLink href="/ai-tools" variant="accent">Browse AI tools</ButtonLink>

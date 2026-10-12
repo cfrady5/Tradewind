@@ -330,7 +330,7 @@ export function HowItWorks() {
       <div className="container-page relative section-y">
         <div className="max-w-3xl">
           <h2 id="how-title" className="text-h2 font-bold"><DotTitle>{"One pathway from discovery to award."}</DotTitle></h2>
-          <p className="mt-6 text-lead text-white/75">Four stages turn a crowded technology landscape into a clear procurement outcome.</p>
+          <p className="mt-6 text-lead text-white/75">Four stages move a solution from submission to award.</p>
         </div>
 
         <div ref={pinRef} className="mt-12 grid gap-10 lg:mt-16 lg:grid-cols-12 lg:items-center lg:gap-16">
@@ -374,7 +374,7 @@ export function HowItWorks() {
               >
                 <span
                   className={cn(
-                    "relative z-10 grid size-10 shrink-0 place-items-center rounded-full border font-mono text-sm font-bold transition-[background-color,border-color,color] duration-(--duration-ui)",
+                    "relative z-10 grid size-10 shrink-0 place-items-center rounded-sm border font-mono text-sm font-bold transition-[background-color,border-color,color] duration-(--duration-ui)",
                     stage === i ? "border-runway bg-runway text-navy" : "border-sky/40 bg-navy text-sky",
                   )}
                   aria-hidden

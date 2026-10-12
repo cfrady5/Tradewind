@@ -16,9 +16,9 @@ export function ChoosePath() {
       <div className="container-page">
         <Reveal className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <h2 id="paths-title" className="max-w-2xl text-h2 font-bold"><DotTitle>{"Two journeys. One ecosystem."}</DotTitle></h2>
+            <h2 id="paths-title" className="max-w-2xl text-h2 font-bold"><DotTitle>{"Select your role."}</DotTitle></h2>
           </div>
-          <p className="max-w-sm text-lead text-ink-muted">Start where you are — Tradewinds routes buyers and builders to exactly what they need.</p>
+          <p className="max-w-sm text-lead text-ink-muted">Tradewinds provides a defined path for government buyers and for solution providers.</p>
         </Reveal>
 
         <div className="mt-14 grid gap-5 lg:grid-cols-2">
@@ -47,8 +47,8 @@ export function ChoosePath() {
                     >
                       <span className="size-2 rounded-full bg-signal" />
                       <span className="whitespace-nowrap text-sm font-semibold text-navy">{r.k}</span>
-                      <span className={`ml-auto h-1.5 rounded-full bg-cloud ${r.w}`}>
-                        <span className="block h-full w-0 rounded-full bg-cobalt transition-[width] duration-700 ease-(--ease-out) group-hover:w-full" style={{ transitionDelay: `${120 + i * 80}ms` }} />
+                      <span className={`ml-auto h-1.5 rounded-sm bg-cloud ${r.w}`}>
+                        <span className="block h-full w-0 rounded-sm bg-cobalt transition-[width] duration-700 ease-(--ease-out) group-hover:w-full" style={{ transitionDelay: `${120 + i * 80}ms` }} />
                       </span>
                     </span>
                   ))}
@@ -69,7 +69,6 @@ export function ChoosePath() {
               className="on-dark group relative flex h-full min-h-[30rem] flex-col overflow-hidden rounded-xl bg-navy p-8 text-white transition-shadow duration-(--duration-ui) hover:shadow-glow md:p-10"
             >
               <span className="absolute inset-0 bg-grid-fine opacity-70" aria-hidden />
-              <span className="absolute -right-24 -top-24 size-72 rounded-full bg-cobalt/50 blur-3xl transition-transform duration-700 ease-(--ease-out) group-hover:scale-125" aria-hidden />
               <span className="relative eyebrow text-runway">For Solution Providers</span>
               <h3 className="relative mt-4 max-w-md text-h3 font-bold">Bring your technology to the mission.</h3>
 
@@ -85,7 +84,7 @@ export function ChoosePath() {
                     {STEPS.map((s, i) => (
                       <span key={s} className="flex flex-col items-center gap-3">
                         <span
-                          className="size-4 rounded-full border-2 border-sky/50 bg-navy transition-[background-color,border-color] duration-(--duration-ui) group-hover:border-runway group-hover:bg-runway"
+                          className="size-4 rounded-sm border-2 border-sky/50 bg-navy transition-[background-color,border-color] duration-(--duration-ui) group-hover:border-runway group-hover:bg-runway"
                           style={{ transitionDelay: `${i * 220}ms` }}
                         />
                         <span className="text-xs font-semibold text-white/80">{s}</span>

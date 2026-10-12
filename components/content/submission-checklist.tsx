@@ -41,8 +41,8 @@ export function SubmissionChecklist({ groups }: { groups: ChecklistGroup[] }) {
           <span className="font-semibold">Submission readiness</span>
           <span className="tabular-nums text-ink-muted" aria-live="polite">{count} of {total} complete</span>
         </div>
-        <div className="mt-3 h-2 overflow-hidden rounded-full bg-cloud" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100} aria-label="Checklist progress">
-          <div className="h-full rounded-full bg-gradient-to-r from-cobalt to-signal transition-[width] duration-(--duration-enter) ease-(--ease-out)" style={{ width: `${pct}%` }} />
+        <div className="mt-3 h-2 overflow-hidden rounded-sm bg-cloud" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100} aria-label="Checklist progress">
+          <div className="h-full rounded-sm bg-gradient-to-r from-cobalt to-signal transition-[width] duration-(--duration-enter) ease-(--ease-out)" style={{ width: `${pct}%` }} />
         </div>
       </div>
       <div className="divide-y divide-line">

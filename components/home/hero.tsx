@@ -17,7 +17,7 @@ const nodeAt = (y0: number) => ({ x: 33, y: y0 * 0.42 + F.y * 0.58 });
 function StatIcon({ kind }: { kind: "cube" | "people" | "bolt" | "chart" }) {
   const p = { width: 26, height: 26, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.6, strokeLinecap: "round" as const, strokeLinejoin: "round" as const, "aria-hidden": true };
   return (
-    <span className="grid size-14 shrink-0 place-items-center rounded-full bg-sky-tint text-cobalt">
+    <span className="grid size-14 shrink-0 place-items-center rounded-sm bg-sky-tint text-cobalt">
       {kind === "cube" && <svg {...p}><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9z" /><path d="m4 7.5 8 4.5 8-4.5M12 12v9" /></svg>}
       {kind === "people" && <svg {...p}><circle cx="9" cy="8" r="3" /><circle cx="17" cy="9" r="2.4" /><path d="M3.5 19a5.5 5.5 0 0 1 11 0M14.5 15.2a4.5 4.5 0 0 1 6 3.8" /></svg>}
       {kind === "bolt" && <svg {...p}><path d="M13 2 4 14h7l-1 8 9-12h-7z" /></svg>}
@@ -53,7 +53,7 @@ export function Hero({ now, metrics }: { now: Date; metrics: Metric[] }) {
             <span className="enter block" style={i(1)}>Accelerating the</span>
             <span className="enter block" style={i(2)}>Acquisition of</span>
             <span className="enter block" style={i(3)}>
-              <span className="bg-gradient-to-r from-cobalt via-signal to-signal bg-clip-text text-transparent">Innovation</span>
+              <span className="text-cobalt">Innovation</span>
               <span className="text-runway">.</span>
             </span>
           </h1>
@@ -61,7 +61,7 @@ export function Hero({ now, metrics }: { now: Date; metrics: Metric[] }) {
             Discover, assess, and acquire mission-ready AI, digital, and data-driven technologies through the Tradewinds ecosystem.
           </p>
           <div className="enter mt-9 flex flex-wrap items-center gap-3" style={{ ...i(4), animationDuration: "500ms" }}>
-            <ButtonLink href="/marketplace" variant="accent" size="lg" className="shadow-[0_10px_24px_-10px_rgb(249_148_59/0.8)]">Explore the Marketplace</ButtonLink>
+            <ButtonLink href="/marketplace" variant="accent" size="lg">Explore the Marketplace</ButtonLink>
             <ButtonLink href="/marketplace/providers" variant="secondary" size="lg" arrow={false} className="bg-white">Submit a Solution</ButtonLink>
           </div>
           <div className="enter mt-5" style={i(5)}>
@@ -102,32 +102,31 @@ export function Hero({ now, metrics }: { now: Date; metrics: Metric[] }) {
             })}
 
             {/* tiles — slight 3D tilt toward the copy */}
-            <div className="absolute inset-0 [perspective:1600px]">
-              <div className="absolute inset-0 [transform:rotateY(-9deg)_rotateX(2deg)] [transform-style:preserve-3d]">
+            <div className="absolute inset-0">
+              <div className="absolute inset-0">
                 <div className="enter absolute left-[2%] top-[6%] h-[34%] w-[46%]" style={i(2)}>
-                  <HeroTile name="jet" priority sizes="(min-width:1024px) 300px, 45vw" className="h-full w-full -rotate-[3deg]" />
+                  <HeroTile name="jet" priority sizes="(min-width:1024px) 300px, 45vw" className="h-full w-full" />
                 </div>
                 <div className="enter absolute left-[51%] top-[1%] h-[45%] w-[30%]" style={i(3)}>
-                  <HeroTile name="satellite" sizes="(min-width:1024px) 200px, 30vw" className="h-full w-full -rotate-[3deg]" />
+                  <HeroTile name="satellite" sizes="(min-width:1024px) 200px, 30vw" className="h-full w-full" />
                 </div>
                 <div className="enter absolute left-[84%] top-[6%] h-[39%] w-[22%]" style={i(4)}>
-                  <HeroTile name="network" sizes="(min-width:1024px) 150px, 22vw" className="h-full w-full -rotate-[3deg]" />
+                  <HeroTile name="network" sizes="(min-width:1024px) 150px, 22vw" className="h-full w-full" />
                 </div>
                 <div className="enter absolute left-[38%] top-[48%] h-[42%] w-[66%]" style={i(5)}>
-                  <HeroTile name="ship" sizes="(min-width:1024px) 440px, 66vw" className="h-full w-full -rotate-[2deg]" />
+                  <HeroTile name="ship" sizes="(min-width:1024px) 440px, 66vw" className="h-full w-full" />
                 </div>
               </div>
             </div>
 
             {/* mission card */}
             <div className="enter absolute left-[8%] top-[39%] z-10 w-[50%] min-w-[220px]" style={i(4)}>
-              <div className="relative overflow-hidden rounded-[20px] bg-navy p-[clamp(1.25rem,2.4vw,2.25rem)] text-white shadow-[0_30px_70px_-20px_rgb(2_44_73/0.65)] ring-1 ring-white/10">
+              <div className="relative overflow-hidden rounded-md bg-navy p-[clamp(1.25rem,2.4vw,2.25rem)] text-white shadow-lift ring-1 ring-sky/20">
                 <div className="absolute inset-0 bg-grid-fine opacity-50" aria-hidden />
-                <div className="absolute -right-10 -top-10 size-40 rounded-full bg-cobalt/50 blur-2xl" aria-hidden />
                 <p className="relative text-[clamp(1.25rem,0.9rem+1.3vw,2rem)] font-extrabold leading-[1.1] tracking-[-0.02em]">
                   Real solutions for real <span className="text-sky">missions</span><span className="text-runway">.</span>
                 </p>
-                <span className="relative mt-5 block h-0.5 w-10 rounded-full bg-runway" aria-hidden />
+                <span className="relative mt-5 block h-0.5 w-10 rounded-sm bg-runway" aria-hidden />
                 <p className="relative mt-5 text-[clamp(0.875rem,0.8rem+0.3vw,1.0625rem)] leading-relaxed text-white/80">Bridging innovative technology and mission outcomes.</p>
               </div>
             </div>
@@ -137,7 +136,7 @@ export function Hero({ now, metrics }: { now: Date; metrics: Metric[] }) {
 
       {/* Stats bar */}
       <div className="container-page relative z-10 pb-12">
-        <div className="enter rounded-2xl border border-white bg-white/90 shadow-[0_20px_50px_-25px_rgb(2_44_73/0.35)] backdrop-blur" style={i(6)}>
+        <div className="enter rounded-md border border-line bg-white" style={i(6)}>
           <ul className="grid divide-line sm:grid-cols-2 lg:grid-cols-4 lg:divide-x">
             {stats.map((s) => (
               <li key={s.label} className="flex items-center gap-5 px-7 py-6">

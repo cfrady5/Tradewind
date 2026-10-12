@@ -46,7 +46,7 @@ export function SearchField({ value, onChange, placeholder, label }: { value: st
       />
       <div className="absolute right-4 top-1/2 flex -translate-y-1/2 items-center gap-2">
         {local ? (
-          <button type="button" onClick={() => { setLocal(""); onChange(""); ref.current?.focus(); }} className="grid size-8 place-items-center rounded-full text-ink-muted hover:bg-cloud hover:text-navy" aria-label="Clear search">
+          <button type="button" onClick={() => { setLocal(""); onChange(""); ref.current?.focus(); }} className="grid size-8 place-items-center rounded-sm text-ink-muted hover:bg-cloud hover:text-navy" aria-label="Clear search">
             <Close width={16} height={16} />
           </button>
         ) : (
@@ -99,12 +99,12 @@ export function ChipGroup({ label, value, onChange, options }: { label: string; 
             aria-checked={on}
             onClick={() => onChange(o.value)}
             className={cn(
-              "inline-flex h-9 items-center gap-2 rounded-full border px-4 text-sm font-semibold transition-[background-color,border-color,color] duration-(--duration-micro)",
+              "inline-flex h-9 items-center gap-2 rounded-sm border px-4 text-sm font-semibold transition-[background-color,border-color,color] duration-(--duration-micro)",
               on ? "border-navy bg-navy text-white" : "border-line bg-white text-navy hover:border-navy/40",
             )}
           >
             {o.label}
-            {o.count !== undefined && <span className={cn("rounded-full px-1.5 text-xs tabular-nums", on ? "bg-white/15" : "bg-cloud text-ink-muted")}>{o.count}</span>}
+            {o.count !== undefined && <span className={cn("rounded-sm px-1.5 text-xs tabular-nums", on ? "bg-white/15" : "bg-cloud text-ink-muted")}>{o.count}</span>}
           </button>
         );
       })}
@@ -123,7 +123,7 @@ export function FilterPanel({ children, active }: { children: ReactNode; active:
         aria-expanded={open}
         className="flex h-11 w-full items-center justify-between rounded-md border border-line bg-white px-4 font-semibold md:hidden"
       >
-        <span className="flex items-center gap-2"><Filter width={18} height={18} /> Filters{active > 0 && <span className="rounded-full bg-cobalt px-2 text-xs text-white">{active}</span>}</span>
+        <span className="flex items-center gap-2"><Filter width={18} height={18} /> Filters{active > 0 && <span className="rounded-sm bg-cobalt px-2 text-xs text-white">{active}</span>}</span>
         <ChevronDown width={18} height={18} className={cn("transition-transform", open && "rotate-180")} />
       </button>
       <div className={cn("mt-3 gap-4 md:mt-0 md:grid", open ? "grid" : "hidden")}>{children}</div>
@@ -167,7 +167,7 @@ export function SortSelect({ value, onChange, options }: { value: string; onChan
 export function Pagination({ page, pages, onPage }: { page: number; pages: number; onPage: (p: number) => void }) {
   if (pages <= 1) return null;
   const nums = Array.from({ length: pages }, (_, i) => i + 1).filter((n) => n === 1 || n === pages || Math.abs(n - page) <= 1);
-  const btn = "grid h-10 min-w-10 place-items-center rounded-full px-3 text-sm font-semibold transition-colors";
+  const btn = "grid h-10 min-w-10 place-items-center rounded-sm px-3 text-sm font-semibold transition-colors";
   return (
     <nav aria-label="Pagination" className="mt-12 flex items-center justify-center gap-1">
       <button type="button" disabled={page <= 1} onClick={() => onPage(page - 1)} className={cn(btn, "hover:bg-cloud disabled:opacity-40")} aria-label="Previous page">

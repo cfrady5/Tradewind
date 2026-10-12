@@ -10,7 +10,7 @@ export default function Page() {
   return (
     <>
       <PageHero
-        title="Built to move innovation at mission speed."
+        title="Mission-focused acquisition of emerging technology."
         lead="Tradewinds is the Department's framework for sourcing, funding and developing solutions to challenges in the AI/ML, digital and data-analytics space."
         crumbs={[{ label: "About", href: "/about" }]}
       />
@@ -36,7 +36,7 @@ export default function Page() {
         </div>
       </Section>
       <Section tone="cloud">
-        <Split title="One front door">
+        <Split title="An integrated ecosystem">
           <p>The <strong>Solutions Marketplace</strong> for assessed, awardable solutions. <strong>Contract vehicles</strong> for services, talent and test. <strong>AI tools</strong> and resources that help acquisition teams work faster. Together they form a single ecosystem with one front door.</p>
         </Split>
       </Section>
